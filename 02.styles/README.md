@@ -63,4 +63,4 @@ HTML файл
 ## Селекторы CSS
 
 ## Справочники
-- []()
+- [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/02.styles)

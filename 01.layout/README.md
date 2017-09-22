@@ -209,6 +209,7 @@
 ```
 
 ## Справочники
+- [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/01.layout)
 - [Полезная информация про элементы, язык англ](https://www.w3.org/wiki/HTML/Elements)
 - [Полезная информация про элементы, частично переведён](https://developer.mozilla.org/ru/docs/Web/HTML/Element)
 - [Полезная информация про элементы, переведена](https://webref.ru/html)
