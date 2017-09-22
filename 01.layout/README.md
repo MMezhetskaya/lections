@@ -23,14 +23,14 @@
 </html>
 ```
 
-##Элементы.
+## Элементы.
 - Правила написания
 - Порядок открывающих и закрывающих тегов(самозакрывающие)
 - Комментарии в HTML '<!-- Комментарий -->'
 - Вложения элементов
 - [Весь список](https://www.w3.org/community/webed/wiki/HTML/Elements) 
 
-## Структура HTML.
+##  Структура HTML.
 - HTML
     ```html
     <!DOCTYPE html>
@@ -57,7 +57,7 @@
     - Комментарий
     - p
 
-## Атрибуты
+##  Атрибуты
 - Атрибут со значением 
     ```html
     <element атрибут="значение">…</element>
@@ -81,12 +81,12 @@
     - Проценты
     - Код языка(lang)
    
-##Тип елементов
+##  Тип елементов
 - строчные
 - блочные
 [Типы](https://www.w3.org/wiki/HTML/Elements)
  
-##Текст
+##  Текст
 - Особенности(пробелы, переносы)
 - pre
 - p
@@ -97,7 +97,7 @@
 - Переносы в тексте
 - [Форматирование](https://www.w3.org/wiki/HTML/Elements) - Text-level semantics
 
-##Ссылки
+## Ссылки
 - Вид:
 ```html
 <a href="<адрес>">текст ссылки</a>
@@ -108,7 +108,7 @@
 - Другие ссылки mailto:, callto:, tel:
 - Якоряб пустые ссылки
 
-##Списки
+## Списки
 - маркированный (неупорядоченный) список
 ```html
 <ul>
@@ -134,7 +134,7 @@
   <dd>Описание второго термина</dd>
 </dl>
 ```
-##Изображения
+## Изображения
 - Форматы PNG, JPEG, GIF и SVG.
 - img
 ```html
@@ -142,7 +142,7 @@
 ```
 - Атрибуты width и height
 
-##Таблицы
+## Таблицы
 - table, tr, td, th
 ```html
 <table>
@@ -164,7 +164,7 @@
     - colspan
     - rowspan
     
-##Формы
+## Формы
 - form
     - action
     - method
@@ -203,12 +203,12 @@
 ```html
 <input type="text" name="myName" placeholder="Please fill me" value="">
 ```
-##Iframes
+## Iframes
 ```html
 <iframe src="https://php-academy.kiev.ua/" width="468" height="60" align="left"></iframe>
 ```
 
-##Справочники
+## Справочники
 - [Полезная информация про элементы, язык англ](https://www.w3.org/wiki/HTML/Elements)
 - [Полезная информация про элементы, частично переведён](https://developer.mozilla.org/ru/docs/Web/HTML/Element)
 - [Полезная информация про элементы, переведена](https://webref.ru/html)
