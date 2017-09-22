@@ -1,6 +1,6 @@
 # Lection 01 - основы HTML
 
-##HTML в деталях.
+## HTML в деталях.
 - HyperText
 - HTML (HyperText Markup Language) — определяет последовательность и тип элементов на веб-странице
 - Набор инструментов
