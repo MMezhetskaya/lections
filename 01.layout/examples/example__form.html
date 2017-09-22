@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Моя первая веб-страница</title>
+</head>
+
+<body>
+    <h1>Forms</h1>
+
+    <form method="get" action="/">
+        <p><b>Вопрос ?</b></p>
+
+        <p>
+            <label for="unittype">Select unit type:</label>
+            <select id="unittype" name="unittype">
+                <option value="1"> Miner </option>
+                <option value="2"> Puffer </option>
+                <option value="3" selected> Snipey </option>
+                <option value="4"> Max </option>
+                <option value="5"> Firebot </option>
+            </select>
+        </p>
+
+        <p>
+            <textarea placeholder="Please fill me" name="myComments"></textarea>
+        </p>
+
+        <p>
+            <input type="text" name="myName" placeholder="Please fill me" value="">
+            <br>
+            <input type="password" name="myPass" placeholder="Please fill password" value="">
+            <br>
+            <label><input type="checkbox" name="myCheckbox" value="aCheck"> Точно да?</label>
+            <br>
+            <input type="radio" id="myRadio" name="answer" value="a1"><label for="myRadio">Ответ 1</label>
+            <br>
+            <label><input type="radio" name="answer" value="a2">Ответ 2</label>
+            <br>
+            <label><input type="radio" name="answer" value="a3">Ответ 3</label>
+        </p>
+        <p><input type="reset" value="Input reset"></p>
+        <p><button type="reset">Button reset</button></p>
+        <p><input type="submit" value="Input оправить"></p>
+        <p><button type="submit">Кнопка оправить</button></p>
+    </form>
+</body>
+</html>

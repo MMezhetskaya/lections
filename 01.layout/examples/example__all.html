@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Моя первая веб-страница</title>
+</head>
+
+<body>
+    <div>
+        <!-- Комментарий -->
+        <h1>Заголовок страницы 1</h1>
+        <h2>Заголовок страницы 2</h2>
+        <h3>Заголовок страницы 3</h3>
+        <h4>Заголовок страницы 4</h4>
+        <h5>Заголовок страницы 5</h5>
+        <h6>Заголовок страницы 6</h6>
+        <p>Основной текст.</p>
+        <p>Основной текст второй абзац.</p>
+    </div>
+
+    <div>
+        <h2>Text</h2>
+
+        <p><a href="example__link.html">Ссылка</a> ,  <strong>strong</strong>, <em>em</em>, <ins>ins</ins>, <small>small</small>, <sub>sub</sub>, <sup>sup</sup></p>
+    </div>
+
+    <div>
+        <h2>Tables</h2>
+
+        <table border="1">
+            <caption>Заголовок</caption>
+            <tr>
+                <th>Ячейка 1</th>
+                <th>Ячейка 2</th>
+                <th>Ячейка 3</th>
+            </tr>
+            <tr>
+                <td>Ячейка 4</td>
+                <td>Ячейка 5</td>
+                <td>Ячейка 6</td>
+            </tr>
+        </table>
+
+        <table border="1">
+            <caption>Объединение ячеек</caption>
+            <tr>
+                <th rowspan="2">Ячейка 1</th>
+                <th colspan="2">Ячейка 2</th>
+            </tr>
+            <tr>
+                <td>Ячейка 3</td>
+                <td>Ячейка 4</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <form method="get" action="/">
+            <p><b>Вопрос ?</b></p>
+            <p>
+                <label for="unittype">Select unit type:</label>
+                <select id="unittype" name="unittype">
+                    <option value="1"> Miner </option>
+                    <option value="2"> Puffer </option>
+                    <option value="3" selected> Snipey </option>
+                    <option value="4"> Max </option>
+                    <option value="5"> Firebot </option>
+                </select>
+
+                <input type="text" name="myName" placeholder="Please fill me" value="">
+                <br>
+                <input type="password" name="myPass" placeholder="Please fill password" value="">
+                <br>
+                <label><input type="checkbox" name="myCheckbox" value="aCheck"> Точно да?</label>
+                <br>
+                <input type="radio" id="myRadio" name="answer" value="a1"><label for="myRadio">Ответ 1</label>
+                <br>
+                <label><input type="radio" name="answer" value="a2">Ответ 2</label>
+                <br>
+                <label><input type="radio" name="answer" value="a3">Ответ 3</label>
+            </p>
+            <p><input type="reset" value="Input reset"></p>
+            <p><button type="reset">Button reset</button></p>
+            <p><input type="submit" value="Input оправить"></p>
+            <p><button type="submit">Кнопка оправить</button></p>
+        </form>
+    </div>
+</body>
+</html>
