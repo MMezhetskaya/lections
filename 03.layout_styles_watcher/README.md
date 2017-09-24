@@ -1,4 +1,4 @@
-# Lection 03 - CSS, HTML, frontend
+# Lection 03 - CSS, HTML, watchers
 
 ### Консоль
 
@@ -12,5 +12,4 @@
 
 
 ## Справочники
-- [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/02.styles)
-- [Сброс стилей](http://marksheet.io/css/reset.css)
+- [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/03.layout_styles_watcher)
