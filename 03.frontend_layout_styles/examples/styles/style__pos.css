@@ -1,0 +1,26 @@
+.myParentClass {
+    position: relative;
+}
+
+.myRelativeClass,
+.myAbsoluteClass,
+.myFixedClass {
+    /*width: 100px;*/
+    height: 100px;
+    color: white;
+}
+
+.myRelativeClass {
+    /*position: relative;*/
+    background-color: black;
+}
+
+.myAbsoluteClass {
+    /*position: absolute;*/
+    background-color: blue;
+}
+
+.myFixedClass {
+    /*position: fixed;*/
+    background-color: green;
+}

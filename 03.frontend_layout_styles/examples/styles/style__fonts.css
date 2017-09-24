@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Tangerine';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/tangerine/v8/HGfsyCL5WASpHOFnouG-RJBw1xU1rKptJj_0jans920.woff2);
+}
+
+body {
+    font-family: Tangerine, Tahoma, sans-serif;
+    font-size: 20px;
+    line-height: 25px;
+}
