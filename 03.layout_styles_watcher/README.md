@@ -58,6 +58,9 @@ body {
 }
 ```
 - закругление углов
+
+![Alt text](./examples/images/css_border-radius.png "Rounded borders")
+
 ```css
 .myClass {
     /* top-left | top-right | bottom-right | bottom-left */
