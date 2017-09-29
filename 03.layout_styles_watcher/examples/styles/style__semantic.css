@@ -1,0 +1,22 @@
+.article {
+    padding: 20px;
+    border: 1px solid #ccc;
+    text-align: center;
+    width: 25%;
+}
+
+.article__header {
+
+}
+
+.article__content {
+
+}
+
+.article__content--important {
+
+}
+
+.article__footer {
+
+}

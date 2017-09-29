@@ -205,7 +205,7 @@
 ```
 ## Iframes
 ```html
-<iframe src="https://php-academy.kiev.ua/" width="468" height="60" align="left"></iframe>
+<iframe src="https://php-academy.kiev.ua/" width="468" height="60"></iframe>
 ```
 
 ## Справочники
