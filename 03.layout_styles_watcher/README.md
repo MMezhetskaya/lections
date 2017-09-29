@@ -172,7 +172,7 @@ Output:
 ## Справочники
 - [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/03.layout_styles_watcher)
 - [Проверка свойст](http://caniuse.com/)
-- [Sass]('http://sass-lang.com/')
+- [Sass](http://sass-lang.com/)
 - [Stylus](http://stylus-lang.com/)
 - [Less](http://lesscss.org/)
 - [Инструменты postCSS](https://github.com/postcss/postcss#tools)
