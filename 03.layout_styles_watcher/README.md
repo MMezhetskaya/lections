@@ -167,7 +167,10 @@ Output:
 - [Инструменты postCSS](https://github.com/postcss/postcss#tools)
 - [Проверка свойст](http://caniuse.com/)
 
-### Собираем проект webpack, PostCSS, stylus
+### Собираем проект webpack, postCSS, stylus/gulp, postCSS, sass
+ - [npm](https://www.npmjs.com/get-npm)
+ - [webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)
+ - [gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)
 
 ## Справочники
 - [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/03.layout_styles_watcher)
@@ -177,3 +180,6 @@ Output:
 - [Less](http://lesscss.org/)
 - [Инструменты postCSS](https://github.com/postcss/postcss#tools)
 - [Flexbox](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_Flexible_Box_Layout/Using_CSS_flexible_boxes/)
+- [npm](https://www.npmjs.com/get-npm)
+- [webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)
+- [gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)
