@@ -1,8 +1,24 @@
-p {
-    color: black;
+* {
+    font-size: 20px;
+    color: green !important;
+    margin: 0;
+    padding: 0;
 }
 
-blockquote {
-    background: lightgreen;
-    color: darkgreen;
+span::before,
+span::after {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+span::before {
+    content: '';
+    background-color: green;
+}
+
+
+span::after {
+    content: '';
+    background-color: red;
 }

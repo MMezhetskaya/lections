@@ -97,7 +97,7 @@ body {
 «Препроцессоры используют язык, который компилируется в CSS. А постпроцессоры реставрируют CSS код так, чтобы он работал наилучшим образом в современных браузерах.»
 
 ![Alt text](./examples/images/pre_post_processors.jpg "CSS processing")
-- шаблонизаторы ([sass]('http://sass-lang.com/')/[stylus](http://stylus-lang.com/)/[less](http://lesscss.org/))
+- шаблонизаторы ([sass](http://sass-lang.com/)/[stylus](http://stylus-lang.com/)/[less](http://lesscss.org/))
     - переменные 
     - вложенные селекторы
     - простая математика
@@ -129,7 +129,7 @@ a {
 ```
 Используем один из шаблонизаторов (stylus).
 ```stylus
-border-radius(n) {
+box-sizing(n) {
     -webkit-box-sizing: n;
     -moz-box-sizing: n;
     box-sizing: n;
