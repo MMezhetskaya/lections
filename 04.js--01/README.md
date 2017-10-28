@@ -1,9 +1,7 @@
 # Lection 01
 
-##Привет JS
-
 ### Поехали!!!!
-####Так что же такое JS?
+#### Так что же такое JS?
 - предыстория (ECMAScript)
 - что такое скрипты?
 - как работает (интерпретатор)?
@@ -11,37 +9,62 @@
     - Интерпретация
 - среда выполнения
 
-###Что (не)умеем
+### Что (не)умеем
 - контекст выполнения
 - браузер
 - безопасность
 - песочница
 
-###В чём же уникальность?
+### В чём же уникальность?
 - Полная интеграция с HTML/CSS.
 - Поддерживается всеми распространёнными браузерами.
 
-###Спецификация и справочники
+### Спецификация и справочники
 - [ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
 - [Mozilla Developer Network](https://developer.mozilla.org/en-US/)
 - [MSDN](http://msdn.microsoft.com/)
 
-###IDE
+### IDE
 - Integrated Development Environment, что просто редактор?
     - Подсветку синтаксиса
     - Автодополнение
     - Фолдинг 
 - Лёгкие редакторы
 
-###Мои предпочтения
+### Мои предпочтения
 - PHPStorm/WebStorm
 - Из быстрых Sublime Text/Notepad++
 
 ### А как же ошибки!
 - Chrome/Firefox/Internet Explorer
-- консоль
+    - Trident — проприетарный движок Microsoft Internet Explorer; используется многими программами для Microsoft Windows (например, мини-браузерами в программах Winamp и RealPlayer).
+    - Gecko — открытый движок проекта Mozilla; используется в большом числе программ, основанных на коде Mozilla (браузере Firefox, почтовом клиенте Thunderbird, наборе программ SeaMonkey).
+    - KHTML — разработан в рамках проекта KDE, используется в браузере Konqueror и послужил основой для WebKit.
+    - WebKit — движок для браузера Apple Safari, включенного в операционную систему Mac OS X, и браузера Google Chrome. Встроен в библиотеку Qt.
+    - Presto — проприетарный движок, разработанный Opera Software; являлся базой для браузера Opera до перехода на Blink, а также лицензирован для использования рядом сторонних компаний.
+    - Blink — движок браузера Google Chrome с 28 версии и Opera c 15 версии. Является ответвлением WebKit.
+    - Edge — новый движок от компании Microsoft для её нового браузера Microsoft Edge. Является ответвлением Trident.
+    
+- консоль 
+```js
+var a = function(b) {
+        return 3 + b;
+    };
 
-##Ура добрались, основы JS
+console.log(a(7));
+
+```
+
+```js
+var a = function(b) {
+        debugger;
+        return 3 + b;
+    };
+
+a();
+```
+
+## Ура добрались, основы JS
 
 - Как подключить:
 ```html
@@ -91,7 +114,7 @@
 </html>
 ```
 
-##Структура кода
+## Структура кода
 - строки 
 ```javascript
 alert('Привет');
@@ -117,7 +140,7 @@ alert('Мир');
 - директива use strict
 - ECMAScript 5 
 
-###Переменные
+### Переменные
 
 - Имя может состоять из: букв, цифр, символов $ и _
 - Первый символ не должен быть цифрой, или -
@@ -134,7 +157,7 @@ var status = IS_ACTIVE;
 ```
 - Правила именования
 
-###Шесть типов данных, typeof
+### Шесть типов данных, typeof
 - примитивы
     - number
         - Infinity
@@ -150,7 +173,7 @@ var status = IS_ACTIVE;
 
 - typeof
 
-###Основные операторы
+### Основные операторы
 - Операнд
 - Унарный
 ```javascript
@@ -207,76 +230,15 @@ console.log( y - x )
 - Оператор ? (тернарный оператор)
 - Логические операторы ||, &&, !
 
-###Циклы while, for
+### Взаимодействие с пользователем: alert, prompt, confirm 
+- alert
+- prompt
+- confirm
 
-- Итерация
-- Цикл do…while
-```javascript
-while (условие) {
-  // код, тело цикла
-}
-```
-
-- Цикл for
-```javascript
-for (;;) {
-  // код, тело цикла
-}
-```
-- for..in
-- break
-- continue
-- Метки для break/continue
-```javascript
-outer: for (var i = 0; i < 3; i++) {
-
-  for (var j = 0; j < 3; j++) {
-
-    var input = prompt('Значение в координатах '+i+','+j, '');
-
-    // если отмена ввода или пустая строка -
-    // завершить оба цикла
-    if (!input) break outer; // (*)
-
-  }
-}
-alert('Готово!');
-```
-- switch
-
-### Функции. Фуууух конец!!!
-- Что это?
-- Объявление
-- Аргументы по умолчанию, arguments
-- Возврат значения
-- Выбор имени функции
-- Функциональные выражения
-    - Function Declaration
-    - Объявление Function Expression
-    ```javascript
-    var f = function(параметры) {
-      // тело функции
-    };
-    ```
-    - Анонимные функции
-    ```javascript
-        function ask(question, yes, no) {
-          if (confirm(question)) yes()
-          else no();
-        }
-        
-        ask(
-          "Вы согласны?",
-          function() { alert("Вы согласились."); },
-          function() { alert("Вы отменили выполнение."); }
-        );
-    ```
-    - new Function
-    ```javascript
-        var sum = new Function('a,b', ' return a+b; ');
-        
-        var result = sum(1, 2);
-        alert( result ); // 3
-    ```
+## Справочники
+- [ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
+- [Mozilla Developer Network](https://developer.mozilla.org/en-US/)
+- [MSDN](http://msdn.microsoft.com/)
+- [Приоритеты](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
 
