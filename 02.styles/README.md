@@ -243,7 +243,7 @@ p { width: 50%; }
 ```
 
 
-## Справочники
+### Справочники
 - [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/02.styles)
 - [Сброс стилей](http://marksheet.io/css/reset.css)
 - [Псевдоклассы](https://developer.mozilla.org/ru/docs/Web/CSS/%D0%9F%D1%81%D0%B5%D0%B2%D0%B4%D0%BE-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B)

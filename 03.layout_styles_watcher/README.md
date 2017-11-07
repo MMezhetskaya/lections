@@ -172,7 +172,7 @@ Output:
  - [webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)
  - [gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)
 
-## Справочники
+### Справочники
 - [Git ссылка на лекцию](https://github.com/Zlodej43sm/lections/tree/master/03.layout_styles_watcher)
 - [Проверка свойст](http://caniuse.com/)
 - [Sass](http://sass-lang.com/)
