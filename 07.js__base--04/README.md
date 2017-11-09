@@ -448,6 +448,6 @@ users.sort(byField('name'));
 ```
 
 
-## Справочники
+### Справочники
 - [jQuery](https://code.jquery.com/jquery-3.2.1.js) 
 - [lodash](https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js)
