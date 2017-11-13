@@ -325,9 +325,104 @@ alert( rabbit.eats ); // true
 
 Также говорят, что объект rabbit «прототипно наследует» от animal.
 
+### Функционально - прототипное программирование
+- методы в прототипном стиле
+- свойства в функциональном стиле
+
+```js
+function User(name) {
+    this.name = name;
+}
+
+User.prototype.sayHi = function() {
+    alert( "Привет, я " + this.name );
+};
+
+var userAdmin = new User('Admin'),
+    userGuest = new User('Guest');
+
+User.prototype.showRole = function() {
+     alert("Только ...");
+ };
+```
+
+- Достоинства
+Функциональный стиль записывает в каждый объект и свойства и методы, а прототипный – только свойства. Поэтому прототипный стиль – быстрее и экономнее по памяти.
+
+- Недостатки
+При создании методов через прототип, мы теряем возможность использовать локальные переменные как приватные свойства, у них больше нет общей области видимости с конструктором.
+
+### Наследование 
+```js
+// 1. Конструктор Animal
+function Animal(name) {
+  this.name = name;
+  this.speed = 0;
+}
+
+// 1.1. Методы -- в прототип
+Animal.prototype.stop = function() {
+  this.speed = 0;
+  alert( this.name + ' стоит' );
+}
+
+Animal.prototype.run = function(speed) {
+  this.speed += speed;
+  alert( this.name + ' бежит, скорость ' + this.speed );
+};
+
+// 2. Конструктор Rabbit
+function Rabbit(name) {
+  this.name = name;
+  this.speed = 0;
+}
+
+// 2.1. Наследование
+Rabbit.prototype = Object.create(Animal.prototype);
+Rabbit.prototype.constructor = Rabbit;
+
+// 2.2. Методы Rabbit
+Rabbit.prototype.jump = function() {
+  this.speed++;
+  alert( this.name + ' прыгает, скорость ' + this.speed );
+}
+```
+
 ### Заключение
 
 ### ДЗ
+ Реализуйте класс Worker (Работник), который будет иметь следующие свойства: name (имя), surname (фамилия), rate (ставка за день работы), days (количество отработанных дней). Также класс должен иметь метод getSalary(), который будет выводить зарплату работника. Зарплата - это произведение (умножение) ставки rate на количество отработанных дней days.
+
+Вот так должен работать наш класс:
+
+```js
+var worker = new Worker('Иван', 'Иванов', 10, 31);
+
+console.log(worker.name); //выведет 'Иван'
+console.log(worker.surname); //выведет 'Иванов'
+console.log(worker.rate); //выведет 10
+console.log(worker.days); //выведет 31
+console.log(worker.getSalary()); //выведет 310 - то есть 10*31
+```
+
+С помощью нашего класса создайте 3х рабочих и найдите сумму их зарплат.
+
+Создайте еще один класс Director который должен наследовать свойства класса Worker, иметь методы:
+  - addWorker(workerName, workerSurname, workerRate, workerDays) добавить работника в список,
+  - removeWorker(workerName) удалить работника из списока,
+  - getWorker(workerName) получить все данные работника
+  - setWorkerRate(workerName, rate) обновить rate  для работника
+
+```js
+var director = new Director('Иван', 'Иванов', 100, 31);
+
+director.addWorker('Петя', 'Петров', 10, 31);
+director.removeWorker('Петя');
+director.getWorker('Петя');
+director.setWorkerRate('Петя', 11);
+
+```
+
 
 ### Справочники
 - [SOLID](https://ru.wikipedia.org/wiki/SOLID_(%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%BD%D0%BE-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)).
