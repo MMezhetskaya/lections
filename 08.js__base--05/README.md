@@ -420,9 +420,15 @@ director.addWorker('Петя', 'Петров', 10, 31);
 director.removeWorker('Петя');
 director.getWorker('Петя');
 director.setWorkerRate('Петя', 11);
-
 ```
 
+Все это должно быть реализовано через форму. Сначала идет поле ввода и кнопка  добавить  директора, для каждого 
+метода класса директор, из списка выше, своя кнопка с полем ввода, если методу необходимо значение. Все результаты 
+выводятся в специальном блоке.
+
+Подсказки.
+
+document.querySelector, innerHTML, click, addEventListener, map, push, p, div, form, label, input type='text', button
 
 ### Справочники
 - [SOLID](https://ru.wikipedia.org/wiki/SOLID_(%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%BD%D0%BE-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)).
