@@ -270,57 +270,57 @@ QUnit.test( "two async calls", function( assert ) {
  10) ` touch webpack.config.js `
  11) 
  ```javascript
-        var path = require('path'),
-            ExtractTextPlugin = require('extract-text-webpack-plugin');
-        
-        module.exports = {
-            context: path.join(__dirname),
-        
-            entry: {
-                bundle: './js',
-                styles: './styles'
-            },
-        
-            output: {
-                path: path.join(__dirname) + '/public/compiled',
-                filename: 'js/[name].js'
-            },
-        
-            watch: true,
-        
-            watchOptions: {
-                aggregateTimeout: 100
-            },
-        
-            resolve: {
-                extensions: ['.js', '.scss', '.css']
-            },
-        
-            module: {
-                rules: [
-                    {
-                        test: /\.(scss|css)$/,
-                        loader: ExtractTextPlugin.extract({
-                            fallback: 'style-loader',
-                            use: [
-                                {
-                                    loader: 'css-loader'
-                                },
-                                {
-                                    loader: 'sass-loader'
-                                }
-                            ]
-                        })
-                    }
-                ]
-            },
-        
-            plugins: [
-                new ExtractTextPlugin('css/[name].css')
-            ]
-        };
-     ``` 
+    var path = require('path'),
+        ExtractTextPlugin = require('extract-text-webpack-plugin');
     
+    module.exports = {
+        context: path.join(__dirname),
+    
+        entry: {
+            bundle: './js',
+            styles: './styles'
+        },
+    
+        output: {
+            path: path.join(__dirname) + '/public/compiled',
+            filename: 'js/[name].js'
+        },
+    
+        watch: true,
+    
+        watchOptions: {
+            aggregateTimeout: 100
+        },
+    
+        resolve: {
+            extensions: ['.js', '.scss', '.css']
+        },
+    
+        module: {
+            rules: [
+                {
+                    test: /\.(scss|css)$/,
+                    loader: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: 'css-loader'
+                            },
+                            {
+                                loader: 'sass-loader'
+                            }
+                        ]
+                    })
+                }
+            ]
+        },
+    
+        plugins: [
+            new ExtractTextPlugin('css/[name].css')
+        ]
+    };
+ ``` 
+ 
 [Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__webpack)
 
 
