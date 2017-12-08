@@ -576,13 +576,67 @@ describe("pow", function() {
 
 И вот вам еще один резкий поворот. Есть крылатая фраза «BDD is TDD done right». Которую многие понимают, как «BDD — это круто, а ваш TDD — фуфло». На самом же деле: BDD — это попытка сформулировать лучшие практики TDD. Т.е. BDD пересекается с TDD, предлагая хорошие практики решения некоторых проблем.
 
-### Заключение
+## Что такое [Node js](https://nodejs.org/en/)
 
-### ДЗ
+Для начала обратимся к Википедии и узнаем, что есть такое Node.js и JavaScript:
+Node или Node.js — серверная реализация языка программирования JavaScript, основанная на движке V8. Предназначена для создания масштабируемых распределённых сетевых приложений, таких как веб-сервер. Node.js по целям использования сходен с каркасами Twisted на языке Python и EventMachine на Ruby. В отличие от большинства программ JavaScript, этот каркас исполняется не в браузере клиента, а на стороне сервера.
+
+JavaScript — прототипно-ориентированный сценарный язык программирования. Является диалектом языка ECMAScript.
+
+Что ж, определение Node.js немного расплывчато, и надо сказать, не корректно. Тогда посмотрим на информацию на официальном сайте:
+Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
+
+Самое главное слово здесь — платформа. Оно и характеризует весь Node.js. Из всего вышесказанного можно сделать предварительный вывод, что Node.js это среда выполнения JavaScript, точно как браузер, с той лишь разницей, что у нас нет доступа к DOM (а собственно, зачем он нужен на стороне сервера?; однако существует библиотека для работы с DOM — jsdom).
+
+```javascript
+var factorial = function (n, a) {
+  return n < 2 ? a : factorial(n - 1, a * n);
+};
+
+console.log(factorial(10, 1));
+```
+
+## Сборка с [Gulp](https://gulpjs.org)
+
+По шагам:
+
+ 1) ` mkdir my_project ` 
+ 2) ` cd my_project ` 
+ 3) ` npm init ` 
+ 4) ` npm install --save-dev gulp ` 
+ 5) ` npm install --save-dev gulp-sass ` 
+ 6) ` touch gulpfile.js `
+ 7) ```javascript
+    var gulp = require('gulp'),
+        sass = require('gulp-sass');
+    
+    gulp.task('sass', function () {
+        return gulp.src('./sass/**/*.scss')
+            .pipe(
+                sass({outputStyle: 'compressed'})
+                    .on('error', sass.logError))
+            .pipe(gulp.dest('./css'));
+    });
+    
+    gulp.task('sass:watch', function () {
+        gulp.watch('./sass/**/*.scss', ['sass']);
+    });
+
+    gulp.task('default', ['sass', 'sass:watch']);
+    ``` 
+    
+[Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)
+
+## Заключение
+
+## ДЗ
 
 Взять последние 4 ДЗ противоположной комманды разработчиков, и покрыть их тестами, при этом придумать и написать как можно больше полезных кейсов, но без фанатизма.
 
-### Справочники
+## Справочники
 - [Mocha](http://mochajs.org/)
 - [Chai](http://chaijs.com/)
 - [Sinon](http://chaijs.com/)
+- [Node js](https://nodejs.org/en/)
+- [Gulp](https://gulpjs.org)
+- [Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)

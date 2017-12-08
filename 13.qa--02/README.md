@@ -254,6 +254,75 @@ QUnit.test( "two async calls", function( assert ) {
 });
 ```
 
+## Сборка с [Webpack](https://webpack.js.org)
+
+По шагам:
+
+ 1) ` mkdir my_project ` 
+ 2) ` cd my_project ` 
+ 3) ` npm init ` 
+ 4) ` npm install --save-dev webpack `
+ 5) ` npm install --save-dev extract-text-webpack-plugin `
+ 6) ` npm install --save-dev node-sass `
+ 7) ` npm install --save-dev css-loader `
+ 8) ` npm install --save-dev style-loader `
+ 9) ` npm install --save-dev sass-loader `
+ 10) ` touch webpack.config.js `
+ 11) ```javascript
+        var path = require('path'),
+            ExtractTextPlugin = require('extract-text-webpack-plugin');
+        
+        module.exports = {
+            context: path.join(__dirname),
+        
+            entry: {
+                bundle: './js',
+                styles: './styles'
+            },
+        
+            output: {
+                path: path.join(__dirname) + '/public/compiled',
+                filename: 'js/[name].js'
+            },
+        
+            watch: true,
+        
+            watchOptions: {
+                aggregateTimeout: 100
+            },
+        
+            resolve: {
+                extensions: ['.js', '.scss', '.css']
+            },
+        
+            module: {
+                rules: [
+                    {
+                        test: /\.(scss|css)$/,
+                        loader: ExtractTextPlugin.extract({
+                            fallback: 'style-loader',
+                            use: [
+                                {
+                                    loader: 'css-loader'
+                                },
+                                {
+                                    loader: 'sass-loader'
+                                }
+                            ]
+                        })
+                    }
+                ]
+            },
+        
+            plugins: [
+                new ExtractTextPlugin('css/[name].css')
+            ]
+        };
+     ``` 
+    
+[Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__webpack)
+
+
 ### Заключение
 
 ### ДЗ
@@ -261,4 +330,6 @@ QUnit.test( "two async calls", function( assert ) {
 Взять тесты с предыдущего ДЗ противоположной комманды разработчиков, и переписать их используя QUnit, при этом дополнить их если видите необходимость.
 
 ### Справочники
-- [Qunit](http://qunitjs.com/).
+- [Qunit](http://qunitjs.com/)
+- [Webpack](https://webpack.js.org)
+- [Сборщик Webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)

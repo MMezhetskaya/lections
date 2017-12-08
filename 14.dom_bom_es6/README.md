@@ -1,4 +1,8 @@
- - DOM 
+# Lection 12
+ 
+## DOM 
+
+
  - BOM
  - Cookie
  - Session
