@@ -268,7 +268,8 @@ QUnit.test( "two async calls", function( assert ) {
  8) ` npm install --save-dev style-loader `
  9) ` npm install --save-dev sass-loader `
  10) ` touch webpack.config.js `
- 11) ```javascript
+ 11) 
+ ```javascript
         var path = require('path'),
             ExtractTextPlugin = require('extract-text-webpack-plugin');
         
