@@ -258,25 +258,25 @@ QUnit.test( "two async calls", function( assert ) {
 
 По шагам:
 
- 1) ` mkdir my_project ` 
+ 1) mkdir my_project 
  
- 2) ` cd my_project ` 
+ 2) cd my_project
  
- 3) ` npm init ` 
+ 3) npm init
  
- 4) ` npm install --save-dev webpack `
+ 4) npm install --save-dev webpack
  
- 5) ` npm install --save-dev extract-text-webpack-plugin `
+ 5) npm install --save-dev extract-text-webpack-plugin
  
- 6) ` npm install --save-dev node-sass `
+ 6) npm install --save-dev node-sass
  
- 7) ` npm install --save-dev css-loader `
+ 7) npm install --save-dev css-loader
  
- 8) ` npm install --save-dev style-loader `
+ 8) npm install --save-dev style-loader
  
- 9) ` npm install --save-dev sass-loader `
+ 9) npm install --save-dev sass-loader
  
- 10) ` touch webpack.config.js `
+ 10) touch webpack.config.js
  
  11) 
  ```javascript

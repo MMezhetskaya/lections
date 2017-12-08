@@ -600,17 +600,17 @@ console.log(factorial(10, 1));
 
 По шагам:
 
- 1) ` mkdir my_project `
+ 1) mkdir my_project
   
- 2) ` cd my_project ` 
+ 2) cd my_project
  
- 3) ` npm init ` 
+ 3) npm init
  
- 4) ` npm install --save-dev gulp ` 
+ 4) npm install --save-dev gulp
  
- 5) ` npm install --save-dev gulp-sass ` 
+ 5) npm install --save-dev gulp-sass 
  
- 6) ` touch gulpfile.js `
+ 6) touch gulpfile.js
  
  7) 
 ```javascript
