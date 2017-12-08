@@ -184,7 +184,7 @@
 - ДЗ
 - Справочники
  
- ## [14.dom__bom_es6](./14.dom__bom_es6)
+## [14.dom_bom_es6](./14.dom_bom_es6)
  - DOM 
  - BOM
  - Cookie
@@ -199,7 +199,7 @@
  - ДЗ
  - Справочники 
  
- ## [15.html5_jquery](./15.html5_jquery)
+## [15.html5_jquery](./15.html5_jquery)
  - HTML5
  - видео, аудио
  - SVG
@@ -221,26 +221,26 @@
  - ДЗ
  - Справочники
  
- ## [16.react--01](./16.react--01)
+## [16.react--01](./16.react--01)
  
- ## [17.react--02](./16.react--02)
+## [17.react--02](./16.react--02)
  
- ## [18.react--03](./16.react--03)
+## [18.react--03](./16.react--03)
  
- ## [19.react--04](./16.react--04)
+## [19.react--04](./16.react--04)
  
- ## [20.react--05](./16.react--05)
+## [20.react--05](./16.react--05)
  
- ## [21.react--06](./16.react--06)
+## [21.react--06](./16.react--06)
  
- ## [22.angular--01](./22.angular--01)
+## [22.angular--01](./22.angular--01)
  
- ## [22.angular--02](./22.angular--02)
+## [22.angular--02](./22.angular--02)
  
- ## [22.angular--03](./22.angular--03)
+## [22.angular--03](./22.angular--03)
  
- ## [22.angular--04](./22.angular--04)
+## [22.angular--04](./22.angular--04)
  
- ## [22.angular--05](./22.angular--05)
+## [22.angular--05](./22.angular--05)
  
- ## [22.angular--06](./22.angular--06)
+## [22.angular--06](./22.angular--06)
