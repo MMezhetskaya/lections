@@ -1,5 +1,5 @@
 # PHP academy lections. Frontend HTML, CSS, JS.
-## 01.layout
+## [01.layout](./01.layout)
 - HTML в деталях
 - Элементы
 - Структура HTML
