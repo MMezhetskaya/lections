@@ -194,7 +194,7 @@
         - LocalStorage 
         - SessionStorage  
     - Cookie && Session
-- HTTP + AJAX & COMET
+- HTTP + AJAX & COMET + NODE
 - ES5-6
 - webpack + BABEL + SASS
 - Заключение

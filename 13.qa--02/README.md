@@ -334,13 +334,13 @@ QUnit.test( "two async calls", function( assert ) {
 [Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__webpack)
 
 
-### Заключение
+## Заключение
 
-### ДЗ
+## ДЗ
 
 Взять тесты с предыдущего ДЗ противоположной комманды разработчиков, и переписать их используя QUnit, при этом дополнить их если видите необходимость.
 
-### Справочники
+## Справочники
 - [Qunit](http://qunitjs.com/)
 - [Webpack](https://webpack.js.org)
 - [Сборщик Webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)
