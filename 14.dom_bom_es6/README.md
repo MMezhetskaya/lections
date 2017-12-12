@@ -7,19 +7,7 @@
  - DOM-модель – это внутреннее представление HTML-страницы в виде дерева.
  - Все элементы страницы, включая теги, текст, комментарии, являются узлами DOM.
  - У элементов DOM есть свойства и методы, которые позволяют изменять их.
- 
-## SVG
 
-
-
-## Canvas
-
-
-
-## CSS графика
-
-
- 
 ## BOM
 
 BOM – это объекты для работы с чем угодно, кроме документа.
@@ -397,6 +385,62 @@ Babel.JS – это транспайлер, переписывающий код 
  
  4) npm install --save-dev webpack
  
+ 5) npm install --save-dev babel-core babel-loader babel-plugin-transform-runtime babel-preset-env
+ 
+ 6) 
+ ```javascript
+     var path = require('path'),
+         CleanWebpackPlugin = require('clean-webpack-plugin');
+     
+     module.exports = {
+         context: path.join(__dirname),
+     
+         entry: {
+             bundle: './js'
+         },
+     
+         output: {
+             path: path.join(__dirname) + '/public/compiled',
+             filename: 'js/[name].js'
+         },
+     
+         watch: true,
+     
+         watchOptions: {
+             aggregateTimeout: 100
+         },
+     
+         resolve: {
+             extensions: ['.js']
+         },
+     
+         module: {
+             rules: [
+                 {
+                     test: /\.js$/,
+                     loader: 'babel-loader',
+                     options: {
+                         ignore: '/node_modules/'
+                     }
+                 }
+             ]
+         },
+         plugins: [
+             new CleanWebpackPlugin(pathsToClean)
+         ]
+     };
+  ``` 
+  
+ 7) touch .babelrc
+ 
+ 8)
+```json
+{
+  "presets": ["env"],
+  "plugins": ["transform-runtime"]
+}
+``` 
+ 
 ## Заключение
 
 ## ДЗ
@@ -404,3 +448,5 @@ Babel.JS – это транспайлер, переписывающий код 
 ## Справочники
 - [ES6 список фич](http://es6-features.org/#Constants)
 - [Ecma](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
+- [Webpack](https://webpack.js.org)
+- [Сборщик Webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)
