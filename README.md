@@ -195,6 +195,8 @@
         - SessionStorage  
     - Cookie && Session
 - HTTP + AJAX & COMET + NODE
+    - Node server
+    - fetch
 - ES5-6
 - webpack + BABEL + SASS
 - Заключение
