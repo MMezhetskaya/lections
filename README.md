@@ -205,9 +205,11 @@
  
 ## [15.html5_jquery](./15.html5_jquery)
 - HTML5
-- видео, аудио
-- SVG
-- Canvas
+    - Геопозиционирование
+    - видео
+    - аудио
+    - SVG
+    - Canvas
 - CSS графика
 - jQuery
 - селекторы
