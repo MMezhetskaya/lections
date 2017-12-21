@@ -10,7 +10,18 @@
 
 ### Подготовка
 
-
+1. Скачайть (React.js)[https://reactjs.org/]
+2. 
+```
++-- js
+|
+|
+|
+|
++-- index.html
++-- package.json
++-- server.js
+```
 
 ## Заключение
 
