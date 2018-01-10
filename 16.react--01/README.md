@@ -94,7 +94,7 @@ app.listen(app.get('port'), function() {
 </html>
 ```
 
-- **node server.js** || **npm start**
+- **node server.js** && **npm start**
 
 ## Подключаем react
 
