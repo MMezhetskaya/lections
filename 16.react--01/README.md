@@ -1,17 +1,5 @@
 ## React l.01
 
-### Вступление
-
-1. Создавать компоненты, учитывая **propTypes**
-
-2. Грамотно использовать **props** и **state** компонента 
-
-3. Работать с формой
-
-4. Работать с **react dev tools**
-
-5. Рефакторить
-
 ### Подготовка
 
 1. Скачать (React.js)[https://reactjs.org/]
@@ -57,7 +45,7 @@ npm init && npm i --save react react-dom;
 }
 ```
 
-- поднимем на **node.js** || **express**
+- поднимем на **node.js** && **express**
 
 ```bash
 npm install --save-dev express;
@@ -332,10 +320,7 @@ class News extends React.Component {
         let newsData = this.props.data,
             newsTemplate = newsData.map((item, idx) => {
                 return (
-                    <div key={idx}>
-                        <p className="news__author">{item.author}:</p>
-                        <p className="news__text">{item.text}</p>
-                    </div>
+                    <Article data={item} key={idx} />
                 )
             });
 
@@ -348,9 +333,41 @@ class News extends React.Component {
 }
 ```
 
+```js
+class Article extends React.Component {
+    render() {
+        let author = this.props.data.author,
+            text = this.props.data.text;
+
+        return (
+            <div className="article">
+                <p className="news__author">{author}:</p>
+                <p className="news__text">{text}</p>
+            </div>
+        )
+    }
+}
+```
+
 ## Заключение
+
+- Что такое **React**
+
+- Разметка **JSX**
+
+- Что такое компонент, и компонентный подход
 
 ## ДЗ
 
+Самостоятельно переписать приложение:
+
+ - используя семантику 
+ 
+ - добавить стили и классы(BEM)
+ 
+ - разбить компоненты на отдельные js файлы(логически)
+ 
+ - написать и добавить компонент показывающий общее кол-во новостей
+
 ## Справочники
-- (React.js)[https://reactjs.org/]
+- [React.js](https://reactjs.org/)
