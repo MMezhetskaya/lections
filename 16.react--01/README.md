@@ -1,6 +1,6 @@
 ## React l.01
 
-### Подготовка
+## Подготовка
 
 1. Скачать (React.js)[https://reactjs.org/]
 

@@ -236,24 +236,25 @@
 - ДЗ
 - Справочники
  
-## [17.react--02](./16.react--02)
+## [17.react--02](./17.react--02)
+
  
-## [18.react--03](./16.react--03)
+## [18.react--03](./18.react--03)
  
-## [19.react--04](./16.react--04)
+## [19.react--04](./19.react--04)
  
-## [20.react--05](./16.react--05)
+## [20.react--05](./20.react--05)
  
-## [21.react--06](./16.react--06)
+## [21.react--06](./21.react--06)
  
 ## [22.angular--01](./22.angular--01)
  
-## [22.angular--02](./22.angular--02)
+## [22.angular--02](./23.angular--02)
  
-## [22.angular--03](./22.angular--03)
+## [22.angular--03](./24.angular--03)
  
-## [22.angular--04](./22.angular--04)
+## [22.angular--04](./25.angular--04)
  
-## [22.angular--05](./22.angular--05)
+## [22.angular--05](./26.angular--05)
  
-## [22.angular--06](./22.angular--06)
+## [22.angular--06](./27.angular--06)
