@@ -267,7 +267,7 @@ let my_news = [
     },
     {
         author: 'Просто Вася',
-        text: 'Считаю, что $ должен стоить 35 рублей!'
+        text: 'Считаю, что $ должен стоить 37 гривен!'
     },
     {
         author: 'Гость',
@@ -312,6 +312,106 @@ class News extends React.Component {
 }
 ```
 
+## prop-types
+
+**Note:** PropTypes не работает с production версией React.
+
+- Ломаем код(легкий вариант, тут все понятно)
+
+```js
+class App extends React.Component {
+    render() {
+        return (
+            <div className="app">
+                <h1>Всем привет, я компонент App! Я умею отображать новости.</h1>
+
+                <News /> {/* удалим дату */}
+            </div>
+        );
+    }
+}
+```
+
+- Проверяем страницу, анализируем
+
+- Собственно **propTypes**
+
+```bash
+npm install --save prop-types
+```
+
+```html
+<script src="node_modules/prop-types/prop-types.js"></script>
+```
+
+```js
+class News extends React.Component {    
+    render() {
+        let newsData = this.props.data,
+            newsTemplate = newsData.map((item, idx) => {
+                return (
+                    <Article data={item} key={idx} />
+                )
+            }),
+            newsLength = newsTemplate.length;
+
+        return (
+            <section className="news">
+                {!!newsLength ? newsTemplate  : 'Новостей нет'}
+
+                <NewsCount total={newsLength}/>
+            </section>
+        )
+    }
+}
+
+News.propTypes = {
+    data: PropTypes.array.isRequired
+};
+```
+
+- Более интересный пример
+
+```js
+let my_news = [
+    {
+        author: 'Саша Печкин',
+        // text: 'В четверг, четвертого числа...'
+    },
+    {
+        author: 'Просто Вася',
+        text: 'Считаю, что $ должен стоить 37 гривен!'
+    },
+    {
+        author: 'Гость',
+        text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000'
+    }
+];
+
+class Article extends React.Component {
+    render() {
+        let author = this.props.data.author,
+            text = this.props.data.text;
+
+        return (
+            <article className="article">
+                <p className="news__author">{author}:</p>
+                <p className="news__text">{text}</p>
+            </article>
+        )
+    }
+}
+
+Article.propTypes = {
+    data: PropTypes.shape({
+        author: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired
+    })
+};
+```
+
+- Подробнее [PropTypes](https://www.npmjs.com/package/prop-types)
+
 ## Порефакторим!?
 
 ```js
@@ -355,6 +455,8 @@ class Article extends React.Component {
 
 - Разметка **JSX**
 
+- **props** && **prop-types**
+
 - Что такое компонент, и компонентный подход
 
 ## ДЗ
@@ -371,3 +473,4 @@ class Article extends React.Component {
 
 ## Справочники
 - [React.js](https://reactjs.org/)
+- [prop-types](https://www.npmjs.com/package/prop-types)
