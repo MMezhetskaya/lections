@@ -46,7 +46,6 @@ class Article extends React.Component {
     }
 }
 
-
 Article.propTypes = {
     data: PropTypes.shape({
         author: PropTypes.string.isRequired,
@@ -56,7 +55,6 @@ Article.propTypes = {
 };
 ```
 3. Добавим ссылку - "подробнее"
-
 ```js
 class Article extends React.Component {
     render() {
