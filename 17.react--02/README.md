@@ -28,7 +28,7 @@ let my_news = [
     }
 ];
 ```
-2. Отобразим полный текст новости
+2. Отобразим полный текст новости.
 ```js
 class Article extends React.Component {
     render() {
