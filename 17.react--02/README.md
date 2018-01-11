@@ -9,7 +9,6 @@
 Сладкая практика:
 
 1. Обновим **my_news**
-
 ```js
 let my_news = [
     {
@@ -29,9 +28,7 @@ let my_news = [
     }
 ];
 ```
-
 2. Отобразим полный текст новости
-
 ```js
 class Article extends React.Component {
     render() {
@@ -58,7 +55,6 @@ Article.propTypes = {
     })
 };
 ```
-
 3. Добавим ссылку - "подробнее"
 
 ```js

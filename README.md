@@ -243,7 +243,6 @@
     - Events(onClick)
     - state для Гуру
 
- 
 ## [18.react--03](./18.react--03)
  
 ## [19.react--04](./19.react--04)
