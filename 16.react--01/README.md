@@ -1,4 +1,4 @@
-## React l.01
+# React l.01
 
 ## Подготовка
 
@@ -11,14 +11,15 @@ npm init && npm i --save react react-dom;
 2. Создать структуру проекта
 
 ```
-+-- node_modules
-|   +-- react
-|      +-- umd
+/root
++-- /node_modules
+|   +-- /react
+|      +-- /umd
 |          +-- react.development.js
-|   +-- react-dom
-|      +-- umd
+|   +-- /react-dom
+|      +-- /umd
 |          +-- react-dom.development.js
-+-- js
++-- /js
 |   +-- app.js
 +-- index.html
 +-- package.json
