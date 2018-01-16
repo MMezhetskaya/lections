@@ -1,6 +1,6 @@
 # React l.03
 
-## Чего не хватало?
+## Чето было не так?
 
 - модульность
 
@@ -8,24 +8,15 @@
 
 - исходные файлы минимилизированны и сжаты в один
 
-### Создать структуру проекта <space><space>
-```
-/root
-+-- /node_modules
-+-- /src
-+-- /static
-+-- index.html
-+-- package.json
-+-- webpack.config.js
-+-- server.js
-```
-
-### webpack
+### [webpack](https://webpack.js.org/)
 
 1. Ставим **webpack** <space><space>
 ```bash
+npm init
 npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 ```
+
+
 
 2. Создаем конфиг файл **webpack.config.js** <space><space>
 ```js
@@ -44,9 +35,9 @@ module.exports = {
         publicPath: '/static/'
     },
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 };
 ```
@@ -107,8 +98,109 @@ module.hot.accept();
 ```
 
 5. Запускаем <space><space>
+```js
+...
+"scripts": {
+    "start": "node server.js"
+}
+...
+```
+
 ```bash
 npm start
+```
+
+### [babel](http://babeljs.io/)
+
+1. Ставим **[babel](http://babeljs.io/)** <space><space>
+```bash
+npm install babel-core babel-loader --save-dev
+```
+
+2. Ставим пресеты (предустановки) <space><space>
+```bash
+# Для поддержки ES6/ES2015
+npm install babel-preset-es2015 --save-dev
+npm install babel-preset-env --save-dev
+
+# Для поддержки JSX
+npm install babel-preset-react --save-dev
+
+# Для поддержки ES7
+npm install babel-preset-stage-0 --save-dev
+
+# Polyfill
+npm install babel-polyfill --save
+
+# Время сборки
+npm install babel-runtime --save
+npm install babel-plugin-transform-runtime --save-dev
+```
+
+3. Подправим **webpack.config.js**  <space><space>
+```js
+let path = require('path'),
+    webpack = require('webpack');
+
+module.exports = {
+    devtool: 'cheap-module-eval-source-map',
+    entry: [
+        'webpack-hot-middleware/client',
+        'babel-polyfill',
+        './src/index'
+    ],
+    output: {
+        path: path.join(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/static/'
+    },
+    plugins: [
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin()
+    ],
+    module: {
+        loaders: [
+            {
+                loaders: ['babel-loader'],
+                include: [
+                    path.resolve(__dirname, "src"),
+                ],
+                options: {
+                    ignore: '/node_modules/'
+                },
+                test: /\.js$/
+            }
+        ]
+    }
+};
+```
+
+4. Настройки для **babel**,  .babelrc <space><space>
+```js
+{
+  "presets": ["env", "stage-0", "react"],
+  "plugins": ["transform-runtime"]
+}
+```
+
+5. Установим **react** и **react-dom**  <space><space>
+```bash
+npm i react react-dom --save
+```
+
+7. Обновим **index.js** <space><space>
+```js
+import 'babel-polyfill'
+import React from 'react'
+import { render } from 'react-dom'
+import App from './containers/App'
+
+
+render(
+    <App />,
+    document.getElementById('root')
+)
 ```
 
 ## Заключение
@@ -116,3 +208,7 @@ npm start
 ## ДЗ
 
 ## Справочники
+- [webpack](https://webpack.js.org/)
+- [Screencast webpack](https://learn.javascript.ru/screencast/webpack)
+- [babel](http://babeljs.io/)
+- [redux](https://redux.js.org/index.html)
