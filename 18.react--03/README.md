@@ -13,6 +13,7 @@
 ### [webpack](https://webpack.js.org/)
 
 1. Ставим **webpack** <space><space>
+
 ```bash
 npm init
 npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
@@ -46,11 +47,13 @@ module.exports = {
 ### server 
 
 1. Для начала установим **express** <space><space>
+
 ```bash
 npm i express --save-dev
 ```
 
 2. Создаем **server.js** <space><space>
+
 ```js
 let webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
@@ -77,6 +80,7 @@ app.listen(port, function(error) {
 ```
 
 3. Создаем **index.html** <space><space>
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -93,12 +97,14 @@ app.listen(port, function(error) {
 ```
 
 4. Создаем **src/index.js** <space><space>
+
 ```js
 document.getElementById('root').innerHTML = 'Привет, я готов.';
 module.hot.accept();
 ```
 
 5. Запускаем <space><space>
+
 ```js
 ...
 "scripts": {
@@ -114,31 +120,34 @@ npm start
 ### [babel](http://babeljs.io/)
 
 1. Ставим **[babel](http://babeljs.io/)** <space><space>
+
 ```bash
 npm install babel-core babel-loader --save-dev
 ```
 
 2. Ставим пресеты (предустановки) <space><space>
+
 ```bash
-# Для поддержки ES6/ES2015
+// Для поддержки ES6/ES2015
 npm install babel-preset-es2015 --save-dev
 npm install babel-preset-env --save-dev
 
-# Для поддержки JSX
+// Для поддержки JSX
 npm install babel-preset-react --save-dev
 
-# Для поддержки ES7
+// Для поддержки ES7
 npm install babel-preset-stage-0 --save-dev
 
-# Polyfill
+// Polyfill
 npm install babel-polyfill --save
 
-# Время сборки
+// Время сборки
 npm install babel-runtime --save
 npm install babel-plugin-transform-runtime --save-dev
 ```
 
 3. Подправим **webpack.config.js**  <space><space>
+
 ```js
 let path = require('path'),
     webpack = require('webpack');
@@ -178,6 +187,7 @@ module.exports = {
 ```
 
 4. Настройки для **babel**,  .babelrc <space><space>
+
 ```js
 {
   "presets": ["env", "stage-0", "react"],
@@ -186,11 +196,13 @@ module.exports = {
 ```
 
 5. Установим **react** и **react-dom**  <space><space>
+
 ```bash
 npm i react react-dom --save
 ```
 
 7. Обновим **index.js** <space><space>
+
 ```js
 import 'babel-polyfill'
 import React from 'react'
