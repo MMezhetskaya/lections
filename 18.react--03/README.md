@@ -1,12 +1,14 @@
 # React l.03
 
-## Чето было не так?
+## Современный web
 
 - модульность
 
 - компиляция на лету
 
 - исходные файлы минимилизированны и сжаты в один
+
+- и много много всего...
 
 ### [webpack](https://webpack.js.org/)
 
@@ -16,9 +18,7 @@ npm init
 npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 ```
 
-
-
-2. Создаем конфиг файл **webpack.config.js** <space><space>
+2. Создаем **webpack.config.js** <space><space>
 ```js
 let path = require('path'),
     webpack = require('webpack');
@@ -42,7 +42,7 @@ module.exports = {
 };
 ```
 
-### server
+### server 
 
 1. Для начала установим **express** <space><space>
 ```bash
