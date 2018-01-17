@@ -257,6 +257,8 @@
     - webpack
     - server
     - babel
+    - React + Hot Reload
+    - ESLint
 - Заключение
 - ДЗ
 - Справочники

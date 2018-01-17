@@ -225,6 +225,20 @@ export default class App extends Component {
 }
 ```
 
+### React + Hot Reload
+
+Сборка без перезагрузки страницы в браузере.
+
+```bash
+npm i react-hot-loader --save-dev
+```
+
+
+### ESLint
+
+Быстро решает синтаксические ошибки и повышает производительность.
+
+
 ## Заключение
 
 ## ДЗ
