@@ -170,16 +170,13 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin()
     ],
     module: {
-        loaders: [
+        rules: [
             {
-                loaders: ['babel-loader'],
-                include: [
-                    path.resolve(__dirname, "src"),
-                ],
+                test: /\.js$/,
+                loader: 'babel-loader',
                 options: {
-                    ignore: '/node_modules/'
-                },
-                test: /\.js$/
+                    ignore: './node_modules/'
+                }
             }
         ]
     }
@@ -198,22 +195,34 @@ module.exports = {
 5. Установим **react** и **react-dom**  <space><space>
 
 ```bash
-npm i react react-dom --save
+npm i react react-dom prop-types --save
 ```
 
 7. Обновим **index.js** <space><space>
 
 ```js
-import 'babel-polyfill'
-import React from 'react'
-import { render } from 'react-dom'
-import App from './containers/App'
-
+import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import App from './containers/App';
 
 render(
     <App />,
     document.getElementById('root')
-)
+);
+```
+
+7. Создадим **containers/App.js** <space><space>
+
+```js
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+export default class App extends Component {
+    render() {
+        return <div>Привет из App</div>;
+    }
+}
 ```
 
 ## Заключение

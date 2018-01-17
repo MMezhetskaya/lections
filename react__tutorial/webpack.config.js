@@ -1,3 +1,6 @@
+let path = require('path'),
+    webpack = require('webpack');
+
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: [
@@ -16,16 +19,13 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin()
     ],
     module: {
-        loaders: [
+        rules: [
             {
-                loaders: ['babel-loader'],
-                include: [
-                    path.resolve(__dirname, "src"),
-                ],
+                test: /\.js$/,
+                loader: 'babel-loader',
                 options: {
-                    ignore: '/node_modules/'
-                },
-                test: /\.js$/
+                    ignore: './node_modules/'
+                }
             }
         ]
     }
