@@ -19,6 +19,7 @@ npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 ```
 
 2. Создаем **webpack.config.js** <space><space>
+
 ```js
 let path = require('path'),
     webpack = require('webpack');
