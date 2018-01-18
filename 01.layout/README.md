@@ -11,7 +11,7 @@
     
 ## Поговорим о HTML
 
-- HTML (HyperText Markup Language)
+- **HTML** (HyperText Markup Language)
 
 - HyperText
 
@@ -37,21 +37,29 @@
 ```
 
 - DOCTYPE
+
 - html
+
 - head -> meta, link, script, style или title
+
 - body
+
 - Комментарий
+
 - h1, p
+
 - [Ура пример!!!](https://translate.google.com/)
 
 ## Элементы
 
 - Правила написания <space><space>
+
 ```html
 <element>Some text</element>
 ```
 
 - Вложения элементов <space><space>
+
 ```html
 <element_0>
     Some text
@@ -63,6 +71,7 @@
 ```
 
 - Порядок открывающих и закрывающих тегов(самозакрывающие) <space><space>
+
 ```html
 <element_0>
     Some text
@@ -83,11 +92,13 @@
 ## Атрибуты
 
 - Атрибут со значением <space><space>
+
 ```html
 <element attribute="value">Some text</element>
 ```
 
 - Атрибут логический <space><space>
+
 ```html
 <element attribute>Some text</element>
 ```
@@ -119,6 +130,7 @@
 ## [Ссылки](https://www.w3.org/community/webed/wiki/HTML/Elements/a)
 
 - a <space><space>
+
 ```html
 <a href="<where to go>">Some text</a>
 ```
@@ -132,7 +144,9 @@
 - Якоря, пустые ссылки
 
 ## Списки
+
 - маркированный (неупорядоченный) список [ul](https://www.w3.org/community/webed/wiki/HTML/Elements/ul) <space><space>
+
 ```html
 <ul>
   <li>Первый пункт</li>
@@ -140,7 +154,9 @@
   <li>Третий пункт</li>
 </ul>
 ```
+
 - нумерованный (упорядоченный) список [ol](https://www.w3.org/community/webed/wiki/HTML/Elements/ol) <space><space>
+
 ```html
 <ol>
   <li>Первый пункт</li>
@@ -149,6 +165,7 @@
 </ol>
 ```
 - список описаний [dl](https://www.w3.org/community/webed/wiki/HTML/Elements/dl) <space><space>
+
 ```html
 <dl>
   <dt>Первый термин</dt>
@@ -163,6 +180,7 @@
 - Форматы PNG, JPEG, GIF и SVG.
 
 - img <space><space>
+
 ```html
 <img src="<where img located>" alt="<some text described image>">
 ```
@@ -170,6 +188,7 @@
 ## Таблицы [table](https://www.w3.org/community/webed/wiki/HTML/Elements/table)
 
 - table, tr, td, th <space><space>
+
 ```html
 <table>
     <tr>
@@ -182,7 +201,9 @@
     </tr>
 </table>
 ```
+
 - caption <space><space>
+
 ```html
 <caption>Заголовок</caption>
 ```
@@ -191,6 +212,7 @@
     
 ## Формы [form](https://www.w3.org/community/webed/wiki/HTML/Elements/form)
 - form action, method, submit <space><space>
+
 ```html
 <form method="post" action="/">
     <p><b>Вопрос ?</b></p>
@@ -204,11 +226,13 @@
 ```
 
 - textarea <space><space>
+
 ```html
 <textarea></textarea>
 ```
 
 - select <space><space>
+
 ```html
 <p>
   <label for="unittype">Select unit type:</label>
@@ -232,6 +256,7 @@
 ```
 
 ## Iframes <space><space>
+
 ```html
 <iframe src="https://php-academy.kiev.ua/" width="468" height="60"></iframe>
 ```
@@ -239,6 +264,7 @@
 ## ДЗ
 
 Создайте вашу персональную страницуна базе шаблона <space><space>
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -259,7 +285,9 @@
 ```
 
 1. Сделайте логотип в стиле google где вместо google будет ваша фамилия ([ссылка на логотип](https://www.google.com.ua/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png)).
+
  - Используйте [Gimp](https://www.gimp.org/downloads/), или любой другой вам знакомый графический редактор
+
  - Вставьте изображение в документ
  
 2. Опишите себя и свои навыки используя любой из елементов типа списка
