@@ -22,7 +22,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                loader: ['babel-loader', 'react-hot'],
+                loader: 'babel-loader',
                 options: {
                     ignore: './node_modules/'
                 }

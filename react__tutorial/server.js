@@ -1,4 +1,4 @@
-let webpack = require('webpack'),
+const webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
     webpackHotMiddleware = require('webpack-hot-middleware'),
     config = require('./webpack.config'),
