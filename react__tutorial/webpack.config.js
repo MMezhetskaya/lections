@@ -24,6 +24,15 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 options: {
+                    ignore: './node_modules/',
+                    plugins: ['transform-runtime']
+                }
+            },
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                loader: 'eslint-loader',
+                options: {
                     ignore: './node_modules/'
                 }
             }
