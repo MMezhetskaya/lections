@@ -12,13 +12,15 @@
 
 ### [webpack](https://webpack.js.org/)
 
-1. Ставим **webpack** <space><space>
+- Ставим **webpack**
+
 ```bash
 npm init
 npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 ```
 
-2. Создаем **webpack.config.js** <space><space>
+- Создаем **webpack.config.js**
+
 ```js
 const webpack = require('webpack');
 
@@ -56,12 +58,14 @@ module.exports = {
 
 ### server + React + Hot Reload 
 
-1. Для начала установим **express** <space><space>
+- Для начала установим **express**
+
 ```bash
 npm i express react-hot-loader --save-dev
 ```
 
-2. Создаем **server.js** <space><space>
+- Создаем **server.js** 
+
 ```js
 const webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
@@ -93,7 +97,8 @@ app
     });
 ```
 
-3. Создаем **index.html** <space><space>
+- Создаем **index.html**
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -109,7 +114,8 @@ app
 </html>
 ```
 
-4. Запускаем <space><space>
+- Запускаем
+
 ```js
 ...
 "scripts": {
@@ -124,12 +130,14 @@ npm start
 
 ### [babel](http://babeljs.io/)
 
-1. Ставим **[babel](http://babeljs.io/)** <space><space>
+- Ставим **[babel](http://babeljs.io/)** 
+
 ```bash
 npm i babel-core babel-loader --save-dev
 ```
 
-2. Ставим пресеты (предустановки) <space><space>
+- Ставим пресеты (предустановки)
+
 ```bash
 // Для поддержки ES6/ES2015
 npm install babel-preset-es2015 --save-dev
@@ -149,7 +157,8 @@ npm install babel-runtime --save
 npm install babel-plugin-transform-runtime --save-dev
 ```
 
-3. Настройки для **babel**,  .babelrc <space><space>
+- Настройки для **babel**,  .babelrc
+
 ```json
 {
     "presets": ["env", "stage-0", "react"],
@@ -157,7 +166,8 @@ npm install babel-plugin-transform-runtime --save-dev
 }
 ```
 
-4. Создаем **src/index.js** <space><space>
+- Создаем **src/index.js**
+
 ```bash
 npm i react react-dom prop-types --save
 ```
@@ -188,7 +198,8 @@ if (module.hot) {
 }
 ```
 
-5. Создадим **containers/App.js** <space><space>
+- Создадим **containers/App.js**
+
 ```js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
