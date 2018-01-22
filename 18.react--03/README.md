@@ -13,16 +13,14 @@
 ### [webpack](https://webpack.js.org/)
 
 1. Ставим **webpack** <space><space>
-
 ```bash
 npm init
 npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 ```
 
 2. Создаем **webpack.config.js** <space><space>
-
 ```js
-let webpack = require('webpack');
+const webpack = require('webpack');
 
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
@@ -30,6 +28,7 @@ module.exports = {
     entry: [
         'react-hot-loader/patch',
         'webpack-hot-middleware/client?quiet=true',
+        'babel-polyfill',
         './src/index'
     ],
     output: {
@@ -58,13 +57,11 @@ module.exports = {
 ### server + React + Hot Reload 
 
 1. Для начала установим **express** <space><space>
-
 ```bash
 npm i express react-hot-loader --save-dev
 ```
 
 2. Создаем **server.js** <space><space>
-
 ```js
 const webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
@@ -97,7 +94,6 @@ app
 ```
 
 3. Создаем **index.html** <space><space>
-
 ```html
 <!DOCTYPE html>
 <html>
@@ -114,7 +110,6 @@ app
 ```
 
 4. Запускаем <space><space>
-
 ```js
 ...
 "scripts": {
@@ -130,13 +125,11 @@ npm start
 ### [babel](http://babeljs.io/)
 
 1. Ставим **[babel](http://babeljs.io/)** <space><space>
-
 ```bash
 npm i babel-core babel-loader --save-dev
 ```
 
 2. Ставим пресеты (предустановки) <space><space>
-
 ```bash
 // Для поддержки ES6/ES2015
 npm install babel-preset-es2015 --save-dev
@@ -157,7 +150,6 @@ npm install babel-plugin-transform-runtime --save-dev
 ```
 
 3. Настройки для **babel**,  .babelrc <space><space>
-
 ```json
 {
     "presets": ["env", "stage-0", "react"],
@@ -166,7 +158,6 @@ npm install babel-plugin-transform-runtime --save-dev
 ```
 
 4. Создаем **src/index.js** <space><space>
-
 ```bash
 npm i react react-dom prop-types --save
 ```
@@ -198,7 +189,6 @@ if (module.hot) {
 ```
 
 5. Создадим **containers/App.js** <space><space>
-
 ```js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
