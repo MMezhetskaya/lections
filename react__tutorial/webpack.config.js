@@ -1,20 +1,20 @@
-let path = require('path'),
-    webpack = require('webpack');
+const webpack = require('webpack');
 
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
+    context: __dirname,
     entry: [
-        'webpack-hot-middleware/client',
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client?quiet=true',
         'babel-polyfill',
         './src/index'
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
-        publicPath: '/static/'
+        path: __dirname,
+        publicPath: '/static/',
+        filename: 'bundle.js'
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
     ],

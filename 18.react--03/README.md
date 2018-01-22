@@ -22,61 +22,78 @@ npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 2. Создаем **webpack.config.js** <space><space>
 
 ```js
-let path = require('path'),
-    webpack = require('webpack');
+let webpack = require('webpack');
 
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
+    context: __dirname,
     entry: [
-        'webpack-hot-middleware/client',
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client?quiet=true',
         './src/index'
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
-        publicPath: '/static/'
+        path: __dirname,
+        publicPath: '/static/',
+        filename: 'bundle.js'
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
-    ]
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                options: {
+                    ignore: './node_modules/'
+                }
+            }
+        ]
+    }
 };
 ```
 
-### server 
+### server + React + Hot Reload 
 
 1. Для начала установим **express** <space><space>
 
 ```bash
-npm i express --save-dev
+npm i express react-hot-loader --save-dev
 ```
 
 2. Создаем **server.js** <space><space>
 
 ```js
-let webpack = require('webpack'),
+const webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
     webpackHotMiddleware = require('webpack-hot-middleware'),
-    config = require('./webpack.config'),
+    conf = require('./webpack.config'),
+    compiler = webpack(conf),
     app = new (require('express'))(),
-    port = 3000,
-    compiler = webpack(config);
+    port = 3000;
 
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
-app.use(webpackHotMiddleware(compiler));
+app
+    .use(
+        webpackDevMiddleware(
+            compiler,
+            {
+                noInfo: true,
+                publicPath: conf.output.publicPath
+            }
+        ),
+        webpackHotMiddleware(compiler)
+    )
+    .get(
+        "*",
+        (req, res) => res.sendFile(`${__dirname}/index.html`)
+    )
+    .listen(port, e => {
+        if (e) return console.error(e);
 
-app.get("/", function(req, res) {
-    res.sendFile(__dirname + '/index.html')
-});
-
-app.listen(port, function(error) {
-    if (error) {
-        console.error(error)
-    } else {
-        console.info("==> 🌎  Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port)
-    }
-});
+        console.info(`==> 🌎 Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`)
+    });
 ```
 
 3. Создаем **index.html** <space><space>
@@ -96,14 +113,7 @@ app.listen(port, function(error) {
 </html>
 ```
 
-4. Создаем **src/index.js** <space><space>
-
-```js
-document.getElementById('root').innerHTML = 'Привет, я готов.';
-module.hot.accept();
-```
-
-5. Запускаем <space><space>
+4. Запускаем <space><space>
 
 ```js
 ...
@@ -122,7 +132,7 @@ npm start
 1. Ставим **[babel](http://babeljs.io/)** <space><space>
 
 ```bash
-npm install babel-core babel-loader --save-dev
+npm i babel-core babel-loader --save-dev
 ```
 
 2. Ставим пресеты (предустановки) <space><space>
@@ -146,73 +156,48 @@ npm install babel-runtime --save
 npm install babel-plugin-transform-runtime --save-dev
 ```
 
-3. Подправим **webpack.config.js**  <space><space>
+3. Настройки для **babel**,  .babelrc <space><space>
 
-```js
-let path = require('path'),
-    webpack = require('webpack');
-
-module.exports = {
-    devtool: 'cheap-module-eval-source-map',
-    entry: [
-        'webpack-hot-middleware/client',
-        'babel-polyfill',
-        './src/index'
-    ],
-    output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
-        publicPath: '/static/'
-    },
-    plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin()
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                options: {
-                    ignore: './node_modules/'
-                }
-            }
-        ]
-    }
-};
-```
-
-4. Настройки для **babel**,  .babelrc <space><space>
-
-```js
+```json
 {
-  "presets": ["env", "stage-0", "react"],
-  "plugins": ["transform-runtime"]
+    "presets": ["env", "stage-0", "react"],
+    "plugins": ["transform-runtime", "react-hot-loader/babel"]
 }
 ```
 
-5. Установим **react** и **react-dom**  <space><space>
+4. Создаем **src/index.js** <space><space>
 
 ```bash
 npm i react react-dom prop-types --save
 ```
 
-7. Обновим **index.js** <space><space>
-
 ```js
-import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
 import App from './containers/App';
 
-render(
-    <App />,
-    document.getElementById('root')
-);
+const renderApp = AppRoutes => {
+    render(
+        <AppContainer>
+            <AppRoutes />
+        </AppContainer>,
+        document.getElementById('root')
+    );
+};
+
+renderApp(App);
+
+if (module.hot) {
+    module.hot.accept('./containers/App', () => {
+        const newRoutes = require('./containers/App').default;
+
+        renderApp(newRoutes);
+    });
+}
 ```
 
-7. Создадим **containers/App.js** <space><space>
+5. Создадим **containers/App.js** <space><space>
 
 ```js
 import React, { Component } from 'react';
@@ -224,15 +209,6 @@ export default class App extends Component {
     }
 }
 ```
-
-### React + Hot Reload
-
-Сборка без перезагрузки страницы в браузере.
-
-```bash
-npm i react-hot-loader --save-dev
-```
-
 
 ### ESLint
 

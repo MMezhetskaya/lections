@@ -257,9 +257,8 @@
 ## [18.react--03](./18.react--03)
 - Современный web
     - webpack
-    - server
+    - server + React + Hot Reload
     - babel
-    - React + Hot Reload
     - ESLint
 - Заключение
 - ДЗ

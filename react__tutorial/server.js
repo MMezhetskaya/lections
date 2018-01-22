@@ -1,22 +1,28 @@
 const webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
     webpackHotMiddleware = require('webpack-hot-middleware'),
-    config = require('./webpack.config'),
+    conf = require('./webpack.config'),
+    compiler = webpack(conf),
     app = new (require('express'))(),
-    port = 3000,
-    compiler = webpack(config);
+    port = 3000;
 
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
-app.use(webpackHotMiddleware(compiler));
+app
+    .use(
+        webpackDevMiddleware(
+            compiler,
+            {
+                noInfo: true,
+                publicPath: conf.output.publicPath
+            }
+        ),
+        webpackHotMiddleware(compiler)
+    )
+    .get(
+        "*",
+        (req, res) => res.sendFile(`${__dirname}/index.html`)
+    )
+    .listen(port, e => {
+        if (e) return console.error(e);
 
-app.get("/", function(req, res) {
-    res.sendFile(__dirname + '/index.html')
-});
-
-app.listen(port, function(error) {
-    if (error) {
-        console.error(error)
-    } else {
-        console.info("==> 🌎  Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port)
-    }
-});
+        console.info(`==> 🌎 Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`)
+    });
