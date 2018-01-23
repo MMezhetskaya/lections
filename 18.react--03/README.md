@@ -319,5 +319,6 @@ module.exports = {
 - [webpack](https://webpack.js.org/)
 - [Screencast webpack](https://learn.javascript.ru/screencast/webpack)
 - [babel](http://babeljs.io/)
+- [esLint](https://eslint.org/)
+- [esLint plugin](https://www.npmjs.com/package/eslint-plugin-react)
 - [redux](https://redux.js.org/index.html)
-- [eslintrc](https://www.npmjs.com/package/eslint-plugin-react)
