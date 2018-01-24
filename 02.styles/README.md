@@ -46,7 +46,7 @@
 - Псевдо
 
 ```css
-element { 
+selector { 
     property: value;
 }
 ```
@@ -54,7 +54,7 @@ element {
 - Каскад
 
  ```css
-element_00 element_01 { 
+selector_00 selector_01 { 
   property: value;
 }
 ```
