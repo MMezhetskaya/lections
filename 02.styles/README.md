@@ -399,17 +399,11 @@ h2 {
 
 ## Почему бы не размещать стиль прямо в HTML?
 
+## SASS, LESS, STYLUS - и прочие шаблонизаторы [сборка](https://github.com/Zlodej43sm/frontend__worker__gulp)
+
 ## ДЗ
 
-Застильте вашу персональную страницу(предыдущее задание).
-
-1. Используя методологию BEM, и правильный код стайл обновите персональную страницу
-
-2. добавьте reset СSS
-
-3. создайте свою CSS(не забываем про правильный код стайл), в стиле [ссылка](https://content.wisestep.com/wp-content/uploads/2017/05/perfect-resume-template.jpg)
-
-4. форму застильте близко к [ссылка](https://accounts.google.com/SignUp?hl=en-GB)
+Используя методологию BEM создайте страницу согласно дизайну [ссылка](https://content.wisestep.com/wp-content/uploads/2017/05/perfect-resume-template.jpg)
 
 ### Справочники
 - [CSS](https://www.w3.org/Style/CSS/Overview.ru.html)
@@ -419,3 +413,5 @@ h2 {
 - [Псевдоэлементы](https://developer.mozilla.org/ru/docs/Web/CSS/Pseudo-elements)
 - [REM vs EM](https://habrahabr.ru/post/280125/)
 - [BEM](https://ru.bem.info/)
+- [сборка](https://github.com/Zlodej43sm/frontend__worker__gulp)
+- [Node js](https://nodejs.org/en/)
