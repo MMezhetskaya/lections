@@ -304,9 +304,9 @@ Output:
 
 ## Собираем проект gulp, sass
 
-1. Установить [npm](https://www.npmjs.com/get-npm)
+- Установить [npm](https://www.npmjs.com/get-npm)
 
-2. Создаем структуру
+- Создаем структуру
 
 ```
 /project
@@ -319,7 +319,7 @@ Output:
 +-- gulpfile.js
 ```
 
-3. Создаем файлы
+- Создаем файлы
 
 **index.html**
 
@@ -484,11 +484,19 @@ gulp.task('styles:w', ['styles'], () => {
 });
 ```
 
-4. Init & install пакетов проекта
+- Init & install пакетов проекта
 
 ```bash
 npm init;
 npm i --save-dev gulp gulp-sass gulp-autoprefixer;
+```
+
+- запуск
+
+```bash
+gulp styles;
+
+gulp styles:w;
 ```
 
 ## ДЗ
