@@ -438,13 +438,6 @@ $color__txt--important: $color--red;
 @import "./variables";
 @import "./mixins";
 
-.header,
- main,
-.footer {
-    margin: 0 auto;
-    width: 1024px;
-}
-
 .article {
     @include rem(font-size, 12px);
     color: $color__txt;
