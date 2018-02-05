@@ -329,11 +329,11 @@ module.exports = {
 
 - однонаправленный поток данных(**data flow**) - все данные в приложении следуют одному паттерну жизненного цикла
 
-    - логику  приложения более предсказуемой и легкой для понимания
+    - логика приложения более предсказуемая и легкая для понимания
     
     - способствует большей упорядоченности данных (**data normalization**)
     
-    - нет нескольким изолированным копиям одних и тех же данных, которые ничего не знают друг о друге.
+    - нет изолированным копиям одних и тех же данных, которые ничего не знают друг о друге.
 
 
 ## И так ТЗ!
@@ -369,7 +369,7 @@ module.exports = {
 
 - Пример данныхc(**state**)
 
-```json
+```
 app: {
     page: {
         year: 2016,
@@ -396,18 +396,18 @@ app: {
 
 - обязательное поле - **type** 
 
-- [Flux соглашение](https://github.com/acdlite/flux-standard-action) (все данные, которые передаются вместе с действием, внутрь свойства **payload**)
+- [Flux соглашение](https://github.com/acdlite/flux-standard-action) (данные передаются вместе с действием, внутрь свойства **payload**)
 
 - создадим **action**
 
-```json
+```
 {
     type: 'ЗАГРУЗИ_ФОТО',
     payload: 2016 //год
 }
 ```
 
-```json
+```
 {
     type: 'ФОТО_ЗАГРУЖЕНЫ_УСПЕШНО',
     payload: [массив фото]
@@ -431,7 +431,7 @@ function getPhotos(year) {
   }
 }
 
-//Эй, приложение что-то произошло! И я знаю, что именно!
+//Эй, приложение что-то произошло в 2015! И я знаю, что именно!
 getPhotos(2015);
 ```
 
@@ -452,30 +452,15 @@ Reducer (page): Ок, нужно положить эти 123 фото в page.ph
 function page(state = initialState, action) {
     switch (action.type) {
         case GET_PHOTO_SUCCESS:
-            return Object.assign({}, state, {
-                photos: action.payload
-            });
-        
-        default:
-            return state;
-        }
-    }
-```
-
-* В редьюсере, мы всегда должны возвращать новый объект, а не измененный предыдущий.
-
-- **[object spread syntax](https://github.com/tc39/proposal-object-rest-spread)**
-
-```js
-function page(state = initialState, action) {
-    switch (action.type) {
-        case GET_PHOTO_SUCCESS:
             return { ...state, photos: action.payload }
         default:
             return state
         }
     }
 ```
+
+* В редьюсере, мы всегда должны возвращать новый объект, а не измененный предыдущий.
+* **[object spread syntax](https://github.com/tc39/proposal-object-rest-spread)**
 
 ```
 <Page photos={reducerPage.photos} />
@@ -527,7 +512,6 @@ if (module.hot) {
 }
 ```
 
-* **createStore** - пустая анонимная функцию в качестве редьюсера и пустой объект в качестве начального состояния
 * **[Provider](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)**
 
 ## Настройка Store
@@ -564,7 +548,7 @@ export default function configureStore(initialState) {
 }
 ```
 
-* [createStore](https://redux.js.org/docs/api/createStore.html)
+* [createStore](https://redux.js.org/docs/api/createStore.html) - анонимная функцию в качестве редьюсера и объект в качестве начального состояния
 
 ## Создание Reducer
 
@@ -589,8 +573,6 @@ export default function userstate(state = initialState) {
 - Actions
 
 - Reducer
-
-- Применили знания на практике
 
 ## ДЗ
 
