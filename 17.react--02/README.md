@@ -547,6 +547,7 @@ onCheckRuleClick(e) {
 ```
 
 Вариант со **state**: <space><space>
+
 ```
 Пора бы и попробовать самим! 
 ```
@@ -567,7 +568,7 @@ onCheckRuleClick(e) {
 
  - используя семантику 
  
- - добавить стили и классы(BEM)
+ - добавить стили и классы(BEM) используя SASS(добавить [sass-loader](https://github.com/webpack-contrib/sass-loader) в webpack.config)
  
  - разбить компоненты на отдельные js файлы(логически)
  
@@ -585,3 +586,4 @@ onCheckRuleClick(e) {
 - [flux](https://facebook.github.io/flux/)
 - [Методы жизненного цикла](https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods)
 - [EventEmitter](https://github.com/Olical/EventEmitter)
+- [sass-loader](https://github.com/webpack-contrib/sass-loader)
