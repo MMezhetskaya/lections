@@ -135,6 +135,12 @@ alert('Мир');
 ```
 - директива **use strict**
 
+```js
+'use strict';
+ 
+...
+```
+
 - **ECMAScript 5**
 
 ## Переменные
