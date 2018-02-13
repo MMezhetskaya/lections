@@ -564,6 +564,72 @@ export default function userstate(state = initialState) {
 }
 ```
 
+## Связывание данных
+
+- подключаем **connect** в **src/containers/App.js**
+
+```js
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+
+class App extends Component {
+    render() {
+        return <div>Привет из App,  { this.props.user }!!!</div>;
+    }
+}
+
+
+function mapStateToProps (state) {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(App);
+```
+
+*подключи **React** компонент к **Redux store**
+
+- проверим **src/reducers/index.js**
+
+```js
+const initialState = {
+    name: 'Redux',
+    surname: 'Reactovich',
+    age: 273
+};
+
+export default function userstate(state = initialState) {
+    return state;
+}
+```
+
+- обновим **src/containers/App.js**
+
+```js
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+
+class App extends Component {
+    render() {
+        const { name, surname, age } = this.props.user;
+
+        return <div>
+            <p>Привет из App, {name} {surname}!</p>
+            <p>Тебе уже {age} ?</p>
+        </div>
+    }
+}
+
+function mapStateToProps (state) {
+    return {
+        user: state
+    }
+}
+
+export default connect(mapStateToProps)(App);
+```
+
 ## Заключение
 
 - Что применяется в современном web
