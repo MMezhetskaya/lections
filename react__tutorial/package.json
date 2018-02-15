@@ -30,9 +30,11 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
+    "fb-react-sdk": "1.0.4",
     "prop-types": "15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-instagram-login": "1.2.0",
     "react-redux": "5.0.6",
     "redux": "3.7.2",
     "redux-logger": "3.0.6",
