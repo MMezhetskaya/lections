@@ -601,7 +601,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import User from '../components/User';
 import Page from '../components/Page';
-import * as pageActions from '../actions/PageActions'
+import * as pageActions from '../actions/PageActions';
 
 class App extends Component {
     render() {
@@ -680,11 +680,23 @@ Page.propTypes = {
     
     4. компонент отобразил
 
-## Взаимодействуем с instagram
-
 ## Заключение
 
+- Комбинирование редьюсеров
+
+- Контейнеры и компоненты
+
+- Создание actions
+
+- Константы
+
+- Middleware (Усилители)
+
+- Асинхронные actions
+
 ## ДЗ
+
+Обновить приложение согласно новой структуре
 
 ## Справочники
 
