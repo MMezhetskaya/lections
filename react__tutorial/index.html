@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Redux tutorial</title>
-    </head>
+<head>
+    <title>Redux tutorial</title>
+</head>
     
-    <body>
-        <div id="root">
-        </div>
-        <script src="//vk.com/js/api/openapi.js"></script>
-        <script src="/static/bundle.js"></script>
-        <script language="javascript">
-            VK.init({
-                apiId: 5087365
+<body>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1565883546866383',
+                xfbml      : true,
+                version    : 'v2.12'
             });
-        </script>
-    </body>
+            FB.AppEvents.logPageView();
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <div id="root"></div>
+
+    <script src="/static/bundle.js"></script>
+</body>
 </html>

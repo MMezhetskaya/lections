@@ -16,12 +16,12 @@ export default class Page extends Component {
             </p>
 
             <h3>{year} год [{photos.length}]</h3>
-            { error ? <p className='error'> Во время загрузки фото произошла ошибка</p> : '' }
+            { error ? <p> Во время загрузки фото произошла ошибка</p> : '' }
             {
                 fetching ?
                     <p>Загрузка...</p> :
                     photos.map((entry, index) =>
-                        <div key={index} className='photo'>
+                        <div key={index}>
                             <p><img src={entry.src} /></p>
                             <p>{entry.likes.count} ❤</p>
                         </div>
