@@ -539,7 +539,7 @@ arr.length = 2; // укоротить до 2 элементов
 alert( arr ); // [1, 2]
 ```
 
-### DOM, BOM и JS
+## DOM, BOM и JS
 
 ![Alt text](./dom.png "DOM, BOM и JS")
  
@@ -559,7 +559,7 @@ var elId = document.getElementById('id'),
 console.dir(elSel.innerHTML);
 ```
 
-### Заключение
+## Заключение
 
 - Свойства, методы
 
@@ -573,7 +573,7 @@ console.dir(elSel.innerHTML);
 
 - DOM введение
 
-### ДЗ
+## ДЗ
 
 Сделать страницу сохранения пользователей.
 
