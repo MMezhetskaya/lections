@@ -539,7 +539,7 @@ arr.length = 2; // укоротить до 2 элементов
 alert( arr ); // [1, 2]
 ```
 
-## DOM, BOM и JS
+## DOM введение
 
 ![Alt text](./dom.png "DOM, BOM и JS")
  
