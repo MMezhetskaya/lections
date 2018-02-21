@@ -595,7 +595,7 @@ console.dir(elSel.innerHTML);
  
 - **{имя поля} != age** вывести все значения введенного поля отсортированные через запятую.
 
-### Справочники
+## Справочники
 - [IEEE 754](https://ru.wikipedia.org/wiki/IEEE_754-2008)
 - [Свойства & методы обьекта](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object)
 - [Свойства & методы массива](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array)
