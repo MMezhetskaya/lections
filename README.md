@@ -196,13 +196,16 @@
 - Справочники
  
 ## [14.dom_bom_es6](./14.dom_bom_es6)
-- DOM 
-- BOM
+- Концепция
+    - DOM 
+    - BOM
+    - JS
 - Сохранение данных на стороне клиента
     - WebStorage
         - LocalStorage 
         - SessionStorage  
-    - Cookie && Session
+    - Cookie
+    - Session
 - HTTP + AJAX & COMET + NODE
     - Node server
     - fetch
