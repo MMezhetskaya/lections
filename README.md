@@ -196,7 +196,7 @@
 - Справочники
  
 ## [14.dom_bom_es6](./14.dom_bom_es6)
-- Концепция
+- Концепция WEB
     - DOM 
     - BOM
     - JS
@@ -206,10 +206,14 @@
         - SessionStorage  
     - Cookie
     - Session
-- HTTP + AJAX & COMET + NODE
-    - Node server
+- HTTP 
+    - AJAX 
+    - COMET 
+    - XMLHttpRequest
     - fetch
-- ES5-6
+- NODE
+    - Node server
+- ES5+
 - webpack + BABEL + SASS
 - Заключение
 - ДЗ
