@@ -223,10 +223,11 @@
  
 ## [15.html5_jquery](./15.html5_jquery)
 - HTML5
-    - Геопозиционирование
     - Аудио && видео
     - SVG
     - Canvas
+    - Canvas vs SVG
+    - Геопозиционирование
 - jQuery
     - Основа
     - Селекторы

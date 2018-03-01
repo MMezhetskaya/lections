@@ -4,56 +4,6 @@
 
 **HTML5** - последняя версия спецификации языка разметки **HTML**
 
-### [Геопозиционирование](http://www.w3.org/TR/geolocation­API/)
-
-> Прикладной интерфейс объекта Geolocation позволяет программам на языке JavaScript запрашивать у броузера географическое местонахождение пользователя. Такие приложения могут отображать карты, маршруты и другую информацию, связанную с текущим местонахождением пользователя. 
-
-**navigator.geolocation**
- 
-- **navigator.geolocation.getCurrentPosition()**
-
-- **navigator.geolocation.watchPosition()** 
-
-- **navigator.geolocation.clearWatch()**
-
-*В устройствах, включающих аппаратную поддержку **GPS**, имеется возможность определять местонахождение с высокой степенью точности с помощью устройства **GPS**.
-
-```js
-navigator.geolocation.getCurrentPosition((pos) => {
-    let latitude = pos.coords.latitude,
-        longitude = pos.coords.longitude;
-    
-    console.log(`Ваши координаты: ${latitude} ${longitude}`);
-});
-```
-
-```js
-function getmap() { 
-    if (!navigator.geolocation) throw 'Определение местонахождения не поддерживается';
-    
-    let image = document.createElement('img');
-    
-    navigator.geolocation.getCurrentPosition(setMapURL);
-    document.body.appendChild(image);
-    
-    return image;
-    
-    function setMapURL(pos) {
-        let latitude = pos.coords.latitude,
-            longitude = pos.coords.longitude, 
-            accuracy = pos.coords.accuracy,
-            url = `http://maps.google.com/maps/api/staticmap?center=${latitude},${longitude}&size=640x640&sensor=true`,
-            zoomlevel = 20; 
-        
-        if (accuracy > 80) zoomlevel -= Math.round(Math.log(accuracy/50)/Math.LN2);
-        
-        url += '&zoom=' + zoomlevel; 
-        
-        image.src = url;
-    }
-}
-```
-
 ### Аудио && видео
 
 ```html
@@ -97,19 +47,6 @@ if (a.canPlayType('audio/wav')) {
 ### [SVG](https://developer.mozilla.org/ru/docs/Web/SVG)
 
 >Масштабируемая векторная графика (SVG) – это грамматика языка XML для описания графических изображений. Рисунки в формате SVG могут даже содержать JavaScript - сценарии и таблицы CSS-стилей, что позволяет наделить их информацией о поведении и представлении. 
-
-```html
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'>
-    <defs>
-        <linearGradient id='fade'>
-            <stop offset='0%' stop-color='#008'/>
-            <stop offset='100%' stop-color='#ccf'/>
-        </linearGradient>
-  </defs>
-  
-  <rect x='100' y='200' width='800' height='600' stroke='black' stroke-width='25' fill='url(#fade)'/>
-</svg>
-```
 
 Отображение времени посредством манипулирования **SVG**­изображением.
 
@@ -164,7 +101,7 @@ function updateTime() {
 ```
 
 ```html
-<div onload='updateTime()'>
+<div>
     <svg id='clock' viewBox='0 0 100 100' width='500' height='500'>
         <defs>
             <filter id='shadow' x='-50%' y='-50%' width='200%' height='200%'> 
@@ -218,7 +155,7 @@ function updateTime() {
     
     c.fillStyle = '#f00';
     
-    context.fillRect(0,0,10,10);
+    c.fillRect(0,0,10,10);
     
     canvas = document.getElementById('circle');
     c = canvas.getContext('2d');
@@ -232,7 +169,71 @@ function updateTime() {
 
 - **canvas** не имеет собственного визуального представления, но он создает поверхность для рисования внутри документа
 
-- **canvas** vs **svg**
+### Canvas vs SVG vs DIV
+
+- SVG будет проще для вас, так как выбор и перемещение его уже встроены. Объекты SVG являются объектами DOM, поэтому они имеют обработчики "click" и т.д.
+
+- DIVs в порядке, но неуклюжие и ужасно загружают производительность в больших количествах.
+
+- Canvas имеет лучшую производительность, но вы должны сами реализовать все концепции управляемого состояния (выбор объекта и т.д.) или использовать библиотеку.
+
+**Итого**
+
+- SVG, вероятно, лучше подходит для приложений и приложений с небольшим количеством элементов (менее 1000? зависит действительно)
+
+- Canvas лучше для тысяч объектов и тщательной манипуляции, но для его получения требуется гораздо больше кода (или библиотеки).
+
+- HTML Divs неуклюжие и не масштабируются, делая круг возможно только с закругленными углами, что делает сложные формы возможными, но включает в себя сотни крошечных крошечных пиксельных разделов. Приходит безумие
+
+### [Геопозиционирование](http://www.w3.org/TR/geolocation­API/)
+
+> Прикладной интерфейс объекта Geolocation позволяет программам на языке JavaScript запрашивать у броузера географическое местонахождение пользователя. Такие приложения могут отображать карты, маршруты и другую информацию, связанную с текущим местонахождением пользователя. 
+
+**navigator.geolocation**
+ 
+- **navigator.geolocation.getCurrentPosition()**
+
+- **navigator.geolocation.watchPosition()** 
+
+- **navigator.geolocation.clearWatch()**
+
+*В устройствах, включающих аппаратную поддержку **GPS**, имеется возможность определять местонахождение с высокой степенью точности с помощью устройства **GPS**.
+
+```js
+navigator.geolocation.getCurrentPosition((pos) => {
+    let latitude = pos.coords.latitude,
+        longitude = pos.coords.longitude;
+    
+    console.log(`Ваши координаты: ${latitude} ${longitude}`);
+});
+```
+
+```js
+function getmap() { 
+    if (!navigator.geolocation) throw 'Определение местонахождения не поддерживается';
+    
+    let image = document.createElement('img');
+    
+    navigator.geolocation.getCurrentPosition(setMapURL);
+    document.body.appendChild(image);
+    
+    return image;
+    
+    function setMapURL(pos) {
+        let latitude = pos.coords.latitude,
+            longitude = pos.coords.longitude, 
+            accuracy = pos.coords.accuracy,
+            url = `http://maps.google.com/maps/api/staticmap?center=${latitude},${longitude}&size=640x640&sensor=true`,
+            zoomlevel = 20; 
+        
+        if (accuracy > 80) zoomlevel -= Math.round(Math.log(accuracy/50)/Math.LN2);
+        
+        url += '&zoom=' + zoomlevel; 
+        
+        image.src = url;
+    }
+}
+```
 
 ## [jQuery](https://jquery.com/)
  
