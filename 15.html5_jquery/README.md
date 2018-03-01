@@ -208,10 +208,6 @@ function updateTime() {
 
 ### [Canvas](https://developer.mozilla.org/ru/docs/Web/API/Canvas_API/Tutorial/%D0%A0%D0%B8%D1%81%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D1%84%D0%B8%D0%B3%D1%83%D1%80)
 
-- **canvas** не имеет собственного визуального представления, но он создает поверхность для рисования внутри документа
-
-- **canvas** vs **svg**
-
 ```html
 Это красный квадрат: <canvas id='square' width=10 height=10></canvas>.
 Это голубой круг: <canvas id='circle' width=10 height=10></canvas>.
@@ -234,21 +230,9 @@ function updateTime() {
 </script>
 ```
 
-```html
-<canvas id='area' width=100 height=100></canvas>
+- **canvas** не имеет собственного визуального представления, но он создает поверхность для рисования внутри документа
 
-<script> 
-    let canvas = document.getElementById('area'),
-        c = canvas.getContext('2d');
-    
-    c.beginPath();
-    c.moveTo(100, 100);
-    c.lineTo(200, 200);
-    c.lineTo(100, 200);
-    c.fill();
-    c.stroke();
-</script>
-```
+- **canvas** vs **svg**
 
 ## [jQuery](https://jquery.com/)
  
@@ -482,53 +466,53 @@ $('#header').detach();
 
 ### События
 
-- blur(),
+- **blur()**
 
-- focusin(), 
+- **focusin()**
 
-- mousedown(), 
+- **mousedown()** 
 
-- mouseup(), 
+- **mouseup()** 
 
-- change(), 
+- **change()** 
 
-- focusout(), 
+- **focusout()** 
 
-- mouseenter(), 
+- **mouseenter()** 
 
-- resize(), 
+- **resize()** 
 
-- click(), 
+- **click()** 
 
-- keydown(), 
+- **keydown()** 
 
-- mouseleave(), 
+- **mouseleave()** 
 
-- scroll(), 
+- **scroll()** 
 
-- dblclick(), 
+- **dblclick()** 
 
-- keypress(), 
+- **keypress()** 
 
-- mousemove(), 
+- **mousemove()** 
 
-- select(), 
+- **select()** 
 
-- error(), 
+- **error()** 
 
-- keyup(), 
+- **keyup()** 
 
-- mouseout(), 
+- **mouseout()** 
 
-- submit(), 
+- **submit()** 
 
-- focus(), 
+- **focus()** 
 
-- load(), 
+- **load()** 
 
-- mouseover(), 
+- **mouseover()** 
 
-- unload()
+- **unload()**
 
 ```js
 $('p').click(function(e) {});
@@ -558,33 +542,33 @@ $('a').off('click.ns1.ns2');
 
 **Event**
 
-- preventDefault()
+- **preventDefault()**
 
-- isDefaultPrevented()
+- **isDefaultPrevented()**
 
-- stopPropagation()
+- **stopPropagation()**
 
-- isPropagationStopped()
+- **isPropagationStopped()**
 
-- stopImmediatePropagation()
+- **stopImmediatePropagation()**
 
-- isImmediatePropagationStopped()
+- **isImmediatePropagationStopped()**
 
-- pageX, pageY
+- **pageX, pageY**
 
-- target, currentTarget, relatedTarget
+- **target, currentTarget, relatedTarget**
 
-- timeStamp
+- **timeStamp**
 
-- which
+- **which**
 
-- data
+- **data**
 
-- handler
+- **handler**
 
-- result
+- **result**
 
-- originalEvent
+- **originalEvent**
 
 **[Ajax](http://api.jquery.com/category/ajax/)**
 
