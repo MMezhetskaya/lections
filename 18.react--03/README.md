@@ -644,11 +644,13 @@ export default connect(mapStateToProps)(App);
 
 Самостоятельно сделать шаблон приложения:
 
- - используя семантику 
- 
- - добавить стили и классы(BEM) используя SASS(добавить [sass-loader](https://github.com/webpack-contrib/sass-loader) в webpack.config)
- 
- - изучить [reducer](https://redux.js.org/docs/basics/Reducers.html), [Provider](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store), [createStore](https://redux.js.org/docs/api/createStore.html)
+- используя семантику 
+
+- добавить стили и классы(BEM) используя SASS(добавить [sass-loader](https://github.com/webpack-contrib/sass-loader) в webpack.config)
+
+- изучить [reducer](https://redux.js.org/docs/basics/Reducers.html), [Provider](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store), [createStore](https://redux.js.org/docs/api/createStore.html)
+
+- **must have [redux getting started](https://egghead.io/courses/getting-started-with-redux)**
 
 ## Справочники
 - [webpack](https://webpack.js.org/)
@@ -662,3 +664,4 @@ export default connect(mapStateToProps)(App);
 - [Object spread syntax](https://github.com/tc39/proposal-object-rest-spread)
 - [Provider](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)
 - [createStore](https://redux.js.org/docs/api/createStore.html)
+- [redux getting started](https://egghead.io/courses/getting-started-with-redux)
