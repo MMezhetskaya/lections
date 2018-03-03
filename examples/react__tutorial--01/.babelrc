@@ -1,0 +1,4 @@
+{
+    "presets": ["env", "stage-0", "react", "react-hmre"],
+    "plugins": ["transform-runtime", "react-hot-loader/babel"]
+}

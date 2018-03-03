@@ -85,7 +85,6 @@ import {
     GET_PHOTOS_SUCCESS
 } from '../constants/Page';
 
-
 function makeYearPhotos(photos, selectedYear) {
     let createdYear, yearPhotos = [];
 
@@ -96,8 +95,6 @@ function makeYearPhotos(photos, selectedYear) {
             yearPhotos.push(item)
         }
     });
-
-    
 
     return yearPhotos.sort((a, b) => (b.likes && a.likes) ? b.likes.data.length - a.likes.data.length : -1);
 }
@@ -164,9 +161,157 @@ export function getPhotos(year) {
     
 - рефакторинг текущего кода must have
 
+## "Роутинг"? Нет не слышал
 
+**Цели "роутинга" ?**
 
+- доступ к разным страницам/разделам/состояниям приложения
 
+- разделение прав доступа
+
+- редиректы
+
+## Что будем делать, или ТЗ
+
+**Делаем примитивный музыкальный каталог:**
+
+- есть список всех жанров
+
+- есть страница альбомов жанра
+
+- есть страница альбома
+
+- есть страница администратора
+
+### Структура сайта
+
+```
+/ - главная страница
+
+/list - список жанров
+
+/genre/:genre/ - страница альбомов жанра
+
+/genre/:genre/:album - есть страница альбома
+
+/admin - страница администратора
+```
+
+* ':' - динамический URL
+
+### Структура директорий и файлов
+
+```
++-- bin
++-- src
+|   +-- components
+|   +-- containers
+|   +-- index.js
++-- webpack
++-- index.html
++-- package.json
++-- server.js
+```
+
+### Dev окружение
+
+За исходную возьмем сборку с предыдущего задания, но немного её прокачаем
+
+#### Создаем bin/server.js
+
+```js
+const fs = require('fs'),
+    babelrc = fs.readFileSync('./.babelrc');
+
+let config;
+
+try {
+    config = JSON.parse(babelrc);
+} catch (err) {
+    console.error('==>     ERROR: Error parsing your .babelrc.');
+    console.error(err);
+}
+
+require('babel-core/register')(config);
+require('../server');
+```
+
+**Зачем все это?**
+
+- сможем выдавать красивое сообщение об ошибке, если не хватает какого-то из babel-preset'ов
+
+- сможем код файла по адресу ../server относительно текущего писать на ES2015+
+
+- модульность + 1 в карму 
+
+#### Обновляем главный server.js
+
+```js
+const http = require('http'),
+    express = require('express'),
+    app = express(),
+    port = 3000;
+
+(function initWebpack() {
+    const webpack = require('webpack'),
+        express = require('express'),
+        webpackDevMiddleware = require('webpack-dev-middleware'),
+        webpackHotMiddleware = require('webpack-hot-middleware'),
+        webpackConfig = require('./webpack/common.config'),
+        compiler = webpack(webpackConfig);
+
+    app
+        .use(
+            webpackDevMiddleware(
+                compiler,
+                {
+                    noInfo: true,
+                    publicPath: webpackConfig.output.publicPath,
+                }
+            )
+        )
+        .use(
+            webpackHotMiddleware(
+                compiler,
+                {
+                    log: console.log,
+                    path: '/__webpack_hmr',
+                    heartbeat: 10 * 1000,
+                }
+            )
+        )
+        .use(express.static(__dirname + '/'));
+})();
+
+app.get(
+    /.*/,
+    function root(req, res) {
+        res.sendFile(__dirname + '/index.html');
+    }
+);
+
+const server = http.createServer(app);
+
+server.listen(
+    process.env.PORT || port,
+    function onListen() {
+        const address = server.address();
+
+        console.log(`🌎 Listening on: ${address}`);
+        console.log(`-> that probably means: http://localhost:${address.port}`);
+    }
+);
+```
+
+- стандартный конфиг сервера на [Express](http://expressjs.com/)
+
+#### Webpack config prod/dev версия
+
+- создаем **webpack/common.config**
+
+```js
+
+```
 
 ## Заключение
 
