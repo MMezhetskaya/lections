@@ -13,8 +13,8 @@ class App extends Component {
             { handleLogin } = this.props.userActions;
 
         return <div>
-            <Page photos={page.photos} year={page.year} getPhotos={getPhotos} fetching={page.fetching} />
             <User name={user.name} handleLogin={handleLogin} error={user.error} />
+            <Page photos={page.photos} year={page.year} getPhotos={getPhotos} fetching={page.fetching} />
         </div>;
     }
 }

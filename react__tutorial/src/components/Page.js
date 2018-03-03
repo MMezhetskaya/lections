@@ -22,8 +22,8 @@ export default class Page extends Component {
                     <p>Загрузка...</p> :
                     photos.map((entry, index) =>
                         <div key={index}>
-                            <p><img src={entry.src} /></p>
-                            <p>{entry.likes.count} ❤</p>
+                            <p><img src={entry.images[3].source} /></p>
+                            <p>{entry.likes ? entry.likes.data.length : 0} ❤</p>
                         </div>
                     )
             }
@@ -35,5 +35,5 @@ Page.propTypes = {
     year: PropTypes.number.isRequired,
     photos: PropTypes.array.isRequired,
     getPhotos: PropTypes.func.isRequired,
-    // error: PropTypes.string.isRequired
+    error: PropTypes.string.isRequired
 };
