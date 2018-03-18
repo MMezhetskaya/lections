@@ -203,6 +203,7 @@ export function getPhotos(year) {
 
 ```
 +-- bin
+|   +-- server.js
 +-- src
 |   +-- components
 |   +-- containers
@@ -254,10 +255,9 @@ const http = require('http'),
 
 (function initWebpack() {
     const webpack = require('webpack'),
-        express = require('express'),
+        webpackConfig = require('./webpack/common.config'),
         webpackDevMiddleware = require('webpack-dev-middleware'),
         webpackHotMiddleware = require('webpack-hot-middleware'),
-        webpackConfig = require('./webpack/common.config'),
         compiler = webpack(webpackConfig);
 
     app
@@ -266,7 +266,7 @@ const http = require('http'),
                 compiler,
                 {
                     noInfo: true,
-                    publicPath: webpackConfig.output.publicPath,
+                    publicPath: webpackConfig.output.publicPath
                 }
             )
         )
@@ -297,7 +297,7 @@ server.listen(
     function onListen() {
         const address = server.address();
 
-        console.log(`🌎 Listening on: ${address}`);
+        console.log('🌎 Listening on: %j', address);
         console.log(`-> that probably means: http://localhost:${address.port}`);
     }
 );
@@ -307,13 +307,444 @@ server.listen(
 
 #### Webpack config prod/dev версия
 
-- создаем **webpack/common.config**
+- создаем **webpack/common.config.js**
 
 ```js
+const path = require('path'),
+    merge = require('webpack-merge'),
+    development = require('./dev.config.js'),
+    production = require('./prod.config.js'),
+    TARGET = process.env.npm_lifecycle_event,
+    PATHS = {
+        app: path.join(__dirname, '../src'),
+        build: path.join(__dirname, '../dist'),
+    };
 
+process.env.BABEL_ENV = TARGET;
+
+const common = {
+    context: __dirname,
+
+    entry: [
+        PATHS.app,
+    ],
+
+    output: {
+        path: __dirname,
+        publicPath: '/dist/',
+        filename: 'bundle.js'
+    },
+
+    resolve: {
+        modules: ['node_modules', PATHS.app]
+    },
+
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                options: {
+                    ignore: './node_modules/',
+                    plugins: ['transform-runtime']
+                }
+            },
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                loader: 'eslint-loader',
+                options: {
+                    ignore: './node_modules/'
+                }
+            }
+        ]
+    }
+};
+
+if (TARGET === 'dev' || !TARGET) {
+    module.exports = merge(development, common);
+}
+
+if (TARGET === 'build' || !TARGET) {
+    module.exports = merge(production, common);
+}
+```
+
+- создаем **webpack/dev.config.js**
+
+```js
+const webpack = require('webpack');
+
+module.exports = {
+    devtool: 'cheap-module-eval-source-map',
+
+    entry: [
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client?quiet=true',
+        'babel-polyfill',
+        '../src/index'
+    ],
+
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"development"',
+            },
+            __DEVELOPMENT__: true,
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin()
+    ],
+};
+```
+
+- создаем **webpack/prod.config.js**
+
+```js
+const webpack = require('webpack');
+
+module.exports = {
+    devtool: 'source-map',
+
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"',
+            },
+            __DEVELOPMENT__: false,
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false,
+            },
+        }),
+    ],
+};
+```
+
+#### Тестируем
+
+- создаем **src/index.js**
+
+```js
+import 'babel-polyfill';
+import React from 'react';
+import { AppContainer } from 'react-hot-loader';
+import { render } from 'react-dom';
+import App from './containers/App';
+
+const renderApp = AppMain => {
+    render(
+        <AppContainer>
+            <AppMain />
+        </AppContainer>,
+        document.getElementById('root')
+    )
+};
+
+renderApp(App);
+
+if (module.hot) {
+    module.hot.accept('./containers/App', () => {
+        const newAppMain = require('./containers/App').default;
+
+        renderApp(newAppMain);
+    });
+}
+```
+
+- создаем **containers/App.js**
+
+```js
+import React, { Component } from 'react'
+
+export default class App extends Component {
+    render() {
+        return <div className='container'>Привет из App !!!</div>
+    }
+}
+```
+
+- проверим ?
+
+```bash
+npm run dev;
+
+npm run build;
+```
+
+## Примитивный роутер
+
+>Роутинг - соответствие URL-адреса некоему состоянию нашего приложения.
+
+**Нам понадобится**
+
+- [hashchange](https://developer.mozilla.org/en-US/docs/Web/Events/hashchange)
+
+### Компонеты
+
+- создадим **src/components/Admin.js**
+
+```js
+import React, { Component } from 'react';
+
+export default class Admin extends Component {
+    render() {
+        return (
+            <h2>Раздел /admin</h2>
+        )
+    }
+}
+```
+
+- создадим **src/components/Genre.js**
+
+```js
+import React, { Component } from 'react';
+
+export default class Genre extends Component {
+    render() {
+        return (
+            <h2>Раздел /genre</h2>
+        )
+    }
+}
+```
+
+- создадим **src/components/Home.js**
+
+```js
+import React, { Component } from 'react';
+
+export default class Home extends Component {
+    render() {
+        return (
+            <h2>Раздел /</h2>
+        )
+    }
+}
+```
+
+### Контейнер
+
+- добавим логики в **src/containers/App.js**
+
+```js
+import React, { Component } from 'react';
+import Admin from '../components/Admin';
+import Genre from '../components/Genre';
+import Home from '../components/Home';
+
+
+export default class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            route: window.location.hash.substr(1)
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener('hashchange', () => {
+            this.setState({
+                route: window.location.hash.substr(1)
+            });
+        })
+    }
+
+    render() {
+        let Child;
+
+        switch (this.state.route) {
+            case '/admin':
+                Child = Admin;
+                break;
+
+            case '/genre':
+                Child = Genre;
+                break;
+
+            default:
+                Child = Home;
+        }
+
+        return (
+            <div>
+                <h1>App</h1>
+
+                <ul>
+                    <li><a href='#'>Home</a></li>
+                    <li><a href='#/admin'>Admin</a></li>
+                    <li><a href='#/genre'>Genre</a></li>
+                </ul>
+                <Child />
+            </div>
+        )
+
+    }
+}
+```
+
+## Подключаем react-router-dom
+
+**Перспектива**
+
+- появились другие URL-адреса
+ 
+- что-то переросло во что-то большее
+
+- появится больше ссылок
+
+**Итог**
+
+- трудноподдерживаемая путаница
+ 
+**Зачем???** 
+
+- "высокоуровневая" абстракция
+
+- "плагин" с массой дополнительных плюшек
+
+**Перепишем**
+
+- установим **react-router-dom**
+
+```bash
+npm i react-router-dom --save
+```
+
+- **src/index.js**
+
+```js
+import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+import App from './containers/App';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Admin from './components/Admin';
+import Genre from './components/Genre';
+import Home from './components/Home';
+
+const renderApp = AppMain => {
+    render(
+        <AppContainer>
+            <BrowserRouter>
+                <AppMain>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/admin' component={Admin} />
+                    <Route path='/genre' component={Genre} />
+                </AppMain>
+            </BrowserRouter>
+        </AppContainer>,
+        document.getElementById('root')
+    );
+};
+
+renderApp(App);
+
+if (module.hot) {
+    module.hot.accept('./containers/App', () => {
+        const newAppMain = require('./containers/App').default;
+
+        renderApp(newAppMain);
+    });
+}
+```
+
+- **src/containers/App.js**
+
+```js
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
+
+export default class App extends Component {
+    render() {
+        return (
+            <div>
+                <h1>App</h1>
+
+                <ul>
+                    <li><Link to='/'>Home</Link></li>
+                    <li><Link to='/admin'>Admin</Link></li>
+                    <li><Link to='/genre'>Genre</Link></li>
+                </ul>
+
+                {this.props.children}
+            </div>
+        )
+    }
+}
+```
+
+- добавим для страниц 404 **src/components/NotFound.js**
+
+```js
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
+export default class NotFound extends Component {
+    render() {
+        return (
+            <p>
+                Страница не найдена. Вернуться на <Link to='/'>главную</Link>?
+            </p>
+        )
+    }
+}
+```
+
+- обновим **src/index.js**
+
+```js
+import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+import App from './containers/App';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Admin from './components/Admin';
+import Genre from './components/Genre';
+import Home from './components/Home';
+import NotFound from './components/NotFound';
+
+const renderApp = AppMain => {
+    render(
+        <AppContainer>
+            <BrowserRouter>
+                <AppMain>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/admin' component={Admin} />
+                    <Route path='/genre' component={Genre} />
+                    <Route path='*' component={NotFound} />
+                </AppMain>
+            </BrowserRouter>
+        </AppContainer>,
+        document.getElementById('root')
+    );
+};
+
+renderApp(App);
+
+if (module.hot) {
+    module.hot.accept('./containers/App', () => {
+        const newAppMain = require('./containers/App').default;
+
+        renderApp(newAppMain);
+    });
+}
 ```
 
 ## Заключение
+
+- Поработали с **API**
+
+- Узнали что такое **роутинг**
+
+- Подключили **react-router-dom**
 
 ## ДЗ
 
@@ -337,8 +768,15 @@ server.listen(
 
 - рефакторинг текущего кода must have
 
+**Самостоятельно переписать приложение**
 
+- семантика
+ 
+- добавить стили и классы(BEM)
+ 
+- правильная логика вывода для 404 страницы
 
 ## Справочники
 - [FB developers apps](https://developers.facebook.com/apps/)
 - [FB API test](https://developers.facebook.com/tools/explorer/)
+- [hashchange](https://developer.mozilla.org/en-US/docs/Web/Events/hashchange)

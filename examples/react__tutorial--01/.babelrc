@@ -1,4 +1,9 @@
 {
-    "presets": ["env", "stage-0", "react", "react-hmre"],
-    "plugins": ["transform-runtime", "react-hot-loader/babel"]
+    "presets": ["env", "stage-0", "react"],
+    "plugins": ["transform-runtime", "react-hot-loader/babel"],
+    "env": {
+        "start": {
+            "presets": ["react-hmre"]
+        }
+    }
 }
