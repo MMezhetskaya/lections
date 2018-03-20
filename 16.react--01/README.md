@@ -2,7 +2,7 @@
 
 ## Подготовка
 
-1. Скачать (React.js)[https://reactjs.org/]
+1. Скачать [React.js](https://reactjs.org/)
 
 ```bash
 npm init && npm i --save react react-dom;
