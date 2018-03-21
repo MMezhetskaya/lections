@@ -705,22 +705,22 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './containers/App';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Admin from './components/Admin';
 import Genre from './components/Genre';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
 
-const renderApp = AppMain => {
+const renderApp = (App) => {
     render(
         <AppContainer>
             <BrowserRouter>
-                <AppMain>
+                <App>
                     <Route exact path='/' component={Home} />
                     <Route path='/admin' component={Admin} />
                     <Route path='/genre' component={Genre} />
-                    <Route path='*' component={NotFound} />
-                </AppMain>
+                    <Route component={NotFound} />
+                </App>
             </BrowserRouter>
         </AppContainer>,
         document.getElementById('root')
@@ -731,9 +731,9 @@ renderApp(App);
 
 if (module.hot) {
     module.hot.accept('./containers/App', () => {
-        const newAppMain = require('./containers/App').default;
+        const newApp = require('./containers/App').default;
 
-        renderApp(newAppMain);
+        renderApp(newApp);
     });
 }
 ```
@@ -775,6 +775,8 @@ if (module.hot) {
 - добавить стили и классы(BEM)
  
 - правильная логика вывода для 404 страницы
+
+- Наладить работу **HMR**
 
 ## Справочники
 - [FB developers apps](https://developers.facebook.com/apps/)
