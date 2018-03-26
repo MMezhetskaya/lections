@@ -1,30 +1,3 @@
-/*
-Реализуйте класс **Worker**, который будет иметь следующие свойства: **name**, **surname**, **rate**, **days**.
-
-Также класс имеет метод **getSalary()**, который выводит зарплату работника.
-
-Зарплата - произведение ставки **rate** на количество отработанных дней **days**.
-
-```js
-var worker00 = new Worker(
-    {
-        name: 'Иван',
-        surname: 'Иванов',
-        rate: 10,
-        days: 20
-    }
-);
-
-console.log(worker00.name);
-console.log(worker00.surname);
-console.log(worker00.rate);
-console.log(worker00.days);
-console.log(worker00.getSalary());
-```
-
-С помощью класса **Worker** создайте 3х рабочих и добавьте метод **getTotalSalary()** выводящий сумму их зарплат.
- */
-
 ;(function(w) {
     'use strict';
 

@@ -1,16 +1,3 @@
-/*
-Создайте еще один класс **Director** который должен наследовать свойства класса **Worker**, и иметь методы
-
-- **addWorker({name: workerName, surname: workerSurname, rate: workerRate, days: workerDays})** - добавит работника в
- список
-
-- **removeWorker(workerName)** - удалит работника из списока
-
-- **getWorker(workerName)** - получить все данные работника
-
-- **setWorkerRate(workerName, rate)** - обновить **rate**  для работника
- */
-
 ;(function(w) {
     'use strict';
 
