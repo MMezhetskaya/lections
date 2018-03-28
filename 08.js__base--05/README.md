@@ -536,7 +536,14 @@ var director = new Director(
     }
 );
 
-director.addWorker('Петя', 'Петров', 10, 20);
+director.addWorker(
+    {
+       name: 'Alec', 
+       surname: 'P',
+       rate: 30, 
+       days: 20
+    }
+);
 director.removeWorker('Петя');
 director.getWorker('Петя');
 director.setWorkerRate('Петя', 11);
