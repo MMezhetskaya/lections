@@ -10,6 +10,10 @@ module.exports = {
         '../src/index'
     ],
 
+    watchOptions: {
+        aggregateTimeout: 100
+    },
+
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {

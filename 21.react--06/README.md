@@ -4,13 +4,15 @@
 
 ```
 / - главная страница
-/list - список жанров
+/genre - список жанров
 /genre/:genre/ - список релизов данного жанра
 /genre/:genre/:release - информация о релизе
 /admin - страница администратора
 ```
 
-**Задача:** создать компонент, который будет доступен по адресу: localhost:3000/list
+**Задача** 
+
+Создать компонент, который будет доступен по адресу: localhost:3000/list
 
 - создать компонент
 
@@ -47,7 +49,7 @@ export default class List extends Component {
 }
 ```
 
-- обновим **src/index.js**
+- **src/index.js**
 
 ```js
 ...
@@ -62,10 +64,11 @@ const renderApp = (App) => {
             <BrowserRouter>
                 <App>
                     <Switch>
-                        <Route exact path='/' component={Home} />
-                        <Route path='/admin' component={Admin} />
-                        <Route path='/genre' component={List} />
-                        <Route component={NotFound} />
+                        ...
+                        
+                        <Route exact path='/genre' component={List} />
+                        
+                        ...
                     </Switch>
                 </App>
             </BrowserRouter>
@@ -80,29 +83,30 @@ const renderApp = (App) => {
 
 ## Динамический роут
 
-**Задача:** создать компонент , который будет доступен по адресу: localhost:3000/genre/house
+**Задача** 
+
+Создать компонент , который будет доступен по адресу: localhost:3000/genre/house
 
 **Реализация**
 
 - перейдем на Genre -> House
 
-- обновим **src/index.js**
+- **src/index.js**
 
 ```js
 
 ...
 
-<Route exact path='/genre' component={List} />
-<Route path='/genre/:genre' component={Genre} />
+<Route exact path='/genre/:genre' component={Genre} />
 
 ...
 
 ```
 
-- обновим **src/components/Genre.js**
+- **src/components/Genre.js**
 
 ```js
-import React, { Component } from 'react';
+...
 
 export default class Genre extends Component {
     render() {
@@ -113,27 +117,424 @@ export default class Genre extends Component {
                 </h2>
 
                 <div>
-                    <p>Release list</p>
+                    <p>
+                        Release list
+                    </p>
                 </div>
             </section>
-        )
+        );
     }
 }
 ```
 
 * __this.props.match.params__ - динамический
 
-**Задача:** создать компонент , который будет доступен по адресу: localhost:3000/genre/house/dida-sebastien-leger-all-day-i-dream  
+**Задача** 
+
+Создать компонент, который будет доступен по адресу: localhost:3000/genre/house/dida-sebastien-leger-all-day-i-dream  
 
 **Реализация**
 
 - **src/index.js**
 
 ```js
+...
 
+import List from './components/Release';
+
+...
+
+const renderApp = (App) => {
+    render(
+        <AppContainer>
+            <BrowserRouter>
+                <App>
+                    <Switch>
+                        ...
+                        
+                        <Route exact path='/genre/:genre/:release' component={Release} />
+                        
+                        ...
+                    </Switch>
+                </App>
+            </BrowserRouter>
+        </AppContainer>,
+        document.getElementById('root')
+    );
+};
+
+...
 ```
 
-- **src/components/Genre.js**
+- **src/components/Release.js**
+
+```js
+import React, { Component } from 'react'
+
+export default class Release extends Component {
+    render() {
+        const releaseName = this.props.match.params.release.replace(/-/g,' ');
+
+        return (
+            <section>
+                <h2>
+                    {this.props.match.params.genre}
+                </h2>
+
+                <p>
+                    {releaseName}
+                </p>
+            </section>
+        )
+    }
+}
+```
+
+**Рефакторим**
+
+- **src/index.js**
+
+```js
+import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { AppContainer } from 'react-hot-loader';
+import { routes } from './routes'
+import App from './containers/App';
+
+const renderApp = (App) => {
+    render(
+        <AppContainer>
+            <BrowserRouter>
+                <App>
+                    {routes}
+                </App>
+            </BrowserRouter>
+        </AppContainer>,
+        document.getElementById('root')
+    );
+};
+
+renderApp(App);
+
+if (module.hot) {
+    module.hot.accept('./containers/App', () => {
+        const newApp = require('./containers/App').default;
+
+        renderApp(newApp);
+    });
+}
+```
+
+- **src/routes.js**
+
+```js
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Admin from './components/Admin';
+import Genre from './components/Genre';
+import Home from './components/Home';
+import List from './components/List';
+import Release from './components/Release';
+import NotFound from './components/NotFound';
+
+export const routes = (
+    <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/admin' component={Admin} />
+        <Route exact path='/genre' component={List} />
+        <Route exact path='/genre/:genre' component={Genre} />
+        <Route exact path='/genre/:genre/:release' component={Release} />
+        <Route component={NotFound} />
+    </Switch>
+);
+```
+
+* [http://localhost:3000/genre/house/dida-sebastien-leger-all-day-i-dream](http://localhost:3000/genre/house/dida-sebastien-leger-all-day-i-dream)
+
+## Активная ссылка
+
+**Обновим структуру components**
+
+```
+src/components/Admin.js -> src/components/Admin/index.js
+
+...
+
+src/components/Release.js -> src/components/Release/index.js
+```
+
+**Зачем ?**
+
+- компонент как независимый модуль
+
+**Продолжим**
+
+Для тех кто все-таки ленился, настал час!
+
+- **src/containers/App/styles.scss**
+
+```scss
+.link {
+  &--active {
+    font-weight: bold;
+  }
+}
+```
+
+- **src/containers/App.js**
+
+```js
+...
+import { NavLink } from 'react-router-dom';
+import './styles.scss';
+
+export default class App extends Component {
+    render() {
+        return (
+            <div>
+                ...
+
+                <ul>
+                    <li><NavLink to='/' exact activeClassName='link--active'>Home</NavLink></li>
+                    <li><NavLink to='/admin' activeClassName='link--active'>Admin</NavLink></li>
+                    <li><NavLink to='/genre' activeClassName='link--active'>Genre</NavLink></li>
+                </ul>
+
+                ...
+            </div>
+        )
+    }
+}
+```
+
+- **webpack/common.config.js**
+
+```js
+    ...
+    autoprefixer = require('autoprefixer'),
+    postcssImport = require('postcss-import'),
+    ...
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    ...
+    isDev = TARGET === 'dev';
+
+...
+
+const common = {
+    ...
+
+    module: {
+        rules: [
+            ...
+            
+            {
+                test: /\.(scss|css)$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                ignore: '/node_modules/',
+                                sourceMap: isDev,
+                                minimize: !isDev
+                            }
+                        },
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                sourceMap: process.env.BABEL_ENV === 'dev',
+                                plugins: (webpack) => [
+                                    autoprefixer({
+                                        browsers: ['last 2 versions'],
+                                    }),
+                                    postcssImport({
+                                        addDependencyTo: webpack,
+                                    })
+                                ]
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                ignore: '/node_modules/',
+                                sourceMap: isDev
+                            }
+                        }
+                    ]
+                })
+            },
+        ]
+    },
+
+    plugins: [
+        new ExtractTextPlugin('bundle.css')
+    ]
+    
+    ...
+};
+
+...
+```
+
+- установим пакеты
+
+```bash
+npm i --save-dev extract-text-webpack-plugin style-loader css-loader postcss postcss-loader autoprefixer sass-loader node-sass
+``` 
+
+- **index.html**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    ...
+    <link rel="stylesheet" href="/dist/bundle.css">
+</head>
+    
+...
+
+</html>
+```
+
+## Redirect
+
+**Зачем?**
+
+Хочется, чтобы пользователь при заходе на сайт, попадал сразу на отображение указанного компонента.
+
+**Как?**
+
+```js
+<Redirect from='/old-path' to='/new-path' />
+```
+
+## Разделение доступа
+
+**Задача**
+
+- вход как администратор
+
+- обычный пользователь
+
+**Реализация**
+
+- **src/components/Login/index.js**
+
+```js
+import React, { Component } from 'react';
+
+export default class Login extends Component {
+    handleSubmit(e) {
+        e.preventDefault();
+        
+        const value = e.target.elements[0].value;
+
+        window.localStorage.setItem('login', value);
+    }
+
+    render() {
+        return (
+            <section>
+                <h2>User login</h2>
+
+                <form onSubmit={this.handleSubmit}>
+                    <input type='text' placeholder='login' />
+
+                    <button type='submit'>Login</button>
+                </form>
+            </section>
+        )
+    }
+}
+```
+
+- **src/routes.js**
+
+```js
+...
+
+import Login from './components/Login';
+
+...
+
+export const routes = (
+    <Switch>
+        ...
+        
+        <Route exact path='/login' component={Login} />
+        
+        ...
+    </Switch>
+);
+```
+
+- **src/containers/App.js**
+
+```js
+...
+
+export default class App extends Component {
+    render() {
+        return (
+            <div>
+                ...
+
+                <ul>
+                    ...
+                    
+                    <li><NavLink to='/login' activeClassName='link--active'>Login</NavLink></li>
+                </ul>
+
+                ...
+            </div>
+        )
+    }
+}
+```
+
+### Xук
+
+> Хук - действие на событие.
+
+**Реализация**
+
+- **src/routes.js**
+
+```js
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import Admin from './components/Admin';
+import Login from './components/Login';
+import Genre from './components/Genre';
+import Home from './components/Home';
+import List from './components/List';
+import Release from './components/Release';
+import NotFound from './components/NotFound';
+
+export const routes = (
+    <Switch>
+        <Route exact path='/' component={Home} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/admin' render={() => checkLogin()}/>
+        <Route exact path='/genre/:genre/:release' component={Release} />
+        <Route exact path='/genre/:genre' component={Genre} />
+        <Route exact path='/genre' component={List} />
+        <Route component={NotFound} />
+    </Switch>
+);
+
+function checkLogin() {
+    const login = window.localStorage.getItem('login');
+
+    return (login === 'admin') ? <Admin /> : <Redirect to='/login' />;
+}
+```
+
+
 
 ## Заключение
 

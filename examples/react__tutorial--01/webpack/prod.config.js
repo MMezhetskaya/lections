@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'nosources-source-map',
 
     plugins: [
         new webpack.DefinePlugin({
