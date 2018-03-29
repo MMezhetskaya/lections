@@ -15,7 +15,7 @@
     <script>
         'use strict';
 
-        // (function(w) {
+        (function(w) {
             var alec = new Worker({
                     name: 'alec',
                     surname: 'Иванов',
@@ -36,13 +36,13 @@
                 });
 
             Worker.getTotalSalary(alec, ivan, nick);
-        // })(window);
+        })(window);
     </script>
 
     <script>
         'use strict';
 
-        // (function(w) {
+        (function(w) {
             var alec = new Director({
                 name: 'alec',
                 surname: 'Иванов',
@@ -68,8 +68,7 @@
                 rate: 3,
                 days: 20
             });
-
-        // })(window);
+        })(window);
     </script>
 </body>
 </html>

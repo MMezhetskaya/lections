@@ -591,3 +591,6 @@ document.body.appendChild(componentFooter.render()) // <footer><p>Корирай
 
 componentFooter.delete() //удалить текуий компонент 
 ```
+
+## Справочники
+- [Usejsdoc](http://usejsdoc.org/)

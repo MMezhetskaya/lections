@@ -575,7 +575,7 @@ a();
 
 3. Не забываем про Code style
 
-### Справочники
+## Справочники
 - [jsbeautifier](http://jsbeautifier.org/)
 - [ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
 - [Mozilla Developer Network](https://developer.mozilla.org/en-US/)
