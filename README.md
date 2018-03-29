@@ -337,6 +337,8 @@
 - Redirect
 - Разделение доступа
     - Xук
+- componentDidMount, componentWillUnmount
+- Подключаем redux
 - Заключение
 - ДЗ
 - Справочники

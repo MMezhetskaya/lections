@@ -1,32 +1,23 @@
-/*global FB:true*/
+/* eslint-disable no-unused-vars */
 
 import {
     LOGIN_REQUEST,
-    LOGIN_SUCCES,
-    LOGIN_FAIL
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    LOGOUT_SUCCESS
 } from '../constants/User'
 
-export function handleLogin() {
-    return function(dispatch) {
-        dispatch({
-            type: LOGIN_REQUEST
-        });
-
-        FB.login(function(res) {
-            if (res.authResponse) {
-                FB.api('/me', (resUser) => {
-                    dispatch({
-                        type: LOGIN_SUCCES,
-                        payload: resUser.name
-                    });
-                }, {scope: 'user_photos'} );
-
-            } else {
-                dispatch({
-                    type: LOGIN_FAIL,
-                    payload: new Error('Ошибка авторизации')
-                });
-            }
-        });
+export function login(payload) {
+    // TODO
+    return {
+        type: LOGIN_REQUEST
     }
 }
+
+export function logout() {
+    return {
+        type: LOGOUT_SUCCESS
+    }
+}
+
+/* eslint-enable no-unused-vars */

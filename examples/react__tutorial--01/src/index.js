@@ -3,17 +3,23 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
-import { routes } from './routes'
+import { routes } from './routes';
 import App from './containers/App';
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
+
+const store = configureStore();
 
 const renderApp = (App) => {
     render(
         <AppContainer>
-            <BrowserRouter>
-                <App>
-                    {routes}
-                </App>
-            </BrowserRouter>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <App>
+                        {routes}
+                    </App>
+                </BrowserRouter>
+            </Provider>
         </AppContainer>,
         document.getElementById('root')
     );

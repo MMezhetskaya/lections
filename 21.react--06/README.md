@@ -500,30 +500,30 @@ export default class App extends Component {
 
 > Хук - действие на событие.
 
+**Задача**
+
+- переход на **/admin**, редирект на  **/login**  в случае если пользователь не **admin**
+
+- после логина редирект на  **/admin** если  **admin**, в противном случае на гланую **/**
+
 **Реализация**
 
 - **src/routes.js**
 
 ```js
-import React from 'react';
+...
+
 import { Route, Switch, Redirect } from 'react-router-dom';
-import Admin from './components/Admin';
-import Login from './components/Login';
-import Genre from './components/Genre';
-import Home from './components/Home';
-import List from './components/List';
-import Release from './components/Release';
-import NotFound from './components/NotFound';
+
+...
 
 export const routes = (
     <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/login' component={Login} />
+        ...
+        
         <Route exact path='/admin' render={() => checkLogin()}/>
-        <Route exact path='/genre/:genre/:release' component={Release} />
-        <Route exact path='/genre/:genre' component={Genre} />
-        <Route exact path='/genre' component={List} />
-        <Route component={NotFound} />
+        
+        ...
     </Switch>
 );
 
@@ -533,6 +533,117 @@ function checkLogin() {
     return (login === 'admin') ? <Admin /> : <Redirect to='/login' />;
 }
 ```
+
+- **src/components/Login/index.js**
+
+```js
+...
+import { Redirect } from 'react-router-dom';
+
+export default class Login extends Component {
+    constructor () {
+        super();
+
+        this.state = {
+            isAdmin: false,
+            fireRedirect: false
+        }
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+
+        const loginVal = e.target.elements[0].value;
+
+        window.localStorage.setItem('login', loginVal);
+
+        this.setState({
+            isAdmin: loginVal === 'admin',
+            fireRedirect: true
+        });
+    }
+
+    render() {
+        const { isAdmin, fireRedirect } = this.state;
+
+        return (
+            <section>
+                ...
+
+                {fireRedirect && (<Redirect to={isAdmin ? '/admin' : '/'}/>)}
+            </section>
+        )
+    }
+}
+```
+
+## componentDidMount, componentWillUnmount
+
+**Задача**
+
+- переход на **/login**, сообщение с именем текущего пользователя
+
+- покидаем **/admin**, сообщение
+
+**Реализация**
+
+- **src/components/Login/index.js**
+
+```js
+...
+
+export default class Login extends Component {
+    ...
+
+    componentDidMount() {
+        let userName = window.localStorage.getItem('login');
+
+        alert(`User name ${userName ? userName : ''}`);
+    }
+
+    ...
+}
+```
+
+- **src/components/Admin/index.js**
+
+```js
+...
+
+export default class Admin extends Component {
+    componentWillUnmount() {
+        confirm('Are you sure?');
+    }
+
+    ...
+}
+```
+
+## Подключаем redux
+
+```bash
+npm i --save redux react-redux
+npm i --save-dev redux-logger redux-thunk
+```
+
+**Задача**
+
+- пользователь кликает на **Admin**
+
+- залогинен - пропускаем его на страницу
+
+- не залогинен - отправлям его на страницу логина
+
+**Мда, но у нас же уже все сделано!!!**
+
+- во время логина мы сделаем задержку (как будто ждем ответ от сервера), и лишь когда пришел ответ - перенаправим браузер пользователя на **/admin** роутинг будет выполняться посредством **store.dispatch**
+
+- а просто для того что-бы освежить знания про **redux**
+
+**Решение**
+
+- **src/index.js**
+
 
 
 
