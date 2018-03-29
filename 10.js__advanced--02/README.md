@@ -1,8 +1,74 @@
-### Прототип объекта
+# Lection 09
 
-Объекты в JavaScript можно организовать в цепочки так, чтобы свойство, не найденное в одном объекте, автоматически искалось бы в другом.
+## Расширим кругозор
 
-Связующим звеном выступает специальное свойство __proto__.
+>Метапеременные — это слова-заменители, которые применяются в технических текстах для обозначения чего-либо, что может стоять на их месте, метапеременные часто используются в программировании.  @Wiki
+
+Есть две легендарных метапеременных — это **foo** и **bar**
+
+- короткие
+
+- одинаковой длины
+ 
+- отличаются друг от друга
+ 
+- легко произносятся
+
+## Прототип объекта
+
+>**prototype** - свойство функции-конструктора, которая устанавливает, что войдёт в свойство **__proto__** на построенном объекте.
+
+![Proto & prototype](./proto_vs_prototype.jpeg "Proto & prototype")
+
+**Просто объекты**
+
+```js
+var knowledgesProgress = {
+        lvl: 50
+    },
+    knowledgesProgressFoo = {
+        getProgress: function() {
+            var msg = this.lvl < 50 ? 'Need more brains' : 'Im super smart';
+            
+            console.log(msg);
+        }
+    };
+    
+// foo.__proto__
+knowledgesProgress.__proto__ = knowledgesProgressFoo;
+
+console.dir(knowledgesProgress);
+knowledgesProgress.getProgress();
+```
+
+**Cложно объекты**
+
+```js
+var knowledgesProgress = new KnowledgesProgress();
+
+function KnowledgesProgress() {
+    this.lvl= 50;
+}
+
+//Foo.prototype
+KnowledgesProgress.prototype.getProgress = function() {
+    var msg = this.lvl < 50 ? 'Need more brains' : 'Im super smart';
+                                                       
+    console.log(msg);
+}
+```
+
+**Грубо, но наглядно**
+
+![Proto & prototype](./proto_vs_prototype_01.jpg "Proto & prototype")
+
+
+**Важно!**
+
+- объекты в можно организовать в цепочки 
+
+- свойство не найденное в одном объекте, автоматически ищется в другом
+
 
 ```javascript
 var animal = {

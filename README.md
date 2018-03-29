@@ -142,6 +142,7 @@
 - Справочники
 
 ## [10.js__advanced--02](./10.js__advanced--02)
+- Расширим кругозор
 - Прототип объекта
 - obj.hasOwnProperty(prop)
 - Object.create(null)
