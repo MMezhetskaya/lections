@@ -441,7 +441,7 @@ export default class Login extends Component {
             <section>
                 <h2>User login</h2>
 
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={::this.handleSubmit}>
                     <input type='text' placeholder='login' />
 
                     <button type='submit'>Login</button>
@@ -644,8 +644,228 @@ npm i --save-dev redux-logger redux-thunk
 
 - **src/index.js**
 
+```js
+...
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 
+const store = configureStore();
 
+const renderApp = (App) => {
+    render(
+        <AppContainer>
+            <Provider store={store}>
+                ...
+            </Provider>
+        </AppContainer>,
+        document.getElementById('root')
+    );
+};
+
+...
+```
+
+- **src/routes.js**
+
+```js
+...
+import Login from './containers/LoginPage';
+...
+
+export const routes = (
+    <Switch>
+        ...
+        <Route exact path='/login' component={Login} />
+        ...
+    </Switch>
+);
+
+...
+```
+
+- создаем **константы** для пользователя **src/constants/User.js**
+
+```js
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGOUT_SUCCES = 'LOGOUT_SUCCESS';
+```
+
+- создаем **actions** для пользователя **src/actions/UserActions.js**
+
+```js
+/* eslint-disable no-unused-vars */
+
+import {
+    LOGIN_REQUEST,
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    LOGOUT_SUCCESS
+} from '../constants/User'
+
+export function login(payload) {
+    // TODO
+    return {
+        type: LOGIN_REQUEST
+    };
+}
+
+export function logout() {
+    return {
+        type: LOGOUT_SUCCESS
+    };
+}
+
+/* eslint-enable no-unused-vars */
+```
+
+- создаем **reducers** для пользователя **src/reducers/user.js**
+
+```js
+import {
+    LOGIN_REQUEST,
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    LOGOUT_SUCCESS
+} from '../constants/User';
+
+const initialState = JSON.parse(window.localStorage.getItem('user')) || {};
+
+export default function userstate(state = initialState, action) {
+
+    switch (action.type) {
+
+        case LOGIN_REQUEST:
+            // TODO
+            return {};
+
+        case LOGIN_SUCCESS:
+            // TODO
+            return {};
+
+        case LOGIN_FAIL:
+            // TODO
+            return {};
+
+        case LOGOUT_SUCCESS:
+            // TODO
+            return {};
+
+        default:
+            return state;
+    }
+}
+```
+
+- **src/reducers/index.js**
+
+```js
+import { combineReducers } from 'redux';
+import user from './user';
+
+export const rootReducer = combineReducers({
+    user
+});
+```
+
+- конфигурируем **store** **src/store/configureStore.js**
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from '../reducers';
+import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk'
+
+export default function configureStore(initialState) {
+    const logger = createLogger(),
+        store = createStore(
+            rootReducer,
+            initialState,
+            applyMiddleware(thunk, logger)
+        );
+
+    if (module.hot) {
+        module.hot.accept('../reducers', () => {
+            const nextRootReducer = require('../reducers');
+
+            store.replaceReducer(nextRootReducer);
+        });
+    }
+
+    return store;
+}
+```
+
+- превратим  **<Login />** в "умный компонент" **<LoginPage />** **src/containers/LoginPage/index.js**
+
+```js
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as UserActions from '../../actions/UserActions';
+
+export class LoginPage extends Component {
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.actions.login({name: e.target.elements[0].value});
+    }
+
+    render() {
+        return (
+            <section>
+                <h2>User login</h2>
+
+                <form onSubmit={::this.handleSubmit}>
+                    <input type='text' placeholder='login' />
+
+                    <button type='submit'>Login</button>
+                </form>
+            </section>
+        )
+    }
+}
+
+function mapStateToProps() {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(UserActions, dispatch);
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+```
+
+### store.dispatch редирект
+
+- пробуем залогинится -> смотрим в консоль
+
+- **src/actions/UserActions.js**
+
+```js
+...
+export function login(payload) {
+    return (dispatch) => {
+        dispatch({
+            type: LOGIN_REQUEST
+        });
+
+        setTimeout(() => {
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: {
+                    name: payload.name,
+                    isAuthenticated: true
+                }
+            })
+        }, 2000)
+    }
+}
+...
+```
 
 ## Заключение
 

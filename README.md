@@ -340,6 +340,7 @@
     - Xук
 - componentDidMount, componentWillUnmount
 - Подключаем redux
+    - store.dispatch редирект
 - Заключение
 - ДЗ
 - Справочники

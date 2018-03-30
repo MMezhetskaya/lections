@@ -3,9 +3,9 @@ import {
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS
-} from '../constants/User'
+} from '../constants/User';
 
-const initialState = JSON.parse(window.localStorage.getItem('rr_user')) || {}
+const initialState = JSON.parse(window.localStorage.getItem('user')) || {};
 
 export default function userstate(state = initialState, action) {
 
@@ -13,21 +13,21 @@ export default function userstate(state = initialState, action) {
 
         case LOGIN_REQUEST:
             // TODO
-            return {}
+            return {};
 
         case LOGIN_SUCCESS:
             // TODO
-            return {}
+            return {};
 
         case LOGIN_FAIL:
             // TODO
-            return {}
+            return {};
 
         case LOGOUT_SUCCESS:
             // TODO
-            return {}
+            return {};
 
         default:
-            return state
+            return state;
     }
 }
