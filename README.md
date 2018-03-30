@@ -341,6 +341,7 @@
 - componentDidMount, componentWillUnmount
 - Подключаем redux
     - store.dispatch редирект
+    - cоздание middleware для роутинга
 - Заключение
 - ДЗ
 - Справочники

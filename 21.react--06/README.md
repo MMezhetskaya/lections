@@ -867,6 +867,93 @@ export function login(payload) {
 ...
 ```
 
+- **src/reducers/user.js**
+
+```js
+...
+    case LOGIN_SUCCESS:
+        return {...state, name: action.payload.name, isAuthenticated: action.payload.isAuthenticated};
+...
+```
+
+- проверяем консоль
+
+###  Cоздание middleware для роутинга
+
+- **src/constants/Routing.js**
+
+```js
+export const ROUTING = 'ROUTING';
+```
+
+- **src/middlewares/redirect.js**
+
+```js
+import {
+    ROUTING
+} from '../constants/Routing'
+
+export const redirect = store => next => action => { //eslint-disable-line no-unused-vars
+    if (action.type === ROUTING) {
+        // this.props.history[action.payload.method](action.payload.nextUrl);
+    }
+
+    return next(action);
+};
+```
+
+- **src/actions/UserActions.js**
+
+```js
+...
+import {
+    ROUTING
+} from '../constants/Routing';
+
+export function login(payload) {
+    return (dispatch) => {
+        ...
+        setTimeout(() => {
+                dispatch({
+                    type: LOGIN_SUCCESS,
+                    payload: {
+                        name: payload.name,
+                        isAuthenticated: true
+                    }
+                });
+    
+                dispatch({
+                    type: ROUTING,
+                    payload: {
+                        method: 'push', //или, например, replace
+                        nextUrl: '/admin'
+                    }
+                });
+            }, 2000);
+    }
+}
+
+...
+```
+
+- **src/store/configureStore.js**
+
+```js
+...
+import { redirect } from '../middlewares/redirect';
+...
+
+export default function configureStore(initialState) {
+    const logger = createLogger(),
+        store = createStore(
+            ...
+            applyMiddleware(redirect, thunk, logger)
+        );
+
+    ...
+}
+```
+
 ## Заключение
 
 ## ДЗ
