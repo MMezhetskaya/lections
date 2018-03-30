@@ -20,7 +20,7 @@ export const routes = (
     </Switch>
 );
 
-function checkLogin() {
+function checkLogin() {debugger;
     const login = window.localStorage.getItem('login');
 
     return (login === 'admin') ? <Admin /> : <Redirect to='/login' />;
