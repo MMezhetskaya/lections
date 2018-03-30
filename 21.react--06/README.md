@@ -913,23 +913,18 @@ import {
 export function login(payload) {
     return (dispatch) => {
         ...
+        
         setTimeout(() => {
-                dispatch({
-                    type: LOGIN_SUCCESS,
-                    payload: {
-                        name: payload.name,
-                        isAuthenticated: true
-                    }
-                });
-    
-                dispatch({
-                    type: ROUTING,
-                    payload: {
-                        method: 'push', //или, например, replace
-                        nextUrl: '/admin'
-                    }
-                });
-            }, 2000);
+            ...
+
+            dispatch({
+                type: ROUTING,
+                payload: {
+                    method: 'push', //или, например, replace
+                    nextUrl: '/admin'
+                }
+            });
+        }, 2000);
     }
 }
 
