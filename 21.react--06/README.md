@@ -950,6 +950,73 @@ export default function configureStore(initialState) {
 }
 ```
 
+### "Закрытый" компонент
+
+- **src/containers/AuthenticatedComponent/index.js**  - проверка прав **user**
+
+```js
+import React from 'react';
+import { connect } from 'react-redux';
+
+export default function requireAuthentication(Component) {
+    class AuthenticatedComponent extends Component {
+        render() {
+            return (
+                this.props.user.isAuthenticated === true
+                    ? <Component {...this.props} />
+                    : null
+            )
+        }
+    }
+
+    function mapStateToProps(state) {
+        return {
+            user: state.user
+        }
+    }
+
+    return connect(mapStateToProps)(AuthenticatedComponent);
+}
+```
+
+- **src/routes.js**  - проверка прав **user**
+
+```js
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Admin from './components/Admin';
+import Login from './containers/LoginPage';
+import Genre from './components/Genre';
+import Home from './components/Home';
+import List from './components/List';
+import Release from './components/Release';
+import NotFound from './components/NotFound';
+import requireAuthentication from './containers/AuthenticatedComponent';
+
+export const routes = (
+    <Switch>
+        <Route exact path='/' component={Home} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/admin'  component={requireAuthentication(Admin)} />
+        <Route exact path='/genre/:genre/:release' component={Release} />
+        <Route exact path='/genre/:genre' component={Genre} />
+        <Route exact path='/genre' component={List} />
+        <Route component={NotFound} />
+    </Switch>
+);
+```
+
+- ударим по консоли
+
 ## Заключение
 
 ## ДЗ
+
+- правильный редирект на **/admin** для **middlewares**
+
+- разобраться почему **componentWillUnmount** для **src/components/Admin/index.js** срабатывает дважды
+
+- редирект на страницу логина, если пользователь не аутентифицирован
+
+- теперь Вы видели все, почти все 
+
