@@ -58,11 +58,6 @@ KnowledgesProgress.prototype.getProgress = function() {
 }
 ```
 
-**Грубо, но наглядно**
-
-![Proto & prototype](./proto_vs_prototype_01.jpg "Proto & prototype")
-
-
 **Важно!**
 
 - объекты в можно организовать в цепочки 
