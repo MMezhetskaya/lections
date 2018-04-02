@@ -348,6 +348,11 @@
 - Справочники
 
 ## [22.angular--01](./22.angular--01)
+- Немного лирики React vs Angular
+    - Преимущества Angular
+    - Преимущества React
+- QuickStart
+- Angular component
 - Заключение
 - ДЗ
 - Справочники
