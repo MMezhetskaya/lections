@@ -348,11 +348,18 @@
 - Справочники
 
 ## [22.angular--01](./22.angular--01)
-- Немного лирики React vs Angular
-    - Преимущества Angular
-    - Преимущества React
+- Курс молодого бойца или TypeScript
+    - Строгая типизация
+    - Читабельность кода
+    - Минусы TypeScript
+    - TypeScript за 5 минут
+    - Миграция с JavaScript
+        - Build Tools
+    - Причем тут TypeScript тема то про Angular!
 - QuickStart
 - Angular component
+- Структура src
+- Структура root
 - Заключение
 - ДЗ
 - Справочники
@@ -373,6 +380,9 @@
 - Справочники
  
 ## [26.angular--05](./26.angular--05)
+- Немного лирики React vs Angular
+    - Преимущества Angular
+    - Преимущества React
 - Заключение
 - ДЗ
 - Справочники
