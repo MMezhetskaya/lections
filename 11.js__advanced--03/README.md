@@ -160,7 +160,7 @@ targetObject.showName();
 ```js
 function foo(arg1, arg2, ...) {
     // this is object context
-    console.log(this, arg1, arg2);
+    console.log(this, arg1, arg2, ..);
 }
 
 foo.call(context, arg1, arg2, ...)
@@ -210,453 +210,483 @@ function showFullName(firstPart, lastPart) {
 
 ### Метод apply
 
-Вызов функции при помощи func.apply работает аналогично func.call, но принимает массив аргументов вместо списка.
+**Важно**
 
-```javascript
-func.call(context, arg1, arg2);
-// идентичен вызову
-func.apply(context, [arg1, arg2]);
+Вызов функции при помощи `foo.apply(this, [arg1, arg2, ...])` работает аналогично `foo.call(this, arg1, arg2, ...)`, но принимает массив аргументов вместо списка
+
+**Синтаксис**
+
+``` js
+foo.call(context, arg1, arg2);
+foo.apply(context, [arg1, arg2]);
 ```
 
 ```javascript
 showFullName.call(user, 'firstName', 'surname');
-
 showFullName.apply(user, ['firstName', 'surname']);
 ```
 
-```javascript
+```js
 Math.max(1, 5, 2)
 ```
 
-```javascript
+```js
 var arr = [1, 3, 7];
 
 // получить максимум из элементов arr
-alert( Math.max.apply(null, arr) ); // 7
+console.log( Math.max.apply(null, arr) ); // 7
 
 Math.max(1,2,3);
-Math.max.apply(Math, [1,2,3]);
+Math.max.apply(null, [1, 2, 3])
 ```
 
 
-## «Одалживание метода»
+## Одалживание метода
 
-При помощи call можно легко взять метод одного объекта, в том числе встроенного, и вызвать в контексте другого.
+При помощи **call** можно легко взять метод одного объекта, в том числе встроенного, и вызвать в контексте другого.
 
-Это называется «одалживание метода» (на англ. method borrowing).
+Это называется "одалживание метода" (на англ. method borrowing).
 
-Используем эту технику для упрощения манипуляций с arguments.
+**Пример**
 
-Как мы знаем, arguments не массив, а обычный объект, поэтому таких полезных методов как push, pop, join и других у него нет. Но иногда так хочется, чтобы были…
+Используем эту технику для упрощения манипуляций с **arguments**.
 
-```javascript
+**arguments** не  псевдо-массив(обычный объект)
+
+- нет полезных методов как **push**, **pop**, **join** и тд
+
+```js
 function printArgs() {
-  arguments.join = [].join; // одолжили метод (1)
+    arguments.join = [].join; // одолжили метод (1)
 
-  var argStr = arguments.join(':'); // (2)
+    var argStr = arguments.join(':'); // (2)
 
-  alert( argStr ); // сработает и выведет 1:2:3
+    console.log(argStr); // сработает и выведет 1:2:3
 }
 
 printArgs(1, 2, 3);
 ```
 
-Почему вызов сработает?
+**Почему вызов сработает?**
 
-Здесь метод join массива скопирован и вызван в контексте arguments. Не произойдёт ли что-то плохое от того, что arguments – не массив? Почему он, вообще, сработал?
+- Метод **join** массива скопирован и вызван в контексте **arguments**
 
-Ответ на эти вопросы простой. В соответствии со спецификацией, внутри join реализован примерно так:
+- Не произойдёт ли что-то плохое от того, что **arguments** – не массив?
 
-```javascript
+- Почему он, вообще, сработал?
+
+**Ответ**
+
+В соответствии со спецификацией, внутри **join** реализован примерно так:
+
+```js
 function join(separator) {
-  if (!this.length) return '';
+    if (!this.length) return '';
 
-  var str = this[0];
+    var str = this[0];
 
-  for (var i = 1; i < this.length; i++) {
-    str += separator + this[i];
-  }
+    for (var i = 1; i < this.length; i++) {
+        str += separator + this[i];
+    }
 
-  return str;
+    return str;
 }
 ```
 
-Как видно, используется this, числовые индексы и свойство length. Если эти свойства “есть, то все в порядке. А больше ничего и не нужно. В качестве this подойдёт даже обычный объект:
+Как видно, используется
 
-```javascript
+- **this**
+
+- числовые индексы
+
+- свойство **length**
+
+**Вывод**
+
+Если эти свойства есть, то все в порядке. А больше ничего и не нужно. В качестве **this** подойдёт даже обычный объект:
+
+```js
 var obj = { // обычный объект с числовыми индексами и length
-  0: "А",
-  1: "Б",
-  2: "В",
-  length: 3
+    0: "А",
+    1: "Б",
+    2: "В",
+    length: 3
 };
 
 obj.join = [].join;
-alert( obj.join(';') ); // "A;Б;В”
+
+console.log( obj.join(';') ); // "A;Б;В”
 ```
 
-Представим на минуту, что вместо arguments у нас – произвольный объект. У него тоже есть числовые индексы, length и мы хотим вызвать в его контексте метод [].join. То есть, ситуация похожа на arguments, но (!) вполне возможно, что у объекта есть свой метод join.
+Представим на минуту, что вместо **arguments** у нас – произвольный объект, у него тоже есть
 
-```javascript
+- числовые индексы
+
+- **length**
+
+Мы хотим вызвать в его контексте метод `[].join`. То есть, ситуация похожа на **arguments**, но **(!)** вполне возможно, что у объекта есть свой метод **join**
+
+```js
 function printArgs() {
-  var join = [].join; // скопируем ссылку на функцию в переменную
+    var join = [].join; // скопируем ссылку на функцию в переменную
 
-  // вызовем join с this=arguments,
-  // этот вызов эквивалентен arguments.join(':') из примера выше
-  var argStr = join.call(arguments, ':');
+    // вызовем join с this=arguments,
+    // этот вызов эквивалентен arguments.join(':') из примера выше
+    var argStr = join.call(arguments, ':');
 
-  alert( argStr ); // сработает и выведет 1:2:3
+    console.log(argStr); // сработает и выведет 1:2:3
 }
 
 printArgs(1, 2, 3);
 ```
 
-```javascript
+```js
 function printArgs() {
-  // вызов arr.slice() скопирует все элементы из this в новый массив
-  var args = [].slice.call(arguments);
-  alert( args.join(', ') ); // args - полноценный массив из аргументов
+    // вызов arr.slice() скопирует все элементы из this в новый массив
+    var args = [].slice.call(arguments);
+
+    console.log(args.join(', ')); // args - полноценный массив из аргументов
 }
 
 printArgs('Привет', 'мой', 'мир'); // Привет, мой, мир
 ```
 
 
-### Привязка контекста и карринг: "bind”
+## Привязка контекста и карринг: bind
 
-Функции в JavaScript никак не привязаны к своему контексту this, с одной стороны, здорово – это позволяет быть максимально гибкими, одалживать методы и так далее.
+Функции в **JS** никак не привязаны к своему контексту **this**
 
-Пример потери контекста
-```javascript
+- это позволяет быть максимально гибкими, одалживать методы и так далее
+
+**Пример**
+
+```js
 var user = {
-  firstName: "Вася",
-  showName: function() {
-    alert( this.firstName );
-  }
+    firstName: "Вася",
+    showName: function() {
+        console.log(this.firstName);
+    }
 };
 
-setTimeout(user.showName, 1000); // undefined (не Вася!)
-
-var f = user.showName;
-
-setTimeout(f, 1000); // контекст user потеряли
+setTimeout(user.showName, 1000);
 ```
 
-```javascript
+```js
 var user = {
-  firstName: "Вася",
-  showName: function() {
-    alert( this.firstName );
-  }
+    firstName: "Вася",
+    showName: function() {
+        console.log(this.firstName);
+    }
 };
 
 setTimeout(function() {
-  user.showName(); // Вася
+    user.showName();
 }, 1000);
 ```
 
 
-```javascript
+```js
 var user = {
-  firstName: "Вася",
-  showName: function() {
-    alert( this.firstName );
-  }
+    firstName: "Вася",
+    showName: function() {
+        console.log(this.firstName);
+    }
 };
 
 setTimeout(user.showName.bind(user), 1000);
 ```
 
-Синтаксис встроенного bind:
+- синтаксис встроенного **bind**
 
-```javascript
-var wrapper = func.bind(context[, arg1, arg2...])
+```js
+var wrapper = foo.bind(context, arg1, arg2, ...)
 ```
 
-func  - Произвольная функция
-context - Контекст, который привязывается к func
-arg1, arg2, …  аргументы
+Методы **bind** и **call**/**apply** близки по синтаксису, но есть важнейшее отличие
 
-```javascript
+- **call**/**apply** вызывают функцию с заданным контекстом и аргументами
+
+- **bind** не вызывает функцию, oн только возвращает "обёртку"
+
+    - можно вызвать позже
+
+    - передаст вызов в исходную функцию, с привязанным контекстом
+
+```js
 function bind(func, context) {
-  return function() { // (*)
-    return func.apply(context, arguments);
-  };
+    return function() {
+        return func.apply(context, arguments);
+    };
 }
 ```
 
-Методы bind и call/apply близки по синтаксису, но есть важнейшее отличие.
+### Карринг
 
-Методы call/apply вызывают функцию с заданным контекстом и аргументами.
+>**Карринг (currying)** или **каррирование** – термин функционального программирования, который означает создание новой функции путём фиксирования аргументов существующей.
 
-А bind не вызывает функцию. Он только возвращает «обёртку», которую мы можем вызвать позже, и которая передаст вызов в исходную функцию, с привязанным контекстом.
+**Пример**
 
- - Карринг
+Функция умножения двух чисел mul(a, b):
 
-Карринг (currying) или каррирование – термин функционального программирования, который означает создание новой функции путём фиксирования аргументов существующей.
-
-Например, есть функция умножения двух чисел mul(a, b):
-
-```javascript
+```js
 function mul(a, b) {
-  return a * b;
+    return a * b;
 };
 ```
 
-```javascript
+```js
 // double умножает только на два
 var double = mul.bind(null, 2); // контекст фиксируем null, он не используется
 
-alert( double(3) ); // = mul(2, 3) = 6
-alert( double(4) ); // = mul(2, 4) = 8
-alert( double(5) ); // = mul(2, 5) = 10
+console.log( double(3) ); // = mul(2, 3) = 6
+console.log( double(4) ); // = mul(2, 4) = 8
+console.log( double(5) ); // = mul(2, 5) = 10
 ```
 
-Говорят, что double является «частичной функцией» (partial function) от mul.
+- `double` является "частичной функцией" (partial function) от `mul`
 
-Выигрыш состоит в том, что эта самостоятельная функция, во-первых, имеет понятное имя (double), а во-вторых, повторные вызовы позволяют не указывать каждый раз первый аргумент, он уже фиксирован благодаря bind.
 
-Вывод:
- - Функция сама по себе не запоминает контекст выполнения.
+**Выигрыш то в чем?**
 
- - Чтобы гарантировать правильный контекст для вызова obj.func(), нужно использовать функцию-обёртку, задать её через анонимную функцию:
+- имеет понятное имя (double)
 
-```javascript
+- повторные вызовы позволяют не указывать каждый раз первый аргумент, он уже фиксирован благодаря bind
+
+**Вывод**
+
+- функция сама по себе не запоминает контекст выполнения
+
+- чтобы гарантировать правильный контекст для вызова `foo.func()`, нужно использовать функцию-обёртку, задать её через анонимную функцию:
+
+```js
 setTimeout(function() {
-  obj.func();
+    obj.func();
 })
 ```
 
-…Либо использовать bind:
+Либо использовать **bind**
 
-```javascript
+```js
 setTimeout(obj.func.bind(obj));
 ```
 
-- Вызов bind часто используют для привязки функции к контексту, чтобы затем присвоить её в обычную переменную и вызывать уже без явного указания объекта.
+- вызов **bind** часто используют для привязки функции к контексту, чтобы затем присвоить её в обычную переменную и вызывать уже без явного указания объекта
 
-- Вызов bind также позволяет фиксировать первые аргументы функции («каррировать» её), и таким образом из общей функции получить её «частные» варианты – чтобы использовать их многократно без повтора одних и тех же аргументов каждый раз.
+- вызов **bind** также позволяет фиксировать первые аргументы функции ("каррировать" её)
 
-### Функции-обёртки, декораторы
+    - из общей функции получить её "частные" варианты
 
-Декоратор – приём программирования, который позволяет взять существующую функцию и изменить/расширить ее поведение.
+        - использовать их многократно без повтора одних и тех же аргументов каждый раз
 
-Декоратор получает функцию и возвращает обертку, которая делает что-то своё «вокруг» вызова основной функции.
+## Функции-обёртки, декораторы
 
-```javascript
-function bind(func, context) {
-  return function() {
-    return func.apply(context, arguments); //(*)
-  };
-}
-```
+>**Декоратор** – приём программирования, который позволяет взять существующую функцию и изменить/расширить ее поведение.
 
-Этот приём называется «форвардинг вызова» (от англ. forwarding): текущий контекст и аргументы через apply передаются в функцию f, так что изнутри f всё выглядит так, как была вызвана она напрямую, а не декоратор.
+**Декоратор** получает функцию и возвращает обертку, которая делает что-то своё "вокруг" вызова основной функции.
 
+Этот приём называется "форвардинг вызова" (от англ. forwarding).
 
-```javascript
-function f(x) {} // любая функция
+- текущий контекст и аргументы через **apply** передаются в функцию `f`
 
-var timers = {}; // объект для таймеров
+    - изнутри `f` всё выглядит так, как была вызвана она напрямую, а не декоратор
 
-// отдекорировали
-f = timingDecorator(f, "myFunc");
-
-// запускаем
-f(1);
-f(2);
-f(3); // функция работает как раньше, но время подсчитывается
-
-alert( timers.myFunc ); // общее время выполнения всех вызовов f
-```
-
-```javascript
+```js
 var timers = {};
 
 // прибавит время выполнения f к таймеру timers[timer]
 function timingDecorator(f, timer) {
-  return function() {
-    var start = performance.now();
+    return function() {
+        var start = performance.now(),
+            result = f.apply(this, arguments);
 
-    var result = f.apply(this, arguments); // (*)
+        if (!timers[timer]) {
+            timers[timer] = 0;
+        }
 
-    if (!timers[timer]) timers[timer] = 0;
-    timers[timer] += performance.now() - start;
+        timers[timer] += performance.now() - start;
 
-    return result;
-  }
+        return result;
+    }
 }
 
 // функция может быть произвольной, например такой:
 var fibonacci = function f(n) {
-  return (n > 2) ? f(n - 1) + f(n - 2) : 1;
+    return (n > 2) ? f(n - 1) + f(n - 2) : 1;
 }
 
 // использование: завернём fibonacci в декоратор
 fibonacci = timingDecorator(fibonacci, "fibo");
 
 // неоднократные вызовы...
-alert( fibonacci(10) ); // 55
-alert( fibonacci(20) ); // 6765
+fibonacci(10);
+fibonacci(20);
 // ...
 
 // в любой момент можно получить общее количество времени на вызовы
-alert( timers.fibo + 'мс' );
+console.log( timers.fibo + 'мс' );
 ```
 
-Декораторы способны упростить рутинные, повторяющиеся задачи, вынести их из кода функции.
+**Декораторы** способны упростить рутинные, повторяющиеся задачи, вынести их из кода функции
 
-```javascript
+```js
 function sum(a, b) {
-  return a + b;
+    return a + b;
 }
 
 // передадим в функцию для сложения чисел нечисловые значения
-alert( sum(true, { name: "Вася", age: 35 }) ); // true[Object object]
+console.log( sum(true, { name: "Вася", age: 35 }) );
 ```
 
-```javascript
+```js
+// обернём декоратор для проверки
+var sum = typeCheck(sum, [checkNumber, checkNumber]); // оба аргумента - числа
+
+sum(3, 4);
+
+function sum(a, b) {
+    return a + b;
+}
+
 // вспомогательная функция для проверки на число
 function checkNumber(value) {
-  return typeof value == 'number';
+    return typeof +value === 'number';
 }
 
 // декоратор, проверяющий типы для f
 // второй аргумент checks - массив с функциями для проверки
 function typeCheck(f, checks) {
-  return function() {
-    for (var i = 0; i < arguments.length; i++) {
-      if (!checks[i](arguments[i])) {
-        alert( "Некорректный тип аргумента номер " + i );
-        return;
-      }
+    return function() {
+        for (var i = 0; i < arguments.length; i++) {
+            if (!checks[i](arguments[i])) {
+                console.error( "Некорректный тип аргумента номер " + i );
+                return;
+            }
+        }
+
+        return f.apply(this, arguments);
     }
-    return f.apply(this, arguments);
-  }
 }
-
-function sum(a, b) {
-  return a + b;
-}
-
-// обернём декоратор для проверки
-sum = typeCheck(sum, [checkNumber, checkNumber]); // оба аргумента - числа
-
-// пользуемся функцией как обычно
-alert( sum(1, 2) ); // 3, все хорошо
-
-// а вот так - будет ошибка
-sum(true, null); // некорректный аргумент номер 0
-sum(1, ["array", "in", "sum?!?"]); // некорректный аргумент номер 1
 ```
 
-Один раз пишем декоратор и дальше просто применяем этот функционал везде, где нужно.
+- повторное использование
 
-```javascript
-function checkPermissionDecorator(f) {
-  return function() {
-    if (isAdmin()) {
-      return f.apply(this, arguments);
-    }
-    alert( 'Недостаточно прав' );
-  }
-};
+```js
+var save = checkPermissionDecorator(save),
+    remove = checkPermissionDecorator(remove);
+    ...
+    add = checkPermissionDecorator(add);
 
 function save() { ... }
 
-save = checkPermissionDecorator(save);
-// Теперь вызов функции save() проверяет права
+function remove() { ... }
+
+...
+
+function add() { ... }
+
+function checkPermissionDecorator(f) {
+    return function() {
+        if (isAdmin()) {
+            return f.apply(this, arguments);
+        }
+
+        console.log( 'Недостаточно прав' );
+    }
+};
 ```
 
-Декоратор – это обёртка над функцией, которая модифицирует её поведение. При этом основную работу по-прежнему выполняет функция.
+**Вывод**
 
-Декораторы можно не только повторно использовать, но и комбинировать!
+- **декоратор** – это обёртка над функцией, которая модифицирует её поведение
 
-### Заключение
+- основную работу по-прежнему выполняет функция
 
-### ДЗ
+- декораторы можно не только повторно использовать, но и комбинировать!
 
-Переделать предыдущее задание в прототипном стиле + добавить новый компонент Articles, и для всех компонентов добавить 
-свойство order которое определяет в каком порядке и после какого элемента будет отрендерен блок, если order 
-одинаковый то блок ставится после блока с таким же order, если order не указан то по умолчанию он равен 0.
+## Заключение
 
-Класс Component содержит список всех созданных потомков(при delete потомок удаляется из списка), при вызове 
-метода Component.renderPage() все потомки рендерятся в порядке order и добавляются к body. 
-Так же при вызове Component.renderPage(component01, ... componentN) с аргументами отрендерятся только компоненты 
-указанные в аргументе
+- Статические свойства и методы
 
-При клике на пункт меню, рендерится блок соответсвующий странице обновляя текущий parent новым блоком
+- Фабричные методы
 
-1) Создайте класс Component, компонент имеет методы:
+- Явное указание **this**: **call**, **apply**
 
- - setView - установить html view
- - setOrder - установить свойство position
- - render - отрендерить текущий  html view с параметрами
- - delete - удалить текуий компонент
- 
-2) Наследуя от класса Component создайте 4 компонента:
+- Одалживание метода
 
- - componentHeader
- - componentMenu - расширяет базовый метод render, добавляя renderSubItem - рендерит пункты  подменю и вставляет их в 
- родительский пункт меню 
- - componentArticles - расширяет базовый метод render, добавляя renderArticle - рендерит статьи и добавляет в компонент body
- - componentFooter
- 
-3) Методы и как работает:
+- Привязка контекста: **bind**
 
-```javascript
-    var componentHeader = new Component({parent: 'header', url: 'путь к лого',  title: 'заголовок'}),
-        componentMenu = new Component({parent: 'nav'}),
-        componentArticles = new Component({parent: 'main'}),
-        componentAbout = new Component({parent: 'main'}),
-        componentContact = new Component({parent: 'main'}),
-        componentFooter = new Component({parent: 'footer', text: 'Корирайты'});
+- Функции-обёртки, декораторы
 
-    componentArticles.setView(
-        '<section>{article}</section>',
-         [
-             {name: 'Статья 1', url: 'www', text: 'Some text for you'},
-             {name: 'Статья 2', url: 'www', text: 'Some text for you'},
-             {name: 'Статья 3', url: 'www', text: 'Some text for you'}
-         ]
-     );
+## ДЗ
 
-    componentMenu.setView(
-        '<ul>{li}</ul>',
-         [
-             {name: 'Главная', url: '#'},
-             {
-                 name: 'O нас',
-                 items: [
-                     {name: 'Кто мы', url: 'componentAbout'}
-                 ]
-             },
-             {name: 'Контакты', url: 'componentContact'}
-         ]
-     );
-    
-    componentContact.setView(
-        '<ul><form>...<form></ul>'
-     );
-    
-    componentAbout.setView(//<li><a href="www" tagret="_blank">Name0 Surname0 (18), City<a></li>
-        '<ul>{li}</ul>',
-         [
-             {name: 'Name0', surname: 'Surname0', age: '18', profile: 'www', from: 'City'},
-             {name: 'Name1', surname: 'Surname1', age: '18', profile: 'www', from: 'City'},
-             {name: 'Name2', surname: 'Surname2', age: '18', profile: 'www', from: 'City'}
-         ]
-     );
-    
-    componentHeader.setView('<h1><img src="{url}" alt="{title}"/>  {title}</h1>');
-    componentFooter.setView('<p><small>{text}</small</p>');
-    
-    // Default - Component.renderPage(componentHeader, componentMenu, componentArticles, componentFooter);
-    // Homepage - Component.renderPage(componentArticles);
-    // About - Component.renderPage(componentAbout);
-    // Contact - Component.renderPage(componentContact);
+**Задание 1**
+
+- предыдущее задание
+
+- конструктор **Component** содержит список всех созданных потомков(при **delete** потомок удаляется из списка)
+
+- `renderPage() => Component.renderPage()` все потомки рендерятся в порядке **order** и добавляются к **body**
+
+**Задание 2**
+
+- при клике на пункт меню, рендерится блок соответсвующий странице обновляя текущий елемент `main` новым блоком
+
+**Запуск**
+
+```js
+var componentHeader = new Component({parent: 'header', url: 'путь к лого',  title: 'заголовок'}),
+    componentMenu = new Component({parent: 'nav'}),
+    componentAbout = new Component({parent: 'main'}),
+    componentContact = new Component({parent: 'main'}),
+    componentArticles = new Component({parent: 'main'}),
+    componentFooter = new Component({parent: 'footer', text: 'Корирайты'}),
+    viewHeader = '<h1><img src="{url}" alt="{title}"/>  {title}</h1>',
+    viewMenu = '<ul>{li}</ul>',
+    viewArticle = '<section><h2>Home</h2>{article}</section>',
+    viewFooter = '<p><small>{text}</small</p>',
+    viewContact = '<section><h2>Contact</h2><form><textarea>Text</textarea><button type="submit">submit</button><form></section>',
+    viewAbout = '<section><h2>About</h2><ul>{list}<ul></section>',
+    dataMenu = [
+        {
+           name: 'Главная',
+           url: 'componentArticles'
+        },
+        {
+           name: 'O нас',
+           url: 'componentAbout',
+           items: [
+               {name: 'Кто мы', url: 'www'},
+               {name: 'Где мы', url: 'www'},
+               {name: 'Откуда', url: 'www'}
+           ]
+        },
+        {
+           name: 'Контакты',
+           url: 'componentContact'
+        }
+    ],
+    dataArticle = [
+        {name: 'Статья 1', url: 'www', text: 'Some text for you'},
+        {name: 'Статья 2', url: 'www', text: 'Some text for you'},
+        {name: 'Статья 3', url: 'www', text: 'Some text for you'}
+    ],
+    dataAbout = [
+         {name: 'Name0', surname: 'Surname0', age: '18', profile: 'www', from: 'City'},
+         {name: 'Name1', surname: 'Surname1', age: '18', profile: 'www', from: 'City'},
+         {name: 'Name2', surname: 'Surname2', age: '18', profile: 'www', from: 'City'}
+     ]
+
+componentHeader.setView(viewHeader);
+componentMenu.setView(viewMenu, dataMenu);
+componentArticles.setView(viewArticle, dataArticle);
+componentContact.setView(viewContact, dataContact);
+componentAbout.setView(viewAbout);
+componentFooter.setView(viewFooter);
+
+Component.renderPage(componentHeader, componentMenu, componentArticles, componentFooter);
+
+// Default - Component.renderPage(componentHeader, componentMenu, componentArticles, componentFooter);
+// Homepage - Component.renderPage(componentArticles);
+// About - Component.renderPage(componentAbout);
+// Contact - Component.renderPage(componentContact);
 ```
-
-Подсказки.
-
-replace, appendChild, innerHTML, forEach, map, sort, for (;;;), apply, prototype, addEventListener, click
