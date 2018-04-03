@@ -1,34 +1,33 @@
-### Статические свойства и методы
+# Lection 11
 
-Методы и свойства, которые не привязаны к конкретному экземпляру объекта, называют «статическими». Их записывают прямо в саму функцию-конструктор.
+## Статические свойства и методы
 
- - Свойства
+- методы и свойства, которые не привязаны к конкретному экземпляру объекта
+
+- записывают прямо в саму функцию-конструктор
+
+**Свойства**
  
-```javascript
+```js
 function Article() {
-  Article.count++;
+    Article.count++;
 }
 
+//хранят данные, специфичные не для одного объекта, а для всех статей целиком
 Article.count = 0; // статическое свойство - переменная
-Article.DEFAULT_FORMAT = "html"; // статическое свойство - константа”
+Article.DEFAULT_FORMAT = "html"; // статическое свойство - константа
 ```
 
-Они хранят данные, специфичные не для одного объекта, а для всех статей целиком.
+**Методы**
 
- - Методы
- 
-Article.showCount():
-
-```javascript
+```js
 function Article() {
-  Article.count++;
-
-  //...
+    Article.count++;
 }
-Article.count = 0;
 
+Article.count = 0;
 Article.showCount = function() {
-  alert( this.count ); // (1)
+    console.log(this.count); // (1)
 }
 
 // использование
@@ -37,138 +36,210 @@ new Article();
 Article.showCount(); // (2)
 ```
  
-### Фабричные методы
+## Фабричные методы
 
-Рассмотрим ситуацию, когда объект нужно создавать различными способами.
+**Задача**
 
-Допустим, нам нужно создавать объекты User: анонимные new User() и с данными new User({name: 'Вася', age: 25}).
+Рассмотрим ситуацию, когда объект нужно создавать различными способами
 
-Можно, конечно, создать полиморфную функцию-конструктор User:
+- анонимные `new User()`
 
-```javascript
-function User(userData) {
-  if (userData) { // если указаны данные -- одна ветка if
-    this.name = userData.name;
-    this.age = userData.age;
-  } else { // если не указаны -- другая
-    this.name = 'Аноним';
-  }
+- с данными `new User({name: 'Вася', age: 25})`
 
-  this.sayHi = function() {
-    alert(this.name)
-  };
-  // ...
-}
+**Решение**
 
-// Использование
+- полиморфная функцию-конструктор `User`
 
-var guest = new User();
+```js
+var guest = new User(),
+    knownUser = new User({
+        name: 'Вася',
+        age: 25
+    });
+
 guest.sayHi(); // Аноним
+knownUser.showName(); // Вася
 
-var knownUser = new User({
-  name: 'Вася',
-  age: 25
-});
-knownUser.sayHi(); // Вася
+function User(userData) {
+    if (userData) { // если указаны данные -- одна ветка if
+        this.name = userData.name;
+        this.age = userData.age;
+    } else { // если не указаны -- другая
+        this.name = 'Аноним';
+    }
+
+    this.showName = function() {
+        console.log(this.name);
+    };
+}
 ```
 
-Подход с использованием фабричных методов был бы другим. Вместо разбора параметров в конструкторе – делаем два метода: User.createAnonymous и User.createFromData.
+- подход с использованием фабричных методов
 
-```javascript
+```js
+var guest = User.createAnonymous(),
+    knownUser = User.createFromData({
+        name: 'Вася',
+        age: 25
+    });
+
+guest.showName();
+knownUser.showName();
+
+
+//Вместо разбора параметров в конструкторе – делаем два метода: User.createAnonymous и `User.createFromData
 function User() {
-  this.sayHi = function() {
-    alert(this.name)
-  };
+    this.showName = function() {
+        console.log(this.name);
+    };
 }
 
 User.createAnonymous = function() {
-  var user = new User;
-  user.name = 'Аноним';
-  return user;
+    var user = new User;
+
+    user.name = 'Аноним';
+
+    return user;
 }
 
 User.createFromData = function(userData) {
-  var user = new User;
-  user.name = userData.name;
-  user.age = userData.age;
-  return user;
+    var user = new User;
+
+    user.name = userData.name;
+    user.age = userData.age;
+
+    return user;
 }
-
-// Использование
-
-var guest = User.createAnonymous();
-guest.sayHi(); // Аноним
-
-var knownUser = User.createFromData({
-  name: 'Вася',
-  age: 25
-});
 ```
 
- - Лучшая читаемость кода. Как конструктора – вместо одной большой функции несколько маленьких, так и вызывающего кода – явно видно, что именно создаётся.
- - Лучший контроль ошибок, т.к. если в createFromData ничего не передали, то будет ошибка, а полиморфный конструктор создал бы анонимного посетителя.
- - Удобная расширяемость. Например, нужно добавить создание администратора, без аргументов. Фабричный метод сделать легко: User.createAdmin = function() { ... }. А для полиморфного конструктора вызов без аргумента создаст анонима, так что нужно добавить параметр – «тип посетителя» и усложнить этим код.
+**Вывод**
 
-Статические свойства и методы объекта удобно применять в следующих случаях:
+- лучшая читаемость кода
 
- - Общие действия и подсчёты, имеющие отношения ко всем объектам данного типа. В примерах выше это подсчёт количества.
- - Методы, не привязанные к конкретному объекту, например кол-во вызовов.
- - Фабричные методы. 
+    - конструктора – вместо одной большой функции несколько маленьких
 
-### Явное указание this: call, apply
+    - вызывающего кода – явно видно, что именно создаётся
 
-this – это текущий объект при вызове «через точку» и новый объект при конструировании через new.
+- лучший контроль ошибок, т.к. если в  `createFromData` ничего не передали, то будет ошибка, а полиморфный конструктор создал бы анонимного посетителя
+
+- удобная расширяемость
+
+    - нужно добавить создание администратора без аргументов
+
+        - `User.createAdmin = function() { ... }`
+
+        - для полиморфного конструктора вызов без аргумента создаст анонима, так что нужно добавить параметр – "тип посетителя" и усложнить этим код
+
+**Статические свойства и методы объекта удобно применять в следующих случаях**
+
+- общие действия и подсчёты, имеющие отношения ко всем объектам данного типа
+
+- методы, не привязанные к конкретному объекту, например кол-во вызовов
+
+- фабричные методы.
+
+## Явное указание this: call, apply
+
+>**this** – это текущий объект при вызове "через точку" и новый объект при конструировании через `new`
+
+```js
+var targetObject = {
+    name: 'Alec',
+    showName: function() {
+        console.log(this.name);
+    }
+};
+
+targetObject.showName();
+```
 
 ### Метод call
 
-Синтаксис метода call:
+**Синтаксис**
 
-```javascript
-func.call(context, arg1, arg2, ...)
+```js
+function foo(arg1, arg2, ...) {
+    // this is object context
+    console.log(this, arg1, arg2);
+}
+
+foo.call(context, arg1, arg2, ...)
 ```
 
-Вызов func.call(context, a, b...) – то же, что обычный вызов func(a, b...), но с явно указанным this(=context).
+**Важно**
 
-```javascript
+- вызов `foo.call(context, a, b...)` – то же, что обычный вызов `foo(a, b...)`, но с явно указанным `this(=context)`
+
+```js
 function showFullName() {
-  alert( this.firstName + " " + this.lastName );
+    console.log( this.firstName + " " + this.lastName );
 }
 ```
 
-```javascript
-function showFullName() {
-  alert( this.firstName + " " + this.lastName );
-}
-
+```js
 var user = {
-  firstName: "Василий",
-  lastName: "Алибабаевич"
+    firstName: "Василий",
+    lastName: "Алибабаевич"
 };
 
 // функция вызовется с this=user
 showFullName.call(user) // "Василий Алибабаевич”
 
+function showFullName() {
+    console.log(this.firstName + " " + this.lastName);
+}
 ```
 
- - Аргументы
+- аргументы
 
-```javascript
+```js
 var user = {
-  firstName: "Василий",
-  surname: "Алибабаевич",
-  patronym: "Иванович"
+    firstName: "Василий",
+    surname: "Алибабаевич",
+    patronym: "Иванович"
 };
 
-function showFullName(firstPart, lastPart) {
-  alert( this[firstPart] + " " + this[lastPart] );
-}
-
-// f.call(контекст, аргумент1, аргумент2, ...)
+// foo.call(контекст, аргумент1, аргумент2, ...)
 showFullName.call(user, 'firstName', 'surname') // "Василий Алибабаевич"
 showFullName.call(user, 'firstName', 'patronym') // "Василий Иванович"
+
+function showFullName(firstPart, lastPart) {
+    console.log(this[firstPart] + " " + this[lastPart]);
+}
 ```
 
-### «Одалживание метода»
+### Метод apply
+
+Вызов функции при помощи func.apply работает аналогично func.call, но принимает массив аргументов вместо списка.
+
+```javascript
+func.call(context, arg1, arg2);
+// идентичен вызову
+func.apply(context, [arg1, arg2]);
+```
+
+```javascript
+showFullName.call(user, 'firstName', 'surname');
+
+showFullName.apply(user, ['firstName', 'surname']);
+```
+
+```javascript
+Math.max(1, 5, 2)
+```
+
+```javascript
+var arr = [1, 3, 7];
+
+// получить максимум из элементов arr
+alert( Math.max.apply(null, arr) ); // 7
+
+Math.max(1,2,3);
+Math.max.apply(Math, [1,2,3]);
+```
+
+
+## «Одалживание метода»
 
 При помощи call можно легко взять метод одного объекта, в том числе встроенного, и вызвать в контексте другого.
 
@@ -250,35 +321,6 @@ function printArgs() {
 printArgs('Привет', 'мой', 'мир'); // Привет, мой, мир
 ```
 
-### Метод apply
-
-Вызов функции при помощи func.apply работает аналогично func.call, но принимает массив аргументов вместо списка.
-
-```javascript
-func.call(context, arg1, arg2);
-// идентичен вызову
-func.apply(context, [arg1, arg2]);
-```
-
-```javascript
-showFullName.call(user, 'firstName', 'surname');
-
-showFullName.apply(user, ['firstName', 'surname']);
-```
-
-```javascript
-Math.max(1, 5, 2)
-```
-
-```javascript
-var arr = [1, 3, 7];
-
-// получить максимум из элементов arr
-alert( Math.max.apply(null, arr) ); // 7
-
-Math.max(1,2,3);
-Math.max.apply(Math, [1,2,3]);
-```
 
 ### Привязка контекста и карринг: "bind”
 
@@ -288,14 +330,14 @@ Math.max.apply(Math, [1,2,3]);
 ```javascript
 var user = {
   firstName: "Вася",
-  sayHi: function() {
+  showName: function() {
     alert( this.firstName );
   }
 };
 
-setTimeout(user.sayHi, 1000); // undefined (не Вася!)
+setTimeout(user.showName, 1000); // undefined (не Вася!)
 
-var f = user.sayHi;
+var f = user.showName;
 
 setTimeout(f, 1000); // контекст user потеряли
 ```
@@ -303,13 +345,13 @@ setTimeout(f, 1000); // контекст user потеряли
 ```javascript
 var user = {
   firstName: "Вася",
-  sayHi: function() {
+  showName: function() {
     alert( this.firstName );
   }
 };
 
 setTimeout(function() {
-  user.sayHi(); // Вася
+  user.showName(); // Вася
 }, 1000);
 ```
 
@@ -317,12 +359,12 @@ setTimeout(function() {
 ```javascript
 var user = {
   firstName: "Вася",
-  sayHi: function() {
+  showName: function() {
     alert( this.firstName );
   }
 };
 
-setTimeout(user.sayHi.bind(user), 1000);
+setTimeout(user.showName.bind(user), 1000);
 ```
 
 Синтаксис встроенного bind:
