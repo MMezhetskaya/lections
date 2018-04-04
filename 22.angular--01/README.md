@@ -91,6 +91,7 @@ function checkMe(check: CheckObject, me: MeObject) {
 function andCheckMe(check: CheckObject, me: MeObject) {
      console.log('Просто песня');
 }
+
 function andCheckMeToo(check: CheckObject, me: MeObject) {
      console.log('Писать легко и с удовольствием');
 }
@@ -253,23 +254,26 @@ function greeter(person : Person) {
 
 - создание **tsconfig.json**
 
+    - все скомпилированные файлы в `./build`
+
+    - принять файлы **JS** в качестве входных данных
+
+    - компиляция в формат
+
+    - чтение `./src`
+
 ```json
 {
     "compilerOptions": {
-        // все скомпилированные файлы в ./build
         "outDir": "./built",
-        // Принять файлы JavaScript в качестве входных данных
         "allowJs": true,
-        // Компиляция в формат
         "target": "es5"
     },
-    // чтение `./src`
     "include": [
         "./src/**/*"
     ]
 }
 ```
-
 
 #### Build Tools
 
@@ -407,7 +411,7 @@ h1 {
 `protractor.conf.js` | **End-to-end** тест конфигурация [Protractor](http://www.protractortest.org/#/), запуск `ng e2e`
 `README.md` | Базовая документация
 `tsconfig.json` | Конфигурация **TypeScript** для **IDE**
-`tslint.json` | Конфигурация для линтера [TSLint](https://palantir.github.io/tslint/) вместе с [Codelyzer](http://codelyzer.com/), используемая, запуск `ng lint`. Помогает поддерживать стиль кода.
+`tslint.json` | Конфигурация для линтера [TSLint](https://palantir.github.io/tslint/) вместе с [Codelyzer](http://codelyzer.com/), используемая, запуск `ng lint`. Помогает поддерживать стиль кода
 
 
 ## Заключение
