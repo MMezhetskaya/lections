@@ -268,10 +268,7 @@ imports: [
 
 ### [NgModel](https://next.angular.io/api/forms/NgModel)
 
-
-
 ### [Pipes](https://next.angular.io/guide/pipes)
-
 
 
 ## Обьявление компонентов
@@ -312,5 +309,7 @@ imports: [
 - [angular-cli документация](https://github.com/angular/angular-cli/wiki)
 
 - [angular pipes](https://next.angular.io/guide/pipes)
+
+- [NgModel](https://next.angular.io/api/forms/NgModel)
 
 - [NgModules](https://next.angular.io/guide/ngmodules)
