@@ -1,3 +1,5 @@
+# Lection 27
+
 ## Немного лирики React vs Angular
 
 ![React vs Angular aa jQuery](./angular-4-vs-react-aa-jquery.png "React vs Angular aa jQuery")

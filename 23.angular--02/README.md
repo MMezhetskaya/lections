@@ -148,7 +148,10 @@ body, input[text], button {
 
 - вывели данные в шаблон
 
-## Компонент `heroes`
+
+## Heroes Editor
+
+### Компонент `heroes`
 
 **Задача**
 
@@ -179,7 +182,7 @@ hero = 'Windstorm';
 <app-heroes></app-heroes>
 ```
 
-## Класс `Hero`
+### Класс `Hero`
 
 - **src/app/hero.ts**
 
@@ -215,6 +218,9 @@ export class HeroesComponent implements OnInit {
 }
 ```
 
+### [Pipes](https://next.angular.io/guide/pipes)
+
+
 - **src/app/heroes/heroes.component.html**
 
 ```angularjs
@@ -230,6 +236,8 @@ export class HeroesComponent implements OnInit {
 <div><span>id: </span>{{hero.id}}</div>
 <div><span>name: </span>{{hero.name}}</div>
 ```
+
+### [NgModel](https://next.angular.io/api/forms/NgModel)
 
 - добавим редактирование свойства `name` **src/app/heroes/heroes.component.html**
 
@@ -266,12 +274,7 @@ imports: [
 ...
 ```
 
-### [NgModel](https://next.angular.io/api/forms/NgModel)
-
-### [Pipes](https://next.angular.io/guide/pipes)
-
-
-## Обьявление компонентов
+### Обьявление компонентов
 
 - каждый компонент должен быть объявлен
 

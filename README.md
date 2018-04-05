@@ -372,17 +372,25 @@
     - Angular компоненты
     - Редактируем стили
     - Чему научились
-- Компонент `heroes`
-- Класс `Hero`
-    - NgModel
+- Heroes Editor
+    - Компонент `heroes`
+    - Класс `Hero`
     - Pipes
-- Обьявление компонентов
+    - NgModels
+    - Обьявление компонентов
     - NgModules
 - Заключение
 - ДЗ
 - Справочники
  
 ## [24.angular--03](./24.angular--03)
+- Heroes List
+- Макет списка
+- ngFor или отображение макета списка
+    - Стили для списка
+- Angular event-binding
+- NgIf
+- Angular class-binding
 - Заключение
 - ДЗ
 - Справочники
