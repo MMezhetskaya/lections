@@ -250,6 +250,8 @@ export class HeroesComponent implements OnInit {
 
 ## ДЗ
 
+**null**
+
 ## Справочники
 
 - [ngFor](https://next.angular.io/guide/template-syntax#ngFor)
