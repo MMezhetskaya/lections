@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
-
+import { HeroService } from './hero.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,9 @@ import { HeroDetailComponent } from './hero-detail/hero-detail.component';
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    // no need to place any providers due to the `providedIn` flag...
+  HeroService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

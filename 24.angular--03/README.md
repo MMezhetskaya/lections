@@ -1,156 +1,164 @@
 # Lection 24
 
-## Список героев
+## Страница героя
 
-**Задача**
+**Правила хорошего тона!**
 
-- отобразить список героев
+- reusable
 
-- при клике на героя
+- строго отвечают своему предназначению
 
-    - оторазить информацию о героя
+**Что будем делать**
 
-## Макет списка
+- разделим компонент
 
-- создадим список героев **src/app/mock-heroes.ts**
+    - компонент списка героев
+
+    - компонент описания героя
+
+## Создание HeroDetailComponent
+
+- создадим `hero-detail`
+
+```
+ng generate component hero-detail
+```
+
+- перенесём с **src/app/heroes/heroes.component.html** в **src/app/heroes/hero-detail.component.html**
 
 ```angularjs
-import { Hero } from './hero';
+<div *ngIf="hero">
 
-export const HEROES: Hero[] = [
-  { id: 11, name: 'Mr. Nice' },
-  { id: 12, name: 'Narco' },
-  { id: 13, name: 'Bombasto' },
-  { id: 14, name: 'Celeritas' },
-  { id: 15, name: 'Magneta' },
-  { id: 16, name: 'RubberMan' },
-  { id: 17, name: 'Dynama' },
-  { id: 18, name: 'Dr IQ' },
-  { id: 19, name: 'Magma' },
-  { id: 20, name: 'Tornado' }
-];
+  <h2>{{ hero.name | uppercase }} Details</h2>
+  <div><span>id: </span>{{hero.id}}</div>
+  <div>
+    <label>name:
+      <input [(ngModel)]="hero.name" placeholder="name"/>
+    </label>
+  </div>
+
+</div>
 ```
 
-- импортируем список **src/app/heroes/heroes.component.ts**
+*selectedHero -> hero
+
+- **src/app/hero-detail/hero-detail.component.ts**
 
 ```angularjs
-...
+import { Component, OnInit, Input } from '@angular/core';
+import { Hero } from '../hero';
 
-import { HEROES } from '../mock-heroes';
+@Component({
+  selector: 'app-hero-detail',
+  templateUrl: './hero-detail.component.html',
+  styleUrls: ['./hero-detail.component.css']
+})
+export class HeroDetailComponent implements OnInit {
+  @Input() hero: Hero;
 
-...
+  constructor() { }
 
-export class HeroesComponent implements OnInit {
-  ...
-
-  heroes = HEROES;
-
-  ...
+  ngOnInit() {
+  }
 
 }
 
 ```
 
-## [ngFor](https://next.angular.io/guide/template-syntax#ngFor) или отображение макета списка
+### [Свойства Input и Output](https://next.angular.io/guide/template-syntax#inputs-outputs)
 
-- отредактируем **src/app/heroes/heroes.component.html**
-
-```angularjs
-<h2>My Heroes</h2>
-<ul class="heroes">
-  <li *ngFor="let hero of heroes">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
-  </li>
-</ul>
-
-...
-```
-
-**Детальнее**
-
-- `<li>` узловой элемент
-
-- `heroes` список из класса `HeroesComponent`
-
-- `hero` текущий герой
-
-### Стили для списка
-
-- посмотрим **src/app/heroes/heroes.component.ts**
-
-- откроем **src/app/heroes/heroes.component.css**
-
-```css
-/* HeroesComponent's private CSS styles */
-.selected {
-  background-color: #CFD8DC !important;
-  color: white;
-}
-.heroes {
-  margin: 0 0 2em 0;
-  list-style-type: none;
-  padding: 0;
-  width: 15em;
-}
-.heroes li {
-  cursor: pointer;
-  position: relative;
-  left: 0;
-  background-color: #EEE;
-  margin: .5em;
-  padding: .3em 0;
-  height: 1.6em;
-  border-radius: 4px;
-}
-.heroes li.selected:hover {
-  background-color: #BBD8DC !important;
-  color: white;
-}
-.heroes li:hover {
-  color: #607D8B;
-  background-color: #DDD;
-  left: .1em;
-}
-.heroes .text {
-  position: relative;
-  top: -3px;
-}
-.heroes .badge {
-  display: inline-block;
-  font-size: small;
-  color: white;
-  padding: 0.8em 0.7em 0 0.7em;
-  background-color: #607D8B;
-  line-height: 1em;
-  position: relative;
-  left: -1px;
-  top: -4px;
-  height: 1.8em;
-  margin-right: .8em;
-  border-radius: 4px 0 0 4px;
-}
-```
-
-## Angular [event-binding](https://next.angular.io/guide/template-syntax#event-binding)
+## Отображение HeroDetailComponent
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
-...
-
-// onSelect() метод HeroesComponent
-<li *ngFor="let hero of heroes" (click)="onSelect(hero)">
-
-...
 ```
+...
+
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+```
+
+### [property-binding](https://next.angular.io/guide/template-syntax#property-binding)
+
+## Services
+
+**Что такое services?**
+
+- специальные объекты или функции
+
+    - выполняющие некоторые общие для всего приложения задачи
+
+**Зачем?**
+
+- компоненты не должны работать напрямую с датой
+
+    - представлении данных
+
+    - делегировании доступа к данным
+
+**Что сделаем**
+
+- создадим `HeroService` - все классы приложения имеют доступ к героям
+
+    - будем использовать **[Angular dependency injection](https://next.angular.io/guide/dependency-injection)**
+
+- создадим `MessageService` и добавим его в
+
+    - `HeroService` - отправление сообщения
+
+    - `MessagesComponent` - отображение сообщения
+
+### [Angular dependency injection](https://next.angular.io/guide/dependency-injection)
+
+## Создаем `HeroService
+
+- cервис `hero`
+
+```
+ng generate serice hero --module=app
+```
+
+- добавит `HeroService` в **dependency injection** системы прежде чем **Angular** сможет использовать его в `HeroesComponent`
+
+    - **src/app/app.module.ts**
+
+- **src/app/hero.service.ts**
+
+```angularjs
+import { Injectable } from '@angular/core';
+import { Hero } from './hero';
+import { HEROES } from './mock-heroes';
+
+@Injectable({providedIn: 'root'})
+export class HeroService {
+  getHeroes(): Hero[] {
+    return HEROES;
+  }
+
+  constructor() { }
+
+}
+```
+
+*`HeroService` может получать дату отовсюду web service, local storage, или data source
+
+### [Providers](https://next.angular.io/guide/providers)
+
+## HeroesComponent
 
 - **src/app/heroes/heroes.component.ts**
 
 ```angularjs
-...
+import { Component, OnInit } from '@angular/core';
+import { Hero } from '../hero';
+import { HeroService } from '../hero.service';
 
+@Component({
+  selector: 'app-heroes',
+  templateUrl: './heroes.component.html',
+  styleUrls: ['./heroes.component.css']
+})
 export class HeroesComponent implements OnInit {
-  ...
+  heroes: Hero[];
 
   selectedHero: Hero;
 
@@ -158,106 +166,79 @@ export class HeroesComponent implements OnInit {
     this.selectedHero = hero;
   }
 
-  ...
+  constructor() { }
+
+  ngOnInit() {
+  }
 
 }
 
 ```
 
+- добавим `HeroService` в конструктор класса
 
-- **src/app/heroes/heroes.component.html**
+    - параметр одновреммено определяет `private heroService` свойство и определяет его как  `HeroService` injection
 
-```angularjs
-<h2>My Heroes</h2>
-<ul class="heroes">
-  <li *ngFor="let hero of heroes" (click)="onSelect(hero)">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
-  </li>
-</ul>
-
-<h2>{{selectedHero.name | uppercase}} Details</h2>
-<div><span>id: </span>{{selectedHero.id}}</div>
-<div>
-  <label>
-    name: <input [(ngModel)]="selectedHero.name" placeholder="name">
-  </label>
-</div>
-```
-
-- откроем консоль
-
-- клик на любого героя из списка
-
-**Почему так?**
-
-- на начальном этапе `selectedHero === undefined`
-
-## [NgIf](https://next.angular.io/api/common/NgIf)
-
-**Как пофиксить?**
-
-- показывать `selectedHero` только если он существует
-
-**Решение**
-
-- **src/app/heroes/heroes.component.html**
+    - при создании `HeroesComponent`, **Dependency Injection** устанавливает `heroService` как одиночный экземпляр `HeroService`
 
 ```angularjs
 ...
 
-<div *ngIf="selectedHero">
+constructor(private heroService: HeroService) { }
 
-  <h2>{{ selectedHero.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{selectedHero.id}}</div>
-  <div>
-    <label>name:
-      <input [(ngModel)]="selectedHero.name" placeholder="name">
-    </label>
-  </div>
-
-</div>
+...
 ```
 
-## Angular [class-binding](https://next.angular.io/guide/template-syntax#class-binding)
-
-- выделим выбранного героя
-
-    - класс `.selected`, стили были добавлены ранее
-
-- **src/app/heroes/heroes.component.html**
+- создадим функцию для получения героев из сервиса
 
 ```angularjs
 ...
 
-<li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-  ...
-</li>
+getHeroes(): void {
+  this.heroes = this.heroService.getHeroes();
+}
 
 ...
 ```
+
+- вызовем её на `ngOnInit`
+
+```
+...
+
+ngOnInit() {
+  this.getHeroes();
+}
+
+...
+```
+
+## Observable data
+
+The HeroService.getHeroes() method has a synchronous signature, which implies that the HeroService can fetch heroes synchronously. The HeroesComponent consumes the getHeroes() result as if heroes could be fetched synchronously.
+
+content_copy
+this.heroes = this.heroService.getHeroes();
+This will not work in a real app. You're getting away with it now because the service currently returns mock heroes. But soon the app will fetch heroes from a remote server, which is an inherently asynchronous operation.
+
+The HeroService must wait for the server to respond, getHeroes() cannot return immediately with hero data, and the browser will not block while the service waits.
+
+HeroService.getHeroes() must have an asynchronous signature of some kind.
+
+It can take a callback. It could return a Promise. It could return an Observable.
+
+In this tutorial, HeroService.getHeroes() will return an Observable in part because it will eventually use the Angular HttpClient.get method to fetch the heroes and HttpClient.get() returns an Observable.
 
 ## Заключение
 
-- отобразили список героев
-
-- познакомились с event-binding
-
-- ngFor
-
-- ngIf
-
-- class-binding
-
 ## ДЗ
-
-**null**
 
 ## Справочники
 
-- [ngFor](https://next.angular.io/guide/template-syntax#ngFor)
+- [Свойства Input и Output](https://next.angular.io/guide/template-syntax#inputs-outputs)
 
-- [event-binding](https://next.angular.io/guide/template-syntax#event-binding)
+- [property-binding](https://next.angular.io/guide/template-syntax#property-binding)
 
-- [class-binding](https://next.angular.io/guide/template-syntax#class-binding)
+- [Angular dependency injection](https://next.angular.io/guide/dependency-injection)
 
-- [NgIf](https://next.angular.io/api/common/NgIf)
+- [providers](https://next.angular.io/guide/providers)

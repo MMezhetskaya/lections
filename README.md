@@ -379,11 +379,6 @@
     - NgModels
     - Обьявление компонентов
     - NgModules
-- Заключение
-- ДЗ
-- Справочники
- 
-## [24.angular--03](./24.angular--03)
 - Список героев
 - Макет списка
 - ngFor или отображение макета списка
@@ -395,12 +390,23 @@
 - ДЗ
 - Справочники
  
-## [25.angular--04](./25.angular--04)
+## [24.angular--03](./24.angular--03)
 - Страница героя
 - Создание HeroDetailComponent
     - Свойства Input и Output
 - Отображение HeroDetailComponent
     - property-binding
+- Services
+    - Angular dependency injection
+- Создаем HeroService
+    - Providers
+- Observable data
+- HeroesComponent
+- ДЗ
+- Справочники
+ 
+## [25.angular--04](./25.angular--04)
+
 - Заключение
 - ДЗ
 - Справочники
