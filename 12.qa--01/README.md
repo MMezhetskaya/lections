@@ -190,8 +190,6 @@ describe("pow", function() {
 
 [Chai](http://chaijs.com/) – библиотека поддерживает разнообразные функции для проверок
 
-[Sinon](http://chaijs.com/) – для эмуляции и хитрой подмены функций «заглушками», понадобится позднее.
-
 *библиотеки позволяют тестировать JS не только в браузере, но и на сервере **Node.JS**
 
 - есть два варианта организации кода
@@ -266,7 +264,6 @@ describe("pow", function() {
 **BDD** — это попытка сформулировать лучшие практики **TDD**
 
 
-
 ## Заключение
 
 ## ДЗ
@@ -275,7 +272,3 @@ describe("pow", function() {
 ## Справочники
 - [Mocha](http://mochajs.org/)
 - [Chai](http://chaijs.com/)
-- [Sinon](http://chaijs.com/)
-- [Node js](https://nodejs.org/en/)
-- [Gulp](https://gulpjs.org)
-- [Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)
