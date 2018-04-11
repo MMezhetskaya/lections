@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div>
+    <p>
+        <a href="#">A</a>
+        P
+    </p>
+
+    DIV
+</div>
+
+<script>
+    document.querySelector('div').addEventListener('click', showTag);
+    document.querySelector('p').addEventListener('click', showTag, true);
+    document.querySelector('a').addEventListener('click', showTag);
+
+    function showTag(e) {
+        // debugger;
+        alert(e.currentTarget.tagName);
+
+        console.log(e.target, e.currentTarget);
+
+        e.preventDefault();
+    }
+</script>
+</body>
+</html>

@@ -593,4 +593,3 @@ componentFooter.delete() //удалить текуий компонент
 ```
 
 ## Справочники
-- [Usejsdoc](http://usejsdoc.org/)

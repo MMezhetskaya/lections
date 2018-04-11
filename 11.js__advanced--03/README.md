@@ -679,7 +679,7 @@ var componentHeader = new Component({parent: 'header', url: 'путь к лог�
 componentHeader.setView(viewHeader);
 componentMenu.setView(viewMenu, dataMenu);
 componentArticles.setView(viewArticle, dataArticle);
-componentContact.setView(viewContact, dataContact);
+componentContact.setView(viewContact);
 componentAbout.setView(viewAbout);
 componentFooter.setView(viewFooter);
 

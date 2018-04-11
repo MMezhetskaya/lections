@@ -263,12 +263,72 @@ describe("pow", function() {
 
 **BDD** — это попытка сформулировать лучшие практики **TDD**
 
+## Events
+
+### Всплытие (bubbling)
+
+![Bubbling events](./event-order-bubbling.png "Bubbling events")
+
+- аргумент `e`
+
+    - `e.currentTarget`
+
+    - `e.target`
+
+    - `e.preventDefault()`
+
+    - `e.stopPropagation()`
+
+    - `e.stopImmediatePropagation()`
+
+- `this`
+
+### Погружение
+
+- `addEventListener`
+
+    - `false`
+
+    - `true`
+
+        - сначала идет сверху вниз (capturing stage)
+
+        - достигло целевого элемента (target stage)
+
+        - событие начинает всплывать (bubbling stage)
+
+## Разбор полётов
+
+- [Usejsdoc](http://usejsdoc.org/)
 
 ## Заключение
 
+- Unit тестирование
+
+- Цели тестирования
+
+- TDD техника
+
+- BDD техника
+
+- Events
+
+    - Всплытие (bubbling)
+
+    - Погружение
+
 ## ДЗ
 
+- доделайте предыдущее ДЗ
+
+- рефакторинг
+
+- покройте тестами
 
 ## Справочники
+
 - [Mocha](http://mochajs.org/)
+
 - [Chai](http://chaijs.com/)
+
+- [Usejsdoc](http://usejsdoc.org/)

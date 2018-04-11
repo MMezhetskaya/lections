@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Homework</title>
+    <script src="./js/ComponentHtml.js"></script>
+</head>
+
+<body>
+    <script>
+        'use strict';
+
+        var componentHeader = new Component({parent: 'header', url: 'https://www.google.com.ua/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png', title: 'Title'}),
+            componentMenu = new Component({parent: 'nav'}),
+            componentContact = new Component({parent: 'main'}),
+            viewHeader = '<h1><img src="{url}" alt="{title}"/>{title}</h1>',
+            viewMenu = '<ul>{li}</ul>',
+            viewContact =
+                '<section><h2>Contact</h2><form><textarea>Text</textarea><button type="submit">submit</button><form></section>',
+            dataMenu = [
+                {
+                    name: 'Главная',
+                    url: 'componentArticles'
+                },
+                {
+                    name: 'O нас',
+                    url: 'componentAbout',
+                    items: [
+                        {name: 'Кто мы', url: 'www'},
+                        {name: 'Где мы', url: 'www'},
+                        {name: 'Откуда', url: 'www'}
+                    ]
+                },
+                {
+                    name: 'Контакты',
+                    url: 'componentContact'
+                }
+            ];
+
+        componentHeader.setView(viewHeader);
+        componentMenu.setView(viewMenu, dataMenu);
+        componentContact.setView(viewContact);
+        Component.renderPage(componentHeader, componentMenu);
+    </script>
+</body>
+</html>
