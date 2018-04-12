@@ -7,6 +7,7 @@
      * @constructor
      */
     var Component = function(opt) {
+        this.name = opt.name;
         this._view = null;
         this._order = 0;
         this._rendered = false;
@@ -41,9 +42,11 @@
         //TODO: sorting by _order
 
         components.map(function(c) {
+            if(c.name === 'menu') {
+
+            }
             c._rendered = true;
             viewBody.appendChild(c._view);
-
         });
     };
 

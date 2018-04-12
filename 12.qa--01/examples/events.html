@@ -16,12 +16,12 @@
 
 <script>
     document.querySelector('div').addEventListener('click', showTag);
-    document.querySelector('p').addEventListener('click', showTag, true);
+    document.querySelector('p').addEventListener('click', showTag);
     document.querySelector('a').addEventListener('click', showTag);
 
     function showTag(e) {
         // debugger;
-        alert(e.currentTarget.tagName);
+        // alert(e.currentTarget.tagName);
 
         console.log(e.target, e.currentTarget);
 

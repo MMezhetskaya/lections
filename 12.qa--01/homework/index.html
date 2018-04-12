@@ -10,8 +10,9 @@
     <script>
         'use strict';
 
-        var componentHeader = new Component({parent: 'header', url: 'https://www.google.com.ua/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png', title: 'Title'}),
-            componentMenu = new Component({parent: 'nav'}),
+        var componentHeader = new Component({name: 'header', parent: 'header', url:
+            'https://www.google.com.ua/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png', title: 'Title'}),
+            componentMenu = new Component({name: 'menu', parent: 'nav'}),
             componentContact = new Component({parent: 'main'}),
             viewHeader = '<h1><img src="{url}" alt="{title}"/>{title}</h1>',
             viewMenu = '<ul>{li}</ul>',
