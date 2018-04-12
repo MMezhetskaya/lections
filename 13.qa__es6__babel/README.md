@@ -205,7 +205,7 @@ QUnit.test( "two async calls", function(assert) {
 });
 ```
 
-## ES6
+## ES6 & babel
 
 > Стандарт [ES-2015](http://www.ecma-international.org/publications/standards/Ecma-262.htm) был принят в июне 2015. Пока что большинство браузеров реализуют его частично, текущее состояние реализации различных возможностей можно посмотреть [здесь](https://kangax.github.io/compat-table/es6/).
 
