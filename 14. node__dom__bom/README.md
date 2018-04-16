@@ -1,5 +1,15 @@
 # Lection 14
 
+## Автоматизация рабочих процессов
+
+### [Gulp](https://gulpjs.com/)
+
+- [Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)
+
+### [Webpack](https://webpack.js.org)
+
+- [Сборщик Webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)
+
 ## Концепция WEB
 
 ![DOM, BOM и JS](./dom.png "DOM, BOM и JS")
@@ -430,8 +440,19 @@ http
 ## ДЗ
 
 ## Справочники
+
 - [NodeJS](https://nodejs.org/en/)
+
 - [NodeJS, wiki](https://ru.wikipedia.org/wiki/Node.js)
-- [ES6 список фич](http://es6-features.org/#Constants)
+
+- [Gulp](https://gulpjs.com/)
+
+- [Сборщик Gulp](https://github.com/Zlodej43sm/frontend__worker__gulp)
+
+- [Webpack](https://webpack.js.org)
+
+- [Сборщик Webpack](https://github.com/Zlodej43sm/frontend__worker__webpack)
+
 - [Ecma](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
+
 - [fetch](https://fetch.spec.whatwg.org/)
