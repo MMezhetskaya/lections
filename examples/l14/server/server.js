@@ -25,6 +25,6 @@ http
         e => {
             if (e) return console.error(e);
 
-            console.info(`==> 🌎 Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`)
+            console.info(`==> 🌎 Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`);
         }
     );
