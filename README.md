@@ -216,6 +216,8 @@
 - Справочники
  
 ## [14.node__dom__bom](./14.node__dom__bom)
+- NODE
+    - Node server
 - Автоматизация рабочих процессов
     - Webpack
     - Gulp
@@ -234,8 +236,6 @@
     - COMET 
     - XMLHttpRequest
     - fetch
-- NODE
-    - Node server
 - Заключение
 - ДЗ
 - Справочники 
