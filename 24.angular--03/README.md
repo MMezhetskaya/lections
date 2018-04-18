@@ -215,19 +215,176 @@ ngOnInit() {
 
 ## Observable data
 
-The HeroService.getHeroes() method has a synchronous signature, which implies that the HeroService can fetch heroes synchronously. The HeroesComponent consumes the getHeroes() result as if heroes could be fetched synchronously.
+**Что не так?**
 
-content_copy
+- `HeroService.getHeroes()` получение данных идет синхронно
+
+```js
 this.heroes = this.heroService.getHeroes();
-This will not work in a real app. You're getting away with it now because the service currently returns mock heroes. But soon the app will fetch heroes from a remote server, which is an inherently asynchronous operation.
+```
 
-The HeroService must wait for the server to respond, getHeroes() cannot return immediately with hero data, and the browser will not block while the service waits.
+- не будет работать в реальном приложении
 
-HeroService.getHeroes() must have an asynchronous signature of some kind.
+    - получение данных с сервера операция асинхронная
 
-It can take a callback. It could return a Promise. It could return an Observable.
+- `HeroService.getHeroes()` в реальности ждёт ответа от сервера
 
-In this tutorial, HeroService.getHeroes() will return an Observable in part because it will eventually use the Angular HttpClient.get method to fetch the heroes and HttpClient.get() returns an Observable.
+    - должен быть асинхронным
+
+
+## [RxJS](http://reactivex.io/rxjs/)
+
+**Способы "общения" компонентов**
+
+Идея предельно простая и давно хорошо себя зарекомендовавшая.
+
+- публикация и подписка на именованные события
+
+    - один из компонентов посылает событие в "эфир"
+
+    - остальные слушают этот "эфир" и ловят те сообщения, которые им нужны
+
+![Subscribe & subscriber](./events_sub.png "Subscribe & subscriber")
+
+**Плюсы**
+
+- "бесплатно" получить слабое связывание компонентов
+
+**Недостаток**
+
+- при росте числа компонентов и соответственно числа событий становится сложно уследить
+
+    - за именами событий
+
+    - за тем, кому какие события нужны для правильной работы.
+
+- появляются
+
+    - пространства имен
+
+    - имена событий из чего-то типа **Событие1** превращаются в **Состояние_приложения1.Компонент2.Событие1**.
+
+- невозможно делать при такой организации
+
+    - компоновать события.
+
+**Пример**
+
+Требование "сделай что-то когда событие Б возникнет после двух событий A" выливается в тонну локальных переменных, хранящих последние данные из событий и счетчики самих событий.
+
+**Облегчают**
+
+`promise` - позволяют организовать очередность событий и практически являются первым шагом в организации потоков данных
+
+
+**Ещё способ**
+
+- протянуть между ними "провода"
+
+    - связанны только те компоненты, которым есть что "сказать"
+
+![RX events](./events_sub.png "RX events")
+
+- каждый компонент соединен с другими, "потоками", по которым передается сигнал
+
+- какие данные нужны компоненту для работы
+
+    - от каких компонентов приходят потоки
+
+    - как преобразуются данные по пути
+
+- именовать события при такой организации не нужно
+
+    - в имени нуждается поток, который несет данные
+
+- задача компоновки событий сводится к компоновке содержащих их потоков
+
+**Реализация потоков**
+
+[RxJS](http://reactivex.io/rxjs/) - представляет собой модульную библиотеку, позволяющую создавать и компоновать потоки данных.
+
+**Для общего развития**
+
+> Подход, используемый в **Rx**, появился в **.NET** и оттуда был портирован во многие популярные языки.
+
+**Ключевые понятия**
+
+- создаваемые в **Rx** потоки реализуют паттерн **Observable** и наследуются от одноименного интерфейса
+
+    - каждый поток можно "слушать"
+
+        - при помощи метода **subscribe**, который принимает в качестве аргумента **Observer**
+
+```js
+observableStream.subscribe(someObserver);
+```
+
+- в самом простом случае **Observer** это функция, которая принимает единственный аргумент – переданное сообщение из потока
+
+```js
+function someObserver(streamEvent) {
+    console.log('Received ' + streamEvent);
+}
+```
+
+**Преимущества**
+
+Все, что происходит в приложении, может быть представлено в виде потока данных:
+
+- нажатия клавиш
+
+- движения мыши
+
+- данные с сервера
+
+- сложное логическое что-то, которое случилось в одном из компонентов
+
+Нет разницы откуда приходят события и что это за события, для компонента это просто потоки данных
+
+![RxJS](./rxjs.png "RxJS")
+
+## Observable HeroService
+
+**Что будем использовать?**
+
+- `Observable` один из ключевых классов **[RxJS](http://reactivex.io/rxjs/)**
+
+- **./src/app/hero.service.ts**, сэмулируем  получение данных от сервера используя **RxJS** `Observable.of()`
+
+```bash
+npm install rxjs --save-dev
+```
+
+```js
+import { Observable } from 'rxjs';
+
+...
+
+  getHeroes(): Observable<Hero[]> {
+    return Observable.of(HEROES);
+  }
+
+...
+```
+
+- `of(HEROES)` возвращает `Observable<Hero[]>` - единственное значение список героев
+
+## Subscribe в HeroesComponent
+
+`HeroService.getHeroes` возвращал `Hero[]` сейчас `Observable<Hero[]>`
+
+- **./src/app/heroes/heroes.component.ts**
+
+```js
+...
+
+getHeroes(): void {
+  this.heroService.getHeroes()
+      .subscribe(heroes => this.heroes = heroes);
+}
+
+...
+```
 
 ## Заключение
 
@@ -241,4 +398,8 @@ In this tutorial, HeroService.getHeroes() will return an Observable in part beca
 
 - [Angular dependency injection](https://next.angular.io/guide/dependency-injection)
 
+- [RxJS](http://reactivex.io/rxjs/)
+
 - [providers](https://next.angular.io/guide/providers)
+
+- [RxJS](http://reactivex.io/rxjs/)

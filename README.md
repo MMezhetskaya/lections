@@ -416,12 +416,20 @@
 - Создаем HeroService
     - Providers
 - Observable data
+- RxJS
+- Observable HeroService
+- Subscribe в HeroesComponent
 - HeroesComponent
 - ДЗ
 - Справочники
  
 ## [25.angular--04](./25.angular--04)
-
+- Отображение сообщения
+    - Создание MessagesComponent
+    - Создание MessageService
+    - Inject в HeroService
+    - Отправление сообщения с HeroService
+    - Привязка к MessageService
 - Заключение
 - ДЗ
 - Справочники
