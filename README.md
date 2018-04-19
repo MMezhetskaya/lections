@@ -218,9 +218,14 @@
 ## [14.node__dom__bom](./14.node__dom__bom)
 - NODE
     - Node server
+- HTTP
+    - AJAX
+    - COMET
+    - XMLHttpRequest
+    - fetch
 - Автоматизация рабочих процессов
-    - Webpack
     - Gulp
+    - Webpack
 - Концепция WEB
     - DOM 
     - BOM
@@ -231,11 +236,6 @@
         - SessionStorage  
     - Cookie
     - Session
-- HTTP 
-    - AJAX 
-    - COMET 
-    - XMLHttpRequest
-    - fetch
 - Заключение
 - ДЗ
 - Справочники 
