@@ -34,6 +34,24 @@ ng generate component messages
 ng generate service message
 ```
 
+- **/src/app/app.module.ts**
+
+```js
+...
+import { MessageService } from './message.service';
+...
+
+
+  providers: [
+    // no need to place any providers due to the `providedIn` flag...
+    ...
+    MessageService
+  ]
+
+...
+
+```
+
 - **/src/app/message.service.ts**
 
 ```js
@@ -131,6 +149,42 @@ import { MessageService } from '../message.service';
 - привязываем событие `click` для кнопки
 
     - вызов метода `MessageService.clear()`
+
+## Routing
+
+**Задача**
+
+- добавить **Dashboard**
+
+- возможность переключения между **Heroes** и **Dashboard**
+
+- при клике на имя героя переключать на подробную инфо выбранного героя
+
+- возможность прямого перехода по ссылке на страницу подробного инфо героя
+
+![App navigation](./nav-diagram.png "App navigation")
+
+### Добавляем AppRoutingModule
+
+```bash
+ng generate module app-routing --flat --module=app;
+```
+
+*`--flat` кладет файлы в `src/app`
+
+*`--module=app` зарегистрировать в импортах `AppModule`
+
+- **src/app/app-routing.module.ts**
+
+```angularjs
+import { NgModule }             from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+@NgModule({
+  exports: [ RouterModule ]
+})
+export class AppRoutingModule {}
+```
 
 ## Заключение
 

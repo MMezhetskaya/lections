@@ -430,6 +430,9 @@
     - Inject в HeroService
     - Отправление сообщения с HeroService
     - Привязка к MessageService
+- Routing
+    -  Добавляем AppRoutingModule
+
 - Заключение
 - ДЗ
 - Справочники
