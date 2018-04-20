@@ -431,8 +431,13 @@
     - Отправление сообщения с HeroService
     - Привязка к MessageService
 - Routing
-    -  Добавляем AppRoutingModule
-
+    - Добавляем AppRoutingModule
+    - Добавляем routes
+- Dashboard
+    - Добавим Dashboard route
+- Страница героя
+    - Router для героя
+    - Routable HeroDetailComponent
 - Заключение
 - ДЗ
 - Справочники
