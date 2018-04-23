@@ -25,7 +25,9 @@ function ajaxRequest(url, block) {
             // вывести результат
             res = xhr.responseText;
         }
-        debugger;
+
+        domNodeBlock.innerHTML = res;
+        // debugger;
     };
 
     domNodeBlock.innerHTML = 'Загрузка!';

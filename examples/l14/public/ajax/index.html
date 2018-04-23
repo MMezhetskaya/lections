@@ -10,7 +10,16 @@
 <div id="result"></div>
 
 <script>
-    let resData = ajaxRequest('./action/data.json', '#result');
+    let resData = fetch('./action/data.json');
+
+
+    resData
+        .then(function (res, req) {
+            debugger;
+        })
+        .then(function (res, req) {
+            debugger;
+        });
 </script>
 </body>
 </html>
