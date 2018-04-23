@@ -292,7 +292,7 @@ imports: [ RouterModule.forRoot(routes) ],
 ...
 ```
 
-## Dashboard
+## Страница Dashboard
 
 - создадим компонент
 
@@ -548,22 +548,240 @@ export class HeroesComponent implements OnInit {
 - **src/app/hero-detail/hero-detail.component.ts**
 
 ```angularjs
+import { Component, OnInit, Input } from '@angular/core';
+import { Hero } from '../hero';
+
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { HeroService }  from '../hero.service';
+
+@Component({
+  selector: 'app-hero-detail',
+  templateUrl: './hero-detail.component.html',
+  styleUrls: ['./hero-detail.component.css']
+})
+export class HeroDetailComponent implements OnInit {
+  @Input() hero: Hero;
+
+  constructor(
+    private route: ActivatedRoute,
+    private heroService: HeroService,
+    private location: Location
+  ) { }
+
+  ngOnInit() {
+  }
+
+}
 ```
 
 **Что это было?**
 
-The ActivatedRoute holds information about the route to this instance of the HeroDetailComponent. This component is interested in the route's bag of parameters extracted from the URL. The "id" parameter is the id of the hero to display.
+- **ActivatedRoute**, содержит данные о `route`  для данного инстанса (**HeroDetailComponent**)
 
-The HeroService gets hero data from the remote server and this component will use it to get the hero-to-display.
+- **HeroService**, получает дату с сервера
 
-The location is an Angular service for interacting with the browser. You'll use it later to navigate back to the view that navigated here.
+- **[location](https://next.angular.io/api/common/Location)**, сервис **Angular** для взаимодействия с **BOM**
+
+**Извлекаем параметр id**
+
+- **src/app/hero-detail/hero-detail.component.ts**
+
+```angularjs
+...
+
+ngOnInit(): void {
+  this.getHero();
+}
+
+getHero(): void {
+  const id = +this.route.snapshot.paramMap.get('id');
+  this.heroService.getHero(id)
+    .subscribe(hero => this.hero = hero);
+}
+
+...
+```
+
+**Добавляем HeroService.getHero()**
+
+- **src/app/hero.service.ts**
+
+```angularjs
+...
+
+getHero(id: number): Observable<Hero> {
+  // TODO: send the message _after_ fetching the hero
+  this.messageService.add(`HeroService: fetched hero id=${id}`);
+  return of(HEROES.find(hero => hero.id === id));
+}
+
+...
+```
+
+**Добавляем кнопку назад**
+
+- **src/app/hero-detail/hero-detail.component.html**
+
+```angularjs
+...
+
+<button (click)="goBack()">go back</button>
+
+...
+```
+
+- **src/app/hero-detail/hero-detail.component.ts**
+
+```angularjs
+...
+
+goBack(): void {
+  this.location.back();
+}
+
+...
+```
+
+**Обновим стили**
+
+- **src/app/app.component.css**
+
+```css
+/* AppComponent's private CSS styles */
+h1 {
+  font-size: 1.2em;
+  color: #999;
+  margin-bottom: 0;
+}
+h2 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-top: 0;
+}
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
+}
+nav a:visited, a:link {
+  color: #607D8B;
+}
+nav a:hover {
+  color: #039be5;
+  background-color: #CFD8DC;
+}
+nav a.active {
+  color: #039be5;
+}
+```
+
+- **src/app/heroes/heroes.component.css**
+
+```css
+/* HeroesComponent's private CSS styles */
+.heroes {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 15em;
+}
+.heroes li {
+  position: relative;
+  cursor: pointer;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+}
+
+.heroes li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+
+.heroes a {
+  color: #888;
+  text-decoration: none;
+  position: relative;
+  display: block;
+  width: 250px;
+}
+
+.heroes a:hover {
+  color:#607D8B;
+}
+
+.heroes .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #607D8B;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  min-width: 16px;
+  text-align: right;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+```
+
+- **src/app/hero-detail/hero-detail.component.css**
+
+```css
+/* HeroDetailComponent's private CSS styles */
+label {
+  display: inline-block;
+  width: 3em;
+  margin: .5em 0;
+  color: #607D8B;
+  font-weight: bold;
+}
+input {
+  height: 2em;
+  font-size: 1em;
+  padding-left: .4em;
+}
+button {
+  margin-top: 20px;
+  font-family: Arial;
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer; cursor: hand;
+}
+button:hover {
+  background-color: #cfd8dc;
+}
+button:disabled {
+  background-color: #eee;
+  color: #ccc;
+  cursor: auto;
+}
+```
+
 
 ## Заключение
+
+- Routing
+
+- Страница Dashboard
+
+- Страница героя
 
 ## ДЗ
 
 ## Справочники
+
+- [location](https://next.angular.io/api/common/Location)

@@ -433,7 +433,7 @@
 - Routing
     - Добавляем AppRoutingModule
     - Добавляем routes
-- Dashboard
+- Страница Dashboard
     - Добавим Dashboard route
 - Страница героя
     - Router для героя
