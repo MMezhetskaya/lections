@@ -2,13 +2,9 @@
 
 ## Подготовка
 
-1. Скачать [React.js](https://reactjs.org/)
+- скачать [React.js](https://reactjs.org/)
 
-```bash
-npm init && npm i --save react react-dom;
-```
-
-2. Создать структуру проекта
+- структура проекта
 
 ```
 /root
@@ -26,11 +22,15 @@ npm init && npm i --save react react-dom;
 +-- server.js
 ```
 
-3. Установить **React Developer Tools**
+- установить **React Developer Tools**
 
-4. Локальный сервер
+**Локальный сервер**
 
 - **package.json**
+
+```bash
+npm init;
+```
 
 ```json
 {
@@ -64,7 +64,7 @@ app.set('port', (process.env.PORT || 3000));
 app.use('/', express.static(__dirname));
 
 app.listen(app.get('port'), function() {
-    console.log('Server started: http://project__demo.lh:' + app.get('port') + '/');
+    console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
 ```
 
@@ -87,7 +87,13 @@ app.listen(app.get('port'), function() {
 
 ## Подключаем react
 
-1. Обновим **index.html**
+- установим **react** и **react-dom**
+
+```bash
+npm i --save react react-dom;
+```
+
+- **index.html**
 
 ```html
 <!DOCTYPE html>
@@ -106,14 +112,7 @@ app.listen(app.get('port'), function() {
 </html>
 ```
 
-2. **js/app.js**
-
-```js
-console.log(React);
-console.log(ReactDOM);
-```
-
-- изменим **js/app.js**:
+- **js/app.js**
 
 ```js
 ReactDOM.render(
@@ -124,16 +123,32 @@ ReactDOM.render(
 
 ### Вау что это было!
 
-- Мы использовали функцию **ReactDOM.render**, которая принимает первым аргументом - реакт-компонент, а вторым - элемент **DOM-дерева**, куда мы хотим добавить **react**.
+- использовали функцию **ReactDOM.render**
 
-- Вообще, зачем мы добавили **react** на нашу страницу? Наверное, потому что где-то слышали, что он быстрый.
+    - реакт-компонент
 
-- **React** при изменениях **DOM-дерева**, старается использовать минимально-возможные воздействия. **React** использует **"виртуальный DOM"** (удаляет/изменяет/добавляет элементы и т.д.) для того, чтобы в реальный **DOM** за "один присест" добавить все изменения.
- Как известно, операции с **DOM-деревом** самые дорогостоящие. Поэтому "интеллектуальный" подход реакта к ним - та самая "киллер-фича".
+    - куда мы хотим добавить реакт-компонент
+
+**Вообще, зачем мы добавили **react** на нашу страницу?**
+
+Наверное, потому что где-то слышали, что он быстрый.
+
+
+**Почему**
+
+- при изменениях **DOM-дерева**, старается использовать минимально-возможные воздействия
+
+- использует **"виртуальный DOM"**
+
+    - удаляет/изменяет/добавляет элементы и т.д.
+
+    - в реальный **DOM** за "один присест" все изменения
+
+**Note:** операции с **DOM-деревом** самые дорогостоящие
  
 ### Ситаксис завоевывающий мир
 
-- Разметка в javascript-коде - **JSX**
+- разметка в javascript-коде - **JSX**
 
 ```js
 ReactDOM.render(
@@ -142,7 +157,7 @@ ReactDOM.render(
 );
 ```
 
-- Увы нужен **transpiler**
+- увы нужен **transpiler**
 
 ```html
 <!DOCTYPE html>
@@ -164,7 +179,7 @@ ReactDOM.render(
 
 ## Создание компонента
 
-- Что такое компонент? 
+- что такое компонент?
 
 ```js
 ReactDOM.render(
@@ -173,7 +188,7 @@ ReactDOM.render(
 );
 ```
 
-- Псевдо-код
+- псевдо-код
 
 ```js
 let photos = ['images/cat.jpg','images/dog.jpg','images/owl.jpg']
@@ -188,7 +203,7 @@ ReactDOM.render(
 );
 ```
 
-- А теперь на **react**
+- а теперь на **react**
 
 ```js
 class App extends React.Component {
@@ -207,7 +222,7 @@ ReactDOM.render(
 );
 ```
 
-- Развиваем идею
+- развиваем идею
 
 ```js
 class App extends React.Component {
@@ -238,17 +253,29 @@ ReactDOM.render(
 );
 ```
 
-### Что же вынесем!
+### Что же имеем!
 
-1. Мы никак не изменили код внутри ReactDOM.render. Компонент <App />, содержит сейчас в себе другой компонент. Но при этом, это никак не влияет на "рендер" всего нашего приложения.
+- не изменили код внутри `ReactDOM.render`
 
-2. Компонент <App /> содержит в себе компонент <News />. Да-да! Так же, как если бы это был просто дочерний <div></div> элемент.
+    - компонент `<App />`, содержит сейчас в себе другой компонент
 
-3. Наш компонент <News /> такой же примитивный, как и App, и содержит всего один (обязательный!) метод render.
+        - никак не влияет на рендер всего нашего приложения
+
+- компонент `<App /> `содержит в себе компонент `<News />`
+
+    - так же, как если бы это был просто дочерний <div></div> элемент
+
+- наш компонент `<News />` такой же примитивный, как и `App`
+
+    - содержит всего один (обязательный!) метод `render`
 
 ## props
 
-У каждого компонента могут быть свойства. Они хранятся в **this.props**, и передаются компоненту как атрибуты.
+У каждого компонента могут быть свойства
+
+- хранятся в **this.props**
+
+    - передаются компоненту как атрибуты
 
 ```js
 let value1 = {name: Garry, surname: Potter};
@@ -258,7 +285,7 @@ let value1 = {name: Garry, surname: Potter};
 
 **this.props** используются только для чтения!
 
-- Продолжаем идею с новостями
+- продолжаем идею с новостями
 
 ```js
 let my_news = [
@@ -315,9 +342,9 @@ class News extends React.Component {
 
 ## prop-types
 
-**Note:** PropTypes не работает с production версией React.
+**Note:** `PropTypes` не работает с production версией `React`
 
-- Ломаем код(легкий вариант, тут все понятно)
+- ломаем код(легкий вариант, тут все понятно)
 
 ```js
 class App extends React.Component {
@@ -333,9 +360,9 @@ class App extends React.Component {
 }
 ```
 
-- Проверяем страницу, анализируем
+- проверяем страницу, анализируем
 
-- Собственно **propTypes**
+- собственно **propTypes**
 
 ```bash
 npm install --save prop-types
@@ -371,7 +398,7 @@ News.propTypes = {
 };
 ```
 
-- Более интересный пример
+- более интересный пример
 
 ```js
 let my_news = [
@@ -411,7 +438,7 @@ Article.propTypes = {
 };
 ```
 
-- Подробнее [PropTypes](https://www.npmjs.com/package/prop-types)
+- подробнее [PropTypes](https://www.npmjs.com/package/prop-types)
 
 ## Порефакторим!?
 
@@ -473,5 +500,7 @@ class Article extends React.Component {
  - написать и добавить компонент показывающий общее кол-во новостей
 
 ## Справочники
+
 - [React.js](https://reactjs.org/)
+
 - [prop-types](https://www.npmjs.com/package/prop-types)
