@@ -55,16 +55,16 @@ npm install --save-dev express;
 - **server.js**
 
 ```js
-const express = require('express');
+const express = require( "express ");
 
 let app = express();
 
-app.set('port', (process.env.PORT || 3000));
+app.set( "port ", (process.env.PORT || 3000));
 
-app.use('/', express.static(__dirname));
+app.use( "/ ", express.static(__dirname));
 
-app.listen(app.get('port'), function() {
-    console.log('Server started: http://localhost:' + app.get('port') + '/');
+app.listen(app.get( "port "), function() {
+    console.log( "Server started: http://localhost: " + app.get( "port ") + "/ ");
 });
 ```
 
@@ -83,7 +83,7 @@ app.listen(app.get('port'), function() {
 </html>
 ```
 
-- **node server.js** && **npm start**
+- **node server.js** или **npm start**
 
 ## Подключаем react
 
@@ -116,8 +116,8 @@ npm i --save react react-dom;
 
 ```js
 ReactDOM.render(
-    React.createElement('h1', null, 'Привет, Мир!'),
-    document.getElementById('root')
+    React.createElement( "h1 ", null, "Привет, Мир! "),
+    document.getElementById( "root ")
 );
 ```
 
@@ -150,10 +150,10 @@ ReactDOM.render(
 
 - разметка в javascript-коде - **JSX**
 
-```js
+"```jsx"
 ReactDOM.render(
     <h1>Hello, world!</h1>,
-    document.getElementById('root')
+    document.getElementById( "root ")
 );
 ```
 
@@ -184,14 +184,14 @@ ReactDOM.render(
 ```js
 ReactDOM.render(
     <h1>Hello, world!</h1>,
-    document.getElementById('root')
+    document.getElementById( "root ")
 );
 ```
 
 - псевдо-код
 
 ```js
-let photos = ['images/cat.jpg','images/dog.jpg','images/owl.jpg']
+let photos = [ "images/cat.jpg ", "images/dog.jpg ", "images/owl.jpg "]
 
 ReactDOM.render(
   <App>
@@ -199,7 +199,7 @@ ReactDOM.render(
     <LastNews />
     <Comments />
   </App>,
-  document.getElementById('root')
+  document.getElementById( "root ")
 );
 ```
 
@@ -218,7 +218,7 @@ class App extends React.Component {
 
 ReactDOM.render(
     <App />,
-    document.getElementById('root')
+    document.getElementById( "root ")
 );
 ```
 
@@ -249,7 +249,7 @@ class News extends React.Component {
 
 ReactDOM.render(
     <App />,
-    document.getElementById('root')
+    document.getElementById( "root ")
 );
 ```
 
@@ -290,16 +290,16 @@ let value1 = {name: Garry, surname: Potter};
 ```js
 let my_news = [
     {
-        author: 'Саша Печкин',
-        text: 'В четверг, четвертого числа...'
+        author: "Саша Печкин ",
+        text: "В четверг, четвертого числа... "
     },
     {
-        author: 'Просто Вася',
-        text: 'Считаю, что $ должен стоить 37 гривен!'
+        author: "Просто Вася ",
+        text: "Считаю, что $ должен стоить 37 гривен! "
     },
     {
-        author: 'Гость',
-        text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000'
+        author: "Гость ",
+        text: "Бесплатно. Скачать. Лучший сайт - http://localhost:3000 "
     }
 ];
 
@@ -385,7 +385,7 @@ class News extends React.Component {
 
         return (
             <section className="news">
-                {!!newsLength ? newsTemplate  : 'Новостей нет'}
+                {!!newsLength ? newsTemplate  : "Новостей нет "}
 
                 <NewsCount total={newsLength}/>
             </section>
@@ -403,16 +403,16 @@ News.propTypes = {
 ```js
 let my_news = [
     {
-        author: 'Саша Печкин',
-        // text: 'В четверг, четвертого числа...'
+        author: "Саша Печкин ",
+        // text: "В четверг, четвертого числа... "
     },
     {
-        author: 'Просто Вася',
-        text: 'Считаю, что $ должен стоить 37 гривен!'
+        author: "Просто Вася ",
+        text: "Считаю, что $ должен стоить 37 гривен! "
     },
     {
-        author: 'Гость',
-        text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000'
+        author: "Гость ",
+        text: "Бесплатно. Скачать. Лучший сайт - http://localhost:3000 "
     }
 ];
 
@@ -438,7 +438,7 @@ Article.propTypes = {
 };
 ```
 
-- подробнее [PropTypes](https://www.npmjs.com/package/prop-types)
+- Пройдёмся подробнее [React page prop-types](https://reactjs.org/docs/typechecking-with-proptypes.html)
 
 ## Порефакторим!?
 
@@ -454,7 +454,7 @@ class News extends React.Component {
 
         return (
             <div className="news">
-                {!!newsTemplate.length ? newsTemplate : 'Новостей нет'}
+                {!!newsTemplate.length ? newsTemplate : "Новостей нет "}
             </div>
         )
     }
@@ -491,16 +491,46 @@ class Article extends React.Component {
 
 Самостоятельно переписать приложение:
 
- - семантика
- 
- - добавить стили и классы(BEM)
- 
- - разбить компоненты на отдельные js файлы(логически)
- 
- - написать и добавить компонент показывающий общее кол-во новостей
+- семантика
+
+- добавить стили и классы(BEM)
+
+- разбить компоненты на отдельные js файлы(логически)
+
+- написать и добавить компонент показывающий общее кол-во новостей
+
+```jsx
+class News extends React.Component {
+    render() {
+        let newsData = this.props.data,
+            newsTemplate = newsData.map((item, idx) => {
+                return (
+                    <Article data={item} key={idx} />
+                )
+            }),
+            newsLength = newsTemplate.length;
+
+        return (
+            <section className="news">
+                {!!newsLength ? newsTemplate  : "Новостей нет "}
+
+                <NewsCount total={newsLength}/>
+            </section>
+        )
+    }
+}
+
+class NewsCount extends React.Component {
+    render() {
+        ...
+    }
+}
+```
 
 ## Справочники
 
 - [React.js](https://reactjs.org/)
 
 - [prop-types](https://www.npmjs.com/package/prop-types)
+
+- [React page prop-types](https://reactjs.org/docs/typechecking-with-proptypes.html)

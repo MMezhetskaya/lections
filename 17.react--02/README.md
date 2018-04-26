@@ -2,34 +2,37 @@
  
 ## State
 
-- this.props - только чтение
+- **this.props** - только чтение
 
-- this.state - динамика
+- **[this.state](https://reactjs.org/docs/state-and-lifecycle.html)** - динамика
 
-Сладкая практика:
+**Сладкая практика:**
 
-1. Обновим **my_news** <space><space>
-```js
+- обновим **my_news**
+
+```jsx
 let my_news = [
     {
-        author: 'Саша Печкин',
-        text: 'В четверг, четвертого числа...',
-        bigText: 'в четыре с четвертью часа четыре чёрненьких чумазеньких чертёнка чертили чёрными чернилами чертёж.'
+        author: "Саша Печкин",
+        text: "В четверг, четвертого числа...",
+        bigText: "в четыре с четвертью часа четыре чёрненьких чумазеньких чертёнка чертили чёрными чернилами чертёж."
     },
     {
-        author: 'Просто Вася',
-        text: 'Считаю, что $ должен стоить 37 гривен!',
-        bigText: 'А евро раздавать бесплатно!'
+        author: "Просто Вася",
+        text: "Считаю, что $ должен стоить 37 гривен!",
+        bigText: "А евро раздавать бесплатно!"
     },
     {
-        author: 'Гость',
-        text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000',
-        bigText: 'На самом деле платно, просто нужно прочитать очень длинное лицензионное соглашение'
+        author: "Гость",
+        text: "Бесплатно. Скачать. Лучший сайт - http://localhost:3000",
+        bigText: "На самом деле платно, просто нужно прочитать очень длинное лицензионное соглашение"
     }
 ];
 ```
-2. Отобразим полный текст новости <space><space>
-```js
+
+- отобразим полный текст новости
+
+```jsx
 class Article extends React.Component {
     render() {
         let author = this.props.data.author,
@@ -40,7 +43,7 @@ class Article extends React.Component {
             <article className="article">
                 <p className="news__author">{author}:</p>
                 <p className="news__text">{text}</p>
-                <p className='news__big-text'>{bigText}</p>
+                <p className="news__big-text">{bigText}</p>
             </article>
         )
     }
@@ -54,8 +57,10 @@ Article.propTypes = {
     })
 };
 ```
-3. Добавим ссылку - "подробнее" <space><space>
-```js
+
+- добавим ссылку "подробнее"
+
+```jsx
 class Article extends React.Component {
     render() {
         let author = this.props.data.author,
@@ -66,19 +71,21 @@ class Article extends React.Component {
             <article className="article">
                 <p className="news__author">{author}:</p>
                 <p className="news__text">{text}</p>
-                <a href="#" className='news__readmore'>Подробнее</a>
-                <p className='news__big-text'>{bigText}</p>
+                <a href="#" className="news__readmore">Подробнее</a>
+                <p className="news__big-text">{bigText}</p>
             </article>
         )
     }
 }
 ```
 
-О-да!!! База есть.
+О-да!!! База есть
 
 ### Начальное состояние(initial state)
 
-Если вы определяете какое-то изменяемое свойство в компоненте, необходимо указать начальное состояние(initial state).
+**Note:** при определении изменяемого свойства в компоненте, необходимо указать начальное состояние(initial state)
+
+**Наш подход**
 
 - constructor -> this.state
 
@@ -86,8 +93,7 @@ class Article extends React.Component {
 
 - styles
 
-
-```js
+```jsx
 class Article extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -104,11 +110,10 @@ class Article extends React.Component {
             visible = this.state.visible,
             styles = {
                 lnk: {
-                    display: !visible ? 'block' : 'none'
+                    display: !visible ? "block" : "none"
                 },
-
                 txtFull: {
-                    display: visible ? 'block' : 'none'
+                    display: visible ? "block" : "none"
                 }
             };
 
@@ -116,8 +121,8 @@ class Article extends React.Component {
             <article className="article">
                 <p className="news__author">{author}:</p>
                 <p className="news__text">{text}</p>
-                <a href="#" className='news__readmore' style={styles.lnk}>Подробнее</a>
-                <p className='news__big-text' style={styles.txtFull}>{bigText}</p>
+                <a href="#" className="news__readmore" style={styles.lnk}>Подробнее</a>
+                <p className="news__big-text" style={styles.txtFull}>{bigText}</p>
             </article>
         )
     }
@@ -126,11 +131,13 @@ class Article extends React.Component {
 
 ## Events(onClick)
 
+**Наш подход**
+
 - function -> readmoreClick
 
 - method -> setState
 
-```js
+```jsx
 class Article extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -142,6 +149,7 @@ class Article extends React.Component {
 
     readmoreClick(e) {
         e.preventDefault();
+        
         this.setState(
             {
                 visible: true
@@ -156,11 +164,11 @@ class Article extends React.Component {
             visible = this.state.visible,
             styles = {
                 lnk: {
-                    display: !visible ? 'block' : 'none'
+                    display: !visible ? "block" : "none"
                 },
 
                 txtFull: {
-                    display: visible ? 'block' : 'none'
+                    display: visible ? "block" : "none"
                 }
             };
 
@@ -168,84 +176,89 @@ class Article extends React.Component {
             <article className="article">
                 <p className="news__author">{author}:</p>
                 <p className="news__text">{text}</p>
-                <a href="#" onClick={this.readmoreClick.bind(this)} className='news__readmore' style={styles.lnk}>Подробнее</a>
-                <p className='news__big-text' style={styles.txtFull}>{bigText}</p>
+                <a href="#" onClick={this.readmoreClick.bind(this)} className="news__readmore" style={styles.lnk}>Подробнее</a>
+                <p className="news__big-text" style={styles.txtFull}>{bigText}</p>
             </article>
         )
     }
 }
 ```
 
-- Все [Events](https://facebook.github.io/react/docs/events.html)
+- все [events](https://facebook.github.io/react/docs/events.html)
 
-- Больше про **setState**
+- больше про **setState**
 
-```js
+```jsx
 this.setState(
     {
         visible: true
     },
     function() {
-      alert('Состояние изменилось');
+      alert("Состояние изменилось");
     }
 );
 ```
 
-```js
-
+```jsx
 this.state = {
     visible: true,
     rating: 0,
-    another_one_prop: 'qweqwe'
+    another_one_prop: "qweqwe"
 }
 
 this.setState(
     {
         visible: true,
-        another_one_prop: 'привет'
+        another_one_prop: "привет"
     },
     function() {
-      alert('Состояние изменилось');
+      alert("Состояние изменилось");
     }
 );
 ```
 
-### state для Гуру 
+### state для Гуру
 
-1. Нельзя вызывать setState в render <space><space>
-```js
-render() {
+- нельзя вызывать **setState** в **render**
+
+```jsx
+...
+
+    render() {
         let author = this.props.data.author,
             text = this.props.data.text,
             bigText = this.props.data.bigText,
             visible = this.state.visible,
             styles = {
                 lnk: {
-                    display: !visible ? 'block' : 'none'
+                    display: !visible ? "block" : "none"
                 },
 
                 txtFull: {
-                    display: visible ? 'block' : 'none'
+                    display: visible ? "block" : "none"
                 }
             };
 
-        console.log('render',this);
+        console.log("render", this);
 
         return (
             <article className="article">
                 <p className="news__author">{author}:</p>
                 <p className="news__text">{text}</p>
-                <a href="#" onClick={this.readmoreClick.bind(this)} className='news__readmore' style={styles.lnk}>Подробнее</a>
-                <p className='news__big-text' style={styles.txtFull}>{bigText}</p>
+                <a href="#" onClick={this.readmoreClick.bind(this)} className="news__readmore" style={styles.lnk}>Подробнее</a>
+                <p className="news__big-text" style={styles.txtFull}>{bigText}</p>
             </article>
         )
     }
 ```
 
-2. Render - дорогостоящая операция, поэтому внимательно относитесь к тому, где вы вызываете setState, и что это за собой влечет.
+- **render** - дорогостоящая операция
 
-3. Если перерисовывается родительский компонент, то будут перерисованы и все дочерние компоненты. <space><space>
-```js
+    - внимательно относитесь к тому, где вы вызываете **setState**
+
+- если перерисовывается родительский компонент, то будут перерисованы все дочерние компоненты
+
+```jsx
 class News extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -262,7 +275,7 @@ class News extends React.Component {
             }
         );
     }
-    
+
     render() {
         let newsData = this.props.data,
             newsTemplate = newsData.map((item, idx) => {
@@ -274,7 +287,7 @@ class News extends React.Component {
 
         return (
             <section className="news" onClick={this.onTotalNewsClick.bind(this)}>
-                {!!newsLength ? newsTemplate  : 'Новостей нет'}
+                {!!newsLength ? newsTemplate  : "Новостей нет"}
 
                 <NewsCount total={newsLength}/>
             </section>
@@ -283,18 +296,25 @@ class News extends React.Component {
 }
 ```
 
-Почему же, было важно использовать именно префиксную запись ++, а не постфиксную? 
+**Использовали именно префиксную запись ++, а не постфиксную?**
 
-**setState()** - не изменяет **this.state** немедленно, а создает очередь изменений состояния. Доступ к **this.state** после вызова метода, потенциально может вернуть имеющееся (что равносильно - бывшее) значение.
+**setState()** - не изменяет **this.state** немедленно
 
-Вообще state у компонентов используется не часто. С появлянием **[flux](https://facebook.github.io/flux/)** - подхода, коммьюнити стало перемещаться на сторону stateless подхода, когда state не используется вообще (за исключением редких моментов).
+- создает очередь изменений состояния
+
+    - доступ к **this.state** после вызова метода, потенциально может вернуть имеющееся (что равносильно - бывшее) значение
+
+**Note:** **state** у компонентов используется не часто
+
+**[flux](https://facebook.github.io/flux/)** - коммьюнити стало перемещаться на сторону **stateless** подхода, когда **state** не используется вообще (за исключением редких моментов).
 
 ## Работа с input
 
-1. Удалим лишние **console.log'и**, удалим обработчик **onTotalNewsClick**.
+- удалим лишние **console.log**, удалим обработчик **onTotalNewsClick**.
 
-2. Затем создадим компонент - **TestInput** <space><space>
-```js
+- создадим компонент **TestInput**
+
+```jsx
 class App extends React.Component {
     render() {
         return (
@@ -312,27 +332,29 @@ class App extends React.Component {
 class TestInput extends React.Component {
     render() {
         return (
-            <input className='test-input' value='введите значение' />
+            <input className="test-input" value="введите значение" />
         );
     }
 }
 ```
 
-Упс, ошибка!
+**Упс, ошибка!**
 
-- Передать функцию обработчик, которая будет изменять какую-то переменную состояния.
+- передать функцию обработчик, которая будет изменять
 
-- Создать начальное состояние
+    - какую-то переменную состояния
 
-- Переменная состояния компонента, в качестве value у инпута
+- создать начальное состояние
 
-```js
+- переменная состояния компонента, в качестве **value** у инпута
+
+```jsx
 class TestInput extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            myValue: ''
+            myValue: ""
         }
     }
 
@@ -352,10 +374,10 @@ class TestInput extends React.Component {
         return (
             <p>
                 <input
-                    className='test-input'
+                    className="test-input"
                     value={this.state.myValue}
                     onChange={this.onChangeHandler.bind(this)}
-                    placeholder='введите значение'
+                    placeholder="введите значение"
                 />
 
                 <button onClick={this.onBtnClickHandler.bind(this)}>Показать alert</button>
@@ -369,28 +391,38 @@ class TestInput extends React.Component {
 
 ### Uncontrolled Components (неконтролируемый компонент)
 
-Главное отличие неконтролируемого компонента от контролируемого в том, что у него нет обработчика изменений, а значит нет постоянных вызовов **setState** и перерисовок.
+Главное отличие неконтролируемого компонента от контролируемого в том, что
 
-Для того чтобы считать значение такого компонента используется функция библиотеки **ReactDOM** - **ReactDOM.findDOMNode**, а для того, чтобы можно было найти с помощью нее элемент, используется атрибут **ref**.
+- нет обработчика изменений, а значит нет постоянных вызовов **setState** и перерисовок
+
+Для того чтобы считать значение такого компонента используется функция библиотеки **ReactDOM**
+
+- **ReactDOM.findDOMNode**
+
+Для того, чтобы можно было найти с помощью нее элемент
+
+- используется атрибут **ref**.
 
 Для неконтролируемого компонента требуется указывать **defaultValue**.
 
-1. Удалим обработчик **onChange**
+- удалим обработчик **onChange**
 
-2. Удалим **this.state**
+- удалим **this.state**
 
-3. Укажем **defaultValue** = пустая строка (defaultValue='') вместо **value**
+- укажем **defaultValue** = пустая строка (`defaultValue = ""`) вместо **value**
 
-4. Добавим атрибут **ref**, назовем его **myTestInput** <space><space>
-```js
+- добавим атрибут **ref**, назовем его **myTestInput**
+
+
+```jsx
 render() {
         return (
             <p>
                 <input
-                    className='test-input'
-                    defaultValue=''
-                    placeholder='введите значение'
-                    ref='myTestInput'
+                    className="test-input"
+                    defaultValue=""
+                    placeholder="введите значение"
+                    ref="myTestInput"
                 />
 
                 <button onClick={this.onBtnClickHandler.bind(this)}>Показать alert</button>
@@ -399,8 +431,9 @@ render() {
     }
 ```
 
-5. Обновим onBtnClickHandler <space><space>
-```js
+- обновим **onBtnClickHandler**
+
+```jsx
 class TestInput extends React.Component {
     onBtnClickHandler(e) {
         alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
@@ -410,10 +443,10 @@ class TestInput extends React.Component {
         return (
             <p>
                 <input
-                    className='test-input'
-                    defaultValue=''
-                    placeholder='введите значение'
-                    ref='myTestInput'
+                    className="test-input"
+                    defaultValue=""
+                    placeholder="введите значение"
+                    ref="myTestInput"
                 />
 
                 <button onClick={this.onBtnClickHandler.bind(this)}>Показать alert</button>
@@ -425,19 +458,29 @@ class TestInput extends React.Component {
 
 ## Жизненный цикл компонента
 
-У каждого компонента, есть жизненый цикл (lifecycle): компонент будет примонтирован, компонент отрисовался, компонент будет удален и так далее...
+У каждого компонента, есть жизненый цикл (lifecycle):
+
+- компонент будет примонтирован
+
+- компонент отрисовался
+
+- компонент будет удален
+
+- и так далее...
 
 ### [Методы жизненного цикла](https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods)
 
-- **componentWillMount** - компонент будет примонтирован. В данный момент у нас нет возможности посмотреть DOM элементы.
+- **componentWillMount** - компонент будет примонтирован
 
-- **componentDidMount** - компонент примонтировался.
+    - в данный момент нет возможности посмотреть **DOM** элементы
 
-Любимая фраза "давайте представим задачу":
+- **componentDidMount** - компонент примонтировался
+
+**Любимая фраза "давайте представим задачу":**
 
 Мы отрисовали компонент, в котором есть **input**, и хотим чтобы фокус установился в него.
 
-```js
+```jsx
 class TestInput extends React.Component {
     onBtnClickHandler(e) {
         alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
@@ -451,10 +494,10 @@ class TestInput extends React.Component {
         return (
             <p>
                 <input
-                    className='test-input'
-                    defaultValue=''
-                    placeholder='введите значение'
-                    ref='myTestInput'
+                    className="test-input"
+                    defaultValue=""
+                    placeholder="введите значение"
+                    ref="myTestInput"
                 />
 
                 <button onClick={this.onBtnClickHandler.bind(this)}>Показать alert</button>
@@ -464,29 +507,41 @@ class TestInput extends React.Component {
 }
 ```
 
-- **componentWillReceiveProps** - компонент получает новые **props**. Этод метод не вызывается в момент первого render'a. В официальной документации очень хороший пример, смотрим его: <space><space>
-```js
+- **componentWillReceiveProps** - компонент получает новые **props**
+
+    - метод не вызывается в момент первого **render**.
+
+```jsx
 componentWillReceiveProps(nextProps) {
-  this.setState({
-    likesIncreasing: nextProps.likeCount > this.props.likeCount
-  });
+    this.setState({
+        likesIncreasing: nextProps.likeCount > this.props.likeCount
+    });
 }
 ```
 
-- **shouldComponentUpdate** - должен ли компонент обновиться? На самом деле, обычно реакт сам отлично разбирается. Но иногда ручное управление позволяет существенно ускорить работу в "узких местах". С этим методом нужно работать очень аккуратно.
+- **shouldComponentUpdate** - должен ли компонент обновиться?
 
--  **componentWillUpdat** - вызывается прямо перед **render**, когда новые **props** и **state** получены. В этом методе нельзя вызывать **setState**.
+    - на самом деле, обычно реакт сам отлично разбирается
 
-- **componentDidUpdate** - вызывается сразу после **render**. Не вызывается в момент первого render'а компонента.
+    - но иногда ручное управление позволяет существенно ускорить работу в "узких местах"
 
-- **componentWillUnmount** - вызывается сразу перед тем, как компонент будет удален из DOM
+-  **componentWillUpdate** - вызывается прямо перед **render**, когда новые **props** и **state** получены
+
+    - нельзя вызывать **setState**.
+
+- **componentDidUpdate** - вызывается сразу после **render**
+
+    - не вызывается в момент первого **render** компонента
+
+- **componentWillUnmount** - вызывается сразу перед тем, как компонент будет удален из **DOM**
 
 ## Работа с формой
 
 Превратим наш **input** в форму добавления новости.
 
-1. Переименуем **<TestInput />** в **<Add />**, попутно обновив код <space><space>
-```js
+- переименуем `<TestInput />` в `<Add />`
+
+```jsx
 class Add extends React.Component {
     onBtnClickHandler(e) {
         e.preventDefault();
@@ -500,25 +555,25 @@ class Add extends React.Component {
         return (
             <form>
                 <input
-                    type='text'
-                    defaultValue=''
-                    placeholder='Ваше имя'
-                    ref='author'
+                    type="text"
+                    defaultValue=""
+                    placeholder="Ваше имя"
+                    ref="author"
                 />
 
                 <textarea
-                    defaultValue=''
-                    placeholder='Текст новости'
-                    ref='text'
+                    defaultValue=""
+                    placeholder="Текст новости"
+                    ref="text"
                 />
 
                 <label>
-                    <input type='checkbox' defaultChecked={false} ref='checkrule' />Я согласен с правилами
+                    <input type="checkbox" defaultChecked={false} ref="checkrule" />Я согласен с правилами
                 </label>
 
                 <button
                     onClick={this.onBtnClickHandler}
-                    ref='alert_button'>
+                    ref="alert_button">
                     Показать alert
                 </button>
             </form>
@@ -527,26 +582,27 @@ class Add extends React.Component {
 }
 ```
 
-2. Отключим кнопку "показать alert", если не отмечен чекбокс. <space><space>
+- отключим "показать alert", если не отмечен чекбокс
 
 Вариант без **state**:
-```js
+
+```jsx
 ...
 onCheckRuleClick(e) {
   ReactDOM.findDOMNode(this.refs.alert_button).disabled = !e.target.checked;
 }
 ...
-<input type='checkbox' defaultChecked={false} ref='checkrule' onChange={this.onCheckRuleClick.bind(this)}/>Я согласен с правилами
+<input type="checkbox" defaultChecked={false} ref="checkrule" onChange={this.onCheckRuleClick.bind(this)}/>Я согласен с правилами
 ...
 <button
     disabled
     onClick={this.onBtnClickHandler}
-    ref='alert_button'>
+    ref="alert_button">
     Показать alert
 </button>
 ```
 
-Вариант со **state**: <space><space>
+Вариант со **state**:
 
 ```
 Пора бы и попробовать самим! 
@@ -566,19 +622,19 @@ onCheckRuleClick(e) {
 
 Самостоятельно переписать приложение:
 
- - используя семантику 
+- семантика
+
+- добавить стили и классы(BEM)
+
+- разбить компоненты на отдельные js файлы(логически)
+
+- добавить валидацию для полей формы(если все поля заполненны кнопка **Показать alert** активна)
+
+- добавить новость первой в список новостей, при **form submit** если все поля валидны или при клике на **Показать alert**.
  
- - добавить стили и классы(BEM) используя SASS(добавить [sass-loader](https://github.com/webpack-contrib/sass-loader) в webpack.config)
+- для взаимодействия между компонентами используйте **[EventEmitter](https://github.com/Olical/EventEmitter)**
  
- - разбить компоненты на отдельные js файлы(логически)
- 
- - добавить валидацию для полей формы(если все поля заполненны кнопка **Показать alert** активна)
- 
- - добавить новость первой в список новостей, при **form submit** если все поля валидны или при клике на **Показать alert**.
- 
- - для взаимодействия между компонентами используйте **[EventEmitter](https://github.com/Olical/EventEmitter)**
- 
- - Отрефакторите приложение, полностью!!!
+- отрефакторите приложение, полностью!!!
 
 ## Справочники
 - [PropTypes](https://www.npmjs.com/package/prop-types)
