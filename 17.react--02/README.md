@@ -6,7 +6,7 @@
 
 - **[this.state](https://reactjs.org/docs/state-and-lifecycle.html)** - динамика
 
-**Сладкая практика:**
+**Применим:**
 
 - обновим **my_news**
 
