@@ -109,7 +109,7 @@ export class HeroDetailComponent implements OnInit {
 
 ### [Angular dependency injection](https://next.angular.io/guide/dependency-injection)
 
-## Создаем `HeroService
+## Создаем HeroService
 
 - cервис `hero`
 
@@ -283,7 +283,7 @@ this.heroes = this.heroService.getHeroes();
 
     - связанны только те компоненты, которым есть что "сказать"
 
-![RX events](./events_sub.png "RX events")
+![RX events](./rx_events.png "RX events")
 
 - каждый компонент соединен с другими, "потоками", по которым передается сигнал
 
