@@ -414,7 +414,7 @@ app: {
 }
 ```
 
-- вызвать **action**, **ActionsCreator** (создатель действия)
+- вызвать **action**, **ActionsCreator** (создание действий)
 
 ```js
 const GET_PHOTO_REQUEST = 'GET_PHOTO_REQUEST';
@@ -437,7 +437,7 @@ getPhotos(2015);
 
 ## Reducer
 
-"Actions описывает факт, что что-то произошло, но не указывает, как состояние приложения должно измениться в ответ, это работа для Reducer'а"  - пруф от официала ([reducer](https://redux.js.org/docs/basics/Reducers.html)).
+> Actions описывает факт, что что-то произошло, но не указывает, как состояние приложения должно измениться в ответ, это работа для Reducer'а **[@ reducer](https://redux.js.org/docs/basics/Reducers.html))**
 
 - **reducer composition**
 
@@ -516,9 +516,14 @@ if (module.hot) {
 
 ## Настройка Store
 
-- **Store** хранит состояние приложения. Единственный путь изменить store - это отправить действие (dispatch action).
+- **store** хранит состояние приложения
 
-- **Store** - это простой обьект:
+    - единственный путь изменить **store**
+
+        - это отправить действие (dispatch action).
+
+- **store** - это простой обьект:
+
     - **getState()**
     
     - **dispatch(action)**
@@ -548,7 +553,7 @@ export default function configureStore(initialState) {
 }
 ```
 
-* [createStore](https://redux.js.org/docs/api/createStore.html) - анонимная функцию в качестве редьюсера и объект в качестве начального состояния
+* [createStore](https://redux.js.org/docs/api/createStore.html) - анонимная функция в качестве редьюсера и объект в качестве начального состояния
 
 ## Создание Reducer
 
@@ -570,7 +575,7 @@ export default function userstate(state = initialState) {
 
 ```js
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 class App extends Component {
     render() {
@@ -588,7 +593,7 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps)(App);
 ```
 
-*подключи **React** компонент к **Redux store**
+*подключили **React** компонент к **Redux store**
 
 - проверим **src/reducers/index.js**
 
