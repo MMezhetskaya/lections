@@ -499,6 +499,26 @@ button.delete {
 
 ## Поиск
 
+**Чему научимся?**
+
+Собирать **Observable** операции в цепочки
+
+**Зачем?**
+
+- уменьшит кол-во сервер запросов
+
+**Что будем делать**
+
+Добавим в **Dashboard** поиск по героям
+
+- при вводе имени в поле
+
+    - отправляем запрос
+
+        - кол-во запросов столько - сколько необходимо
+
+**Добавим сервис метод**
+
 - **src/app/hero.service.ts**
 
 ```angularjs
@@ -509,7 +529,7 @@ button.delete {
   searchHeroes(term: string): Observable<Hero[]> {
     if (!term.trim()) {
       // if not search term, return empty hero array.
-      return of([]);
+      return Observable.of([]);
     }
     return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
       tap(_ => this.log(`found heroes matching "${term}"`)),
@@ -523,7 +543,178 @@ button.delete {
 
 **Добавим на страницу Dashboard**
 
+- создадим **HeroSearchComponent**
+
+```bash
+ng generate component hero-search
+```
+
+- **src/app/dashboard/dashboard.component.html**
+
+```angularjs
+
+...
+<app-hero-search></app-hero-search>
+...
+
+
+```
+
+- **src/app/hero-search/hero-search.component.html**
+
+```angularjs
+<div id="search-component">
+  <h4>Hero Search</h4>
+
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let hero of heroes$ | async" >
+      <a routerLink="/detail/{{hero.id}}">
+        {{hero.name}}
+      </a>
+    </li>
+  </ul>
+</div>
+```
+
+- разберем `<li *ngFor="let hero of heroes$ | async" >`
+
+    - `$` определяет `heroes$` как `Observable`
+
+    - `*ngFor` не работает с `Observable`
+
+        - pipe символ `|` потом `async`, определяет как **Angular's AsyncPipe**
+
+    - **AsyncPipe** подписывается на `Observable` автоматическм
+
+- **src/app/hero-search/hero-search.component.html**
+
+```css
+/* HeroSearch private styles */
+.search-result li {
+  border-bottom: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  width:195px;
+  height: 16px;
+  padding: 5px;
+  background-color: white;
+  cursor: pointer;
+  list-style-type: none;
+}
+
+.search-result li:hover {
+  background-color: #607D8B;
+}
+
+.search-result li a {
+  color: #888;
+  display: block;
+  text-decoration: none;
+}
+
+.search-result li a:hover {
+  color: white;
+}
+.search-result li a:active {
+  color: white;
+}
+#search-box {
+  width: 200px;
+  height: 20px;
+}
+
+
+ul.search-result {
+  margin-top: 0;
+  padding-left: 0;
+}
+```
+
+- **src/app/hero-search/hero-search.component.ts**
+
+```angularjs
+import { Component, OnInit } from '@angular/core';
+
+import { Observable, Subject } from 'rxjs';
+
+import {
+  debounceTime, distinctUntilChanged, switchMap
+} from 'rxjs/operators';
+
+import { Hero } from '../hero';
+import { HeroService } from '../hero.service';
+
+@Component({
+  selector: 'app-hero-search',
+  templateUrl: './hero-search.component.html',
+  styleUrls: [ './hero-search.component.css' ]
+})
+export class HeroSearchComponent implements OnInit {
+  heroes$: Observable<Hero[]>;
+  private searchTerms = new Subject<string>();
+
+  constructor(private heroService: HeroService) {}
+
+  // Push a search term into the observable stream.
+  search(term: string): void {
+    this.searchTerms.next(term);
+  }
+
+  ngOnInit(): void {
+    this.heroes$ = this.searchTerms.pipe(
+      // wait 300ms after each keystroke before considering the term
+      debounceTime(300),
+
+      // ignore new term if same as previous term
+      distinctUntilChanged(),
+
+      // switch to new search observable each time the term changes
+      switchMap((term: string) => this.heroService.searchHeroes(term)),
+    );
+  }
+}
+```
+
+- взгянем на **src/app/hero-search/hero-search.component.html**
+
+### Цепочки RxJS
+
+- добавление значения в поток на каждое нажатие кнопки
+
+    - куча HTTP запросов
+
+- `ngOnInit()` проводит `searchTerms` через очередь **RxJS** операторов
+
+    - уменьшают кол-во запросов к `searchHeroes()`
+
+**Где это в коде?**
+
+```angularjs
+this.heroes$ = this.searchTerms.pipe(
+  // wait 300ms after each keystroke before considering the term
+  debounceTime(300),
+
+  // ignore new term if same as previous term
+  distinctUntilChanged(),
+
+  // switch to new search observable each time the term changes
+  switchMap((term: string) => this.heroService.searchHeroes(term)),
+);
+```
+
+## А что дальше?
+
+- [Angular architecture](https://next.angular.io/guide/architecture)
+
 ## Заключение
+
+- HTTP
+
+- HttpClient
+
+- Цепочки RxJS
 
 ## ДЗ
 
@@ -538,3 +729,5 @@ button.delete {
 - [HttpClient](https://next.angular.io/api/common/http/HttpClient)
 
 - [In-memory Web API module](https://github.com/angular/in-memory-web-api)
+
+- [Angular architecture](https://next.angular.io/guide/architecture)

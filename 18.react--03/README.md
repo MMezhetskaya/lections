@@ -549,9 +549,14 @@ if (module.hot) {
 
 ## Настройка Store
 
-- **Store** хранит состояние приложения. Единственный путь изменить store - это отправить действие (dispatch action).
+- **store** хранит состояние приложения
 
-- **Store** - это простой обьект:
+    - единственный путь изменить **store**
+
+        - это отправить действие (dispatch action).
+
+- **store** - это простой обьект:
+
     - **getState()**
     
     - **dispatch(action)**
@@ -607,7 +612,7 @@ export default function userState(state = initialState) {
 
 ```js
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 class App extends Component {
     render() {

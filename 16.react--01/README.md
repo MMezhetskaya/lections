@@ -55,7 +55,7 @@ npm install --save-dev express;
 - **server.js**
 
 ```js
-const express = require( "express ");
+const express = require( "express");
 
 let app = express();
 
