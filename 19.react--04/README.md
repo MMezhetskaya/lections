@@ -2,11 +2,13 @@
 
 ## Комбинирование редьюсеров
 
-Главный вопрос, зачем ???
+**Главный вопрос, зачем ???**
 
-- больше модульности(каждый кусочек кода отвечает за конкретную часть)
+- больше модульности
 
-Для нашего приложения, можно выделить следующие **reducer'ы**:
+    - каждый кусочек кода отвечает за конкретную часть
+
+**Можно выделить следующие reducer'ы**
 
 - **user**
 
@@ -54,9 +56,11 @@ export default combineReducers({
 });
 ```
 
-***combineReducers** просто возвращает "составной" редьюсер.
+- **combineReducers**, возвращает "составной" редьюсер
  
-- итог, структура та-же
+**Итог**
+
+- структура та-же
 
 ```json
 {
@@ -106,23 +110,23 @@ export default connect(mapStateToProps)(App);
 
 - меньший объем кода в каждом файле 
 
-- лучшая читаемость.
+- лучшая читаемость
 
 ## [Контейнеры и компоненты](https://redux.js.org/docs/basics/UsageWithReact.html)
 
-Разделение на **компоненты** и **контейнеры**, иначе называемые: **глупые** и **умные** компоненты, **Presentational** и **Container**.
+> Разделение на **компоненты** и **контейнеры**, иначе называемые: **глупые** и **умные** компоненты, **Presentational** и **Container**.
 
  &nbsp; | Компонент (глупый) | Контейнер (умный)
 --- | --- | ---
 **Цель** | Как это выглядит (разметка, стили) | Как это работает (получение данных, обновление состояния)
 **Осведомлен о Redux** | - | +
-**Для считывания данных** | Читает данные из props | Подписан на Redux state (состояние)
-**Для изменения данных** | Вызывает callback из props | Отправляет (dispatch) Redux действие (actions)
-**Пишутся** | Вручную | Обычно, генерируются Redux
+**Для считывания данных** | Читает данные из `props` | Подписан на **Redux** `state` (состояние)
+**Для изменения данных** | Вызывает `callback` из `props` | Отправляет (`dispatch`) **Redux** действие (`actions`)
+**Пишутся** | Вручную | Обычно, генерируются **Redux**
 
-Что-то непонятно :(
+- что-то непонятно :(
 
-Перепишем все, что бы стало ясно.
+**Перепишем все, что бы стало ясно.**
 
 - установим **PropTypes**
 
@@ -179,29 +183,31 @@ Page.propTypes = {
 
 ## Создание actions
 
-- практически любое действие пользователя в интерфейсе = отправка действия (dispatch actions)
+> Практически любое действие пользователя в интерфейсе = отправка действия (**dispatch actions**)
 
 **Наше приложение**
 
-- по клику на кнопку года:
+- по клику на кнопку года
+
     - устанавливает заголовок
+
     - загружает фото этого года
     
-### Установка заголовка. 
+### Установка заголовка
 
-Данные внутри redux-приложения:
+Данные внутри **redux**-приложения:
 
-1. Приложение получило изначальное состояние (initial state)
+1. приложение получило изначальное состояние (**initial state**)
 
-2. Пользователь нажав кнопку, отправил действие (dispatch action)
+2. пользователь нажав кнопку -> отправил действие (**dispatch action**)
 
-3. Соответсвующий редьюсер обновил часть приложения, в согласии с тем, что узнал от действия.
+3. соответсвующий редьюсер обновил часть приложения, в согласии с тем, что узнал от действия
 
-4. Приложение изменилось и теперь отражает новое состояние.
+4. приложение изменилось и теперь отражает новое состояние
 
 5. ... (все повторяется по кругу, с пункта 2)
 
-Это и есть однонаправленный поток данных.
+**Это и есть однонаправленный поток данных.**
 
 - создадим page action **src/actions/PageActions.js**
 
@@ -237,9 +243,8 @@ export default function page(state = initialState, action) {
 - подправим **src/containers/App.js**
 
 ```js
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux';
+...
+
 import User from '../components/User';
 import Page from '../components/Page';
 import * as pageActions from '../actions/PageActions'
@@ -272,13 +277,12 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 ```
 
-* [bindActionCreators](https://redux.js.org/docs/api/bindActionCreators.html)
+**Note:** [bindActionCreators](https://redux.js.org/docs/api/bindActionCreators.html)
 
 - обновим **src/components/Page.js**
 
 ```js
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+...
 
 export default class Page extends Component {
     onYearBtnClick(e) {
@@ -307,11 +311,11 @@ Page.propTypes = {
 };
 ```
 
-* ::this.onYearBtnClick === this.onYearBtnClick.bind(this) [ES7 (experimental)](https://github.com/tc39/proposal-bind-operator)
+**Note:** `::this.onYearBtnClick === this.onYearBtnClick.bind(this)` [ES7 (experimental)](https://github.com/tc39/proposal-bind-operator)
 
 ## Константы
 
-Если вынести все page actions в отдельный файл с константами, то 
+Если вынести все **page actions** в отдельный файл с константами, то
 
 - удобнее писать тесты
 
@@ -319,11 +323,11 @@ Page.propTypes = {
 
 - поддерживать код
 
-- не отходим от "соглашений" принятых в разработке Flux/Redux приложений
+- не отходим от "соглашений" принятых в разработке **Flux/Redux** приложений
 
-Go go go
+**Go go go**
 
-- обновим **src/constants/Page.js**
+- обновим **src/reducers/page.js**
 
 ```js
 import { SET_YEAR } from '../constants/Page';
@@ -360,11 +364,15 @@ export function setYear(year) {
 
 ## Middleware (Усилители). Логгер
 
-Суть middleware функций, взять входные данные, добавить что-то и передать дальше.
+Суть **middleware** функций
 
-Тут будет пример, из жизни.
+- взять входные данные
 
-Напишем простейший логгер, на каждое действие.
+    - добавить что-то
+
+        - передать дальше
+
+**Напишем простейший логгер, на каждое действие**
 
 - обновим **store/configureStore.js**
 
@@ -393,20 +401,18 @@ export default function configureStore(initialState) {
 ```js
 /*eslint-disable */
 export const logger = store => next => action => {
-    console.log(`Тип события: ${action.type}, дополнительные данные события: ${action.payload}`)
+    console.log(`Тип события: ${action.type}, данные события: ${action.payload}`)
     return next(action)
 };
 /*eslint-enable */
 ```
 
 
-- **eslint-disable** - просто выключает проверку этого блока "линтером".
+- **eslint-disable**, выключает проверку этого блока линтером
 
-- **ping** - это функция, которая возвращает функцию
+- **middleware**, всегда функция(целью не является прервать цепочку вызовов)
 
-- **Middleware** - это всегда функция, которые обычно возвращают функцию, если только целью **middleware** не является прервать цепочку вызовов.
-
-в возвращаемых функциях, благодаря **applyMiddleware** у нас становятся доступными аргументы:
+В возвращаемых функциях, благодаря **applyMiddleware** у нас становятся доступными аргументы:
 
 - **store** - redux-store нашего приложения;
 
@@ -449,7 +455,7 @@ export default function configureStore(initialState) {
 
 ## Асинхронные actions
 
-Давайте представим синхронное действие:
+**Давайте представим синхронное действие:**
 
 1. пользователь кликнул на кнопку
 
@@ -457,7 +463,7 @@ export default function configureStore(initialState) {
 
 3. интерфейс обновился
 
-Давайте представим асинхронное действие:
+**Давайте представим асинхронное действие:**
 
 1. пользователь кликнул на кнопку
 
@@ -496,7 +502,7 @@ switch(тип_действия)
 
     - отобразить строку "У тебя ХХ фото" (зависит, от длины массива, переданного в action.payload)
 
-* вместо реального метода загрузки, использовать setTimeout, который является удобным для тренировок исполнения асинхронных запросов.
+**Note:** вместо реального метода загрузки, использовать `setTimeout`
 
 
 - изменим **src/constants/Page.js**
@@ -701,6 +707,9 @@ Page.propTypes = {
 ## Справочники
 
 - [Контейнеры и компоненты](https://redux.js.org/docs/basics/UsageWithReact.html)
+
 - [bindActionCreators](https://redux.js.org/docs/api/bindActionCreators.html)
+
 - [ES7 (experimental)](https://github.com/tc39/proposal-bind-operator)
+
 - [redux-thunk](https://github.com/gaearon/redux-thunk)

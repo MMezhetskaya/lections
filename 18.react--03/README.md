@@ -12,14 +12,14 @@
 
 ### [webpack](https://webpack.js.org/)
 
-- Ставим **webpack**
+- ставим **webpack**
 
 ```bash
 npm init
 npm i webpack webpack-dev-middleware webpack-hot-middleware --save-dev
 ```
 
-- Создаем **webpack.config.js**
+- создаем **webpack.config.js**
 
 ```js
 const webpack = require('webpack');
@@ -58,13 +58,13 @@ module.exports = {
 
 ### server + React + Hot Reload 
 
-- Для начала установим **express**
+- установим **express**
 
 ```bash
 npm i express react-hot-loader --save-dev
 ```
 
-- Создаем **server.js** 
+- создаем **server.js**
 
 ```js
 const webpack = require('webpack'),
@@ -97,7 +97,7 @@ app
     });
 ```
 
-- Создаем **index.html**
+- создаем **index.html**
 
 ```html
 <!DOCTYPE html>
@@ -114,7 +114,7 @@ app
 </html>
 ```
 
-- Запускаем
+- запускаем
 
 ```js
 ...
@@ -130,13 +130,13 @@ npm start
 
 ### [babel](http://babeljs.io/)
 
-- Ставим **[babel](http://babeljs.io/)** 
+- ставим **[babel](http://babeljs.io/)**
 
 ```bash
 npm i babel-core babel-loader --save-dev
 ```
 
-- Ставим пресеты (предустановки)
+- ставим пресеты (предустановки)
 
 ```bash
 // Для поддержки ES6/ES2015
@@ -157,7 +157,7 @@ npm install babel-runtime --save
 npm install babel-plugin-transform-runtime --save-dev
 ```
 
-- Настройки для **babel**,  .babelrc
+- настройки для **babel**,  **.babelrc**
 
 ```json
 {
@@ -166,7 +166,7 @@ npm install babel-plugin-transform-runtime --save-dev
 }
 ```
 
-- Создаем **src/index.js**
+- создаем **src/index.js**
 
 ```bash
 npm i react react-dom prop-types --save
@@ -198,7 +198,7 @@ if (module.hot) {
 }
 ```
 
-- Создадим **containers/App.js**
+- создадим **containers/App.js**
 
 ```js
 import React, { Component } from 'react';
@@ -213,17 +213,19 @@ export default class App extends Component {
 
 ### ESLint
 
-- Быстро решает синтаксические ошибки и повышает производительность
+- решает синтаксические ошибки
 
-- Единый стиль программирования
+- повышает производительность
 
-- Поехали!!!
+- единый стиль программирования
+
+**Поехали!!!**
 
 ```bash
 npm i babel-eslint eslint eslint-plugin-react --save-dev
 ```
 
-- Задаём правила **.eslintrc**
+- задаём правила **.eslintrc**
 
 ```json
 {
@@ -261,11 +263,13 @@ npm i babel-eslint eslint eslint-plugin-react --save-dev
 
 **[Все правила](https://www.npmjs.com/package/eslint-plugin-react)**
 
-- Ставим нужный лоадер и обновляем конфиг
+- ставим нужный лоадер
 
 ```bash
 npm i eslint-loader --save-dev
 ```
+
+- обновляем конфиг
 
 ```js
 const webpack = require('webpack');
@@ -319,15 +323,19 @@ module.exports = {
 
 ## Основы Redux
 
-- **Redux** — это инструмент управления как состоянием данных, так и состоянием интерфейса в JavaScript-приложениях.
+**Инструмент управления**
 
-![Redux scheme](./redux__scheme.png "Redux scheme")
+— состоянием данных
 
-### Redux приложение это...
+- состоянием интерфейса
+
+**Redux приложение это**
 
 - состояние (**state**) приложения в одном месте
 
-- однонаправленный поток данных(**data flow**) - все данные в приложении следуют одному паттерну жизненного цикла
+- однонаправленный поток данных(**data flow**)
+
+    - все данные в приложении следуют одному паттерну жизненного цикла
 
     - логика приложения более предсказуемая и легкая для понимания
     
@@ -335,10 +343,19 @@ module.exports = {
     
     - нет изолированным копиям одних и тех же данных, которые ничего не знают друг о друге.
 
+![Redux scheme](./redux__scheme.png "Redux scheme")
 
-## И так ТЗ!
+## ТЗ
 
-- Создать одностраничное приложение, с минимумом функций, которое после логина и подтверждения прав доступа к фото, будет выдавать топ ваших "залайканных" фото в порядке убывания. Схематично, приложение можно представить следующим образом: 
+**Создать одностраничное приложение**
+
+- логин
+
+    - получить фото
+
+    - отрисовать кнопки по годам
+
+        - показать фото соответсвующее году
 
 ![Task scheme](./task__scheme.png "Task scheme")
 
@@ -361,13 +378,24 @@ module.exports = {
 
 ### Архитектура приложения
 
-- В шапке слева заголовок и три кнопки выбора года
+**Дизайн**
 
-- Ниже - фото соответствующего года, отсортированное по количеству лайков
+- в шапке
 
-- В шапке справа - ссылка войти/выйти
+    - слева заголовок и кнопки по годам
 
-- Пример данныхc(**state**)
+    - справа ссылка войти/выйти
+
+- ниже
+
+    - фото соответствующего года
+
+    - отсортированное по количеству лайков(дате добавления, имени и тд)
+
+
+**Пример данных**
+
+- **state**
 
 ```
 app: {
@@ -382,7 +410,7 @@ app: {
 }
 ```
 
-- **store**, "объединяет" редьюсер (**reducer**) и действия (**actions**)
+- **store**, объединяет действия (**actions**) и редьюсер (**reducer**)
 
     - **getState()** - позволяет получить состояние приложения
     
@@ -394,16 +422,18 @@ app: {
 
 - простой объект
 
-- обязательное поле - **type** 
+- **type**, обязательное поле
 
-- [Flux соглашение](https://github.com/acdlite/flux-standard-action) (данные передаются вместе с действием, внутрь свойства **payload**)
+- **payload**, данные
+
+**Note:** [Flux соглашение](https://github.com/acdlite/flux-standard-action)
 
 - создадим **action**
 
 ```
 {
     type: 'ЗАГРУЗИ_ФОТО',
-    payload: 2016 //год
+    payload: 2016
 }
 ```
 
@@ -421,12 +451,10 @@ const GET_PHOTO_REQUEST = 'GET_PHOTO_REQUEST';
 const GET_PHOTO_SUCCESS = 'GET_PHOTO_SUCCESS';
 ```
 
-*обычно тип действия, описывают как константу(да большим проектам, нет маленьким)
-
 ```js
 function getPhotos(year) {
   return {
-    type: GET_PHOTOS,
+    type: GET_PHOTO_REQUEST,
     payload: year
   }
 }
@@ -435,11 +463,17 @@ function getPhotos(year) {
 getPhotos(2015);
 ```
 
-## Reducer
+**Note:** обычно тип действия, описывают как константу
 
-"Actions описывает факт, что что-то произошло, но не указывает, как состояние приложения должно измениться в ответ, это работа для Reducer'а"  - пруф от официала ([reducer](https://redux.js.org/docs/basics/Reducers.html)).
+## [Reducer](https://redux.js.org/docs/basics/Reducers.html)
 
-- **reducer composition**
+**Actions**
+
+- описывает факт, что что-то произошло
+
+**Reducers**
+
+- как состояние приложения должно измениться в ответ
 
 ![Reducer example](./reducer.png 'Reducer example')
 
@@ -459,8 +493,7 @@ function page(state = initialState, action) {
     }
 ```
 
-* В редьюсере, мы всегда должны возвращать новый объект, а не измененный предыдущий.
-* **[object spread syntax](https://github.com/tc39/proposal-object-rest-spread)**
+**Note:** в редьюсере, всегда должны возвращать новый объект, а не измененный предыдущий
 
 ```
 <Page photos={reducerPage.photos} />
@@ -484,7 +517,7 @@ npm i redux react-redux --save
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import App from './containers/App';
 import configureStore from './store/configureStore'
 import { AppContainer } from 'react-hot-loader';
@@ -548,7 +581,11 @@ export default function configureStore(initialState) {
 }
 ```
 
-* [createStore](https://redux.js.org/docs/api/createStore.html) - анонимная функцию в качестве редьюсера и объект в качестве начального состояния
+- [createStore](https://redux.js.org/docs/api/createStore.html)
+
+    - анонимная функцию в качестве редьюсера
+
+    - объект в качестве начального состояния
 
 ## Создание Reducer
 
@@ -559,7 +596,7 @@ const initialState = {
   user: 'Unknown User'
 };
 
-export default function userstate(state = initialState) {
+export default function userState(state = initialState) {
   return state;
 }
 ```
@@ -588,7 +625,7 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps)(App);
 ```
 
-*подключи **React** компонент к **Redux store**
+**Note:** подключили **React** компонент к **Redux store**
 
 - проверим **src/reducers/index.js**
 
@@ -599,7 +636,7 @@ const initialState = {
     age: 273
 };
 
-export default function userstate(state = initialState) {
+export default function userState(state = initialState) {
     return state;
 }
 ```
@@ -632,13 +669,13 @@ export default connect(mapStateToProps)(App);
 
 ## Заключение
 
-- Что применяется в современном web
+- что применяется в современном web
 
-- Основы Redux
+- основы Redux
 
-- Actions
+- actions
 
-- Reducer
+- reducers
 
 ## ДЗ
 
@@ -653,15 +690,27 @@ export default connect(mapStateToProps)(App);
 - **must have [redux getting started](https://egghead.io/courses/getting-started-with-redux)**
 
 ## Справочники
+
 - [webpack](https://webpack.js.org/)
+
 - [Screencast webpack](https://learn.javascript.ru/screencast/webpack)
+
 - [babel](http://babeljs.io/)
+
 - [esLint](https://eslint.org/)
+
 - [esLint plugin](https://www.npmjs.com/package/eslint-plugin-react)
+
 - [redux](https://redux.js.org/index.html)
+
 - [Flux соглашение](https://github.com/acdlite/flux-standard-action)
+
 - [reducer](https://redux.js.org/docs/basics/Reducers.html)
+
 - [Object spread syntax](https://github.com/tc39/proposal-object-rest-spread)
+
 - [Provider](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)
+
 - [createStore](https://redux.js.org/docs/api/createStore.html)
+
 - [redux getting started](https://egghead.io/courses/getting-started-with-redux)

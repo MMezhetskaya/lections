@@ -477,6 +477,32 @@ class Article extends React.Component {
 }
 ```
 
+## Version control workflow
+
+**Branches**
+
+- **master**
+
+- **staging**
+
+- **default**
+
+**Deploy process**
+
+```
+//master -> youTaskBranch
+git checkout master;
+git checkout -b you-task-branch;
+
+PR -> (default -> youTaskBranch)
+
+PR -> (staging -> youTaskBranch)
+
+PR -> (master -> youTaskBranch)
+```
+
+**Good luck!**
+
 ## Заключение
 
 - Что такое **React**
