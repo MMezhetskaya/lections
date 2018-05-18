@@ -592,85 +592,6 @@ export default function configureStore(initialState) {
 
     - объект в качестве начального состояния
 
-## Создание Reducer
-
-- создадим **src/reducers/index.js**
-
-```js
-const initialState = {
-  user: 'Unknown User'
-};
-
-export default function userState(state = initialState) {
-  return state;
-}
-```
-
-## Связывание данных
-
-- подключаем **connect** в **src/containers/App.js**
-
-```js
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-class App extends Component {
-    render() {
-        return <div>Привет из App,  { this.props.user }!!!</div>;
-    }
-}
-
-
-function mapStateToProps (state) {
-    return {
-        user: state.user
-    }
-}
-
-export default connect(mapStateToProps)(App);
-```
-
-**Note:** подключили **React** компонент к **Redux store**
-
-- проверим **src/reducers/index.js**
-
-```js
-const initialState = {
-    name: 'Redux',
-    surname: 'Reactovich',
-    age: 273
-};
-
-export default function userState(state = initialState) {
-    return state;
-}
-```
-
-- обновим **src/containers/App.js**
-
-```js
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-
-class App extends Component {
-    render() {
-        const { name, surname, age } = this.props.user;
-
-        return <div>
-            <p>Привет из App, {name} {surname}!</p>
-            <p>Тебе уже {age} ?</p>
-        </div>
-    }
-}
-
-function mapStateToProps (state) {
-    return {
-        user: state
-    }
-}
-
-export default connect(mapStateToProps)(App);
-```
 
 ## Заключение
 
@@ -679,8 +600,6 @@ export default connect(mapStateToProps)(App);
 - основы Redux
 
 - actions
-
-- reducers
 
 ## ДЗ
 
