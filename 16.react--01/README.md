@@ -150,7 +150,7 @@ ReactDOM.render(
 
 - разметка в javascript-коде - **JSX**
 
-"```jsx"
+```jsx
 ReactDOM.render(
     <h1>Hello, world!</h1>,
     document.getElementById( "root ")
@@ -263,7 +263,7 @@ ReactDOM.render(
 
 - компонент `<App /> `содержит в себе компонент `<News />`
 
-    - так же, как если бы это был просто дочерний <div></div> элемент
+    - так же, как если бы это был просто дочерний `<div></div>` элемент
 
 - наш компонент `<News />` такой же примитивный, как и `App`
 
