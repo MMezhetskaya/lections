@@ -624,20 +624,23 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './containers/App';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Admin from './components/Admin';
 import Genre from './components/Genre';
 import Home from './components/Home';
+import NotFound from './components/NotFound';
 
-const renderApp = AppMain => {
+const renderApp = (App) => {
     render(
         <AppContainer>
             <BrowserRouter>
-                <AppMain>
-                    <Route exact path='/' component={Home} />
-                    <Route path='/admin' component={Admin} />
-                    <Route path='/genre' component={Genre} />
-                </AppMain>
+                <App>
+                    <Switch>
+                        <Route exact path='/' component={Home} />
+                        <Route path='/admin' component={Admin} />
+                        <Route path='/genre' component={Genre} />
+                    </Switch>
+                </App>
             </BrowserRouter>
         </AppContainer>,
         document.getElementById('root')
@@ -648,9 +651,9 @@ renderApp(App);
 
 if (module.hot) {
     module.hot.accept('./containers/App', () => {
-        const newAppMain = require('./containers/App').default;
+        const newApp = require('./containers/App').default;
 
-        renderApp(newAppMain);
+        renderApp(newApp);
     });
 }
 ```
@@ -700,15 +703,7 @@ export default class NotFound extends Component {
 - обновим **src/index.js**
 
 ```js
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
-import App from './containers/App';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Admin from './components/Admin';
-import Genre from './components/Genre';
-import Home from './components/Home';
+...
 import NotFound from './components/NotFound';
 
 const renderApp = (App) => {
@@ -716,10 +711,10 @@ const renderApp = (App) => {
         <AppContainer>
             <BrowserRouter>
                 <App>
-                    <Route exact path='/' component={Home} />
-                    <Route path='/admin' component={Admin} />
-                    <Route path='/genre' component={Genre} />
-                    <Route component={NotFound} />
+                    <Switch>
+                        ...
+                        <Route component={NotFound} />
+                    </Switch>
                 </App>
             </BrowserRouter>
         </AppContainer>,
@@ -727,15 +722,7 @@ const renderApp = (App) => {
     );
 };
 
-renderApp(App);
-
-if (module.hot) {
-    module.hot.accept('./containers/App', () => {
-        const newApp = require('./containers/App').default;
-
-        renderApp(newApp);
-    });
-}
+...
 ```
 
 ## Заключение
@@ -773,10 +760,6 @@ if (module.hot) {
 - семантика
  
 - добавить стили и классы(BEM)
- 
-- правильная логика вывода для 404 страницы
-
-- Наладить работу **HMR**
 
 ## Справочники
 - [FB developers apps](https://developers.facebook.com/apps/)
