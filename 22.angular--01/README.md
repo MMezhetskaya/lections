@@ -1,4 +1,6 @@
-# Lection 22
+# Lection l.22
+
+## Angular p.01
 
 ## Курс молодого бойца или [TypeScripts](http://www.typescriptlang.org/)
 

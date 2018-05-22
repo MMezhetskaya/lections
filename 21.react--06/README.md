@@ -1,3 +1,7 @@
+# Lection l.21
+
+## React p.06
+
 ## Дописываем роуты
 
 **Наши роуты**
@@ -85,7 +89,7 @@ const renderApp = (App) => {
 
 **Задача** 
 
-Создать компонент , который будет доступен по адресу: localhost:3000/genre/house
+Создать компонент , который будет доступен по адресу: **[localhost:3000/genre/house](http://localhost:3000/genre/house)**
 
 **Реализация**
 
@@ -131,7 +135,7 @@ export default class Genre extends Component {
 
 **Задача** 
 
-Создать компонент, который будет доступен по адресу: localhost:3000/genre/house/dida-sebastien-leger-all-day-i-dream  
+Создать компонент, который будет доступен по адресу: **[localhost:3000/genre/house/dida-sebastien-leger-all-day-i-dream](localhost:3000/genre/house/dida-sebastien-leger-all-day-i-dream)**
 
 **Реализация**
 
