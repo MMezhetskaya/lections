@@ -1,6 +1,4 @@
-# Lection l.21
-
-## React p.06
+# Lection l.21. React p.06.
 
 ## Дописываем роуты
 

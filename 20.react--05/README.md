@@ -1,6 +1,4 @@
-# Lection l.20
-
-## React p.05
+# Lection l.20. React p.05.
 
 ## Финальные штрихи или работа с API
 

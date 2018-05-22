@@ -1,6 +1,4 @@
-# Lection 28
-
-## Node p.01
+# Lection 28. Node p.01.
 
 ## Введение в Node JS
 

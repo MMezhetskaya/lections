@@ -1,6 +1,4 @@
-# Lection l.17
-
-## React p.02
+# Lection l.17. React p.02.
  
 ## State
 
