@@ -436,6 +436,210 @@ fs.readFile('/etc/passwd', function (err, data) {
 
 ## Кластеры
 
+**Минусы**
+
+- один **thread**
+
+**Выход**
+
+- **cluster**
+
+**Итого**
+
+- возможность использовать все ресурсы процессора на любой машине
+
+или
+
+- вертикально масштабировать Node-приложения
+
+**Код очень прост**
+
+- импортируем модуль
+
+- создаём одного мастера и несколько работников (worker)
+
+- обычно создают по одному процессу на каждый ЦПУ
+
+    - но это не является незыблемым правилом
+
+        - можете наделать столько процессов, сколько пожелаете
+
+            - но с определённого момента прирост производительности прекратится, согласно закону убывания доходности
+
+```js
+// cluster.js
+const cluster = require('cluster');
+
+if (cluster.isMaster) {
+  for (var i = 0; i < numCPUs; i++) {
+    cluster.fork()
+  }
+} else if (cluster.isWorker) {
+  // ваш серверный код
+})
+```
+
+
+## Обработка асинхронных ошибок
+
+- try/catch
+
+```js
+try {
+    throw new Error('Fail!')
+} catch (e) {
+    console.log('Custom Error: ' + e.message)
+}
+```
+
+**Кто скажет в чем минус?**
+
+```js
+try {
+    setTimeout(function () {
+        throw new Error('Fail!')
+    }, Math.round(Math.random()*100));
+} catch (e) {
+    console.log('Custom Error: ' + e.message);
+}
+```
+
+![Работа над ошибками](./fun__05.jpg "Работа над ошибками")
+
+### `on('error')`
+
+- прослушивайть события `on('error')`
+
+    - генерируемые большинством основных объектов в **Node.js**(в особенности http)
+
+```js
+server.on('error', function (err) {
+    console.error(err);
+    process.exit(1);
+})
+```
+
+### uncaughtException
+
+- очень грубый механизм обработки ошибок
+
+- всегда прослушивайте `uncaughtException` в объекте `process`
+
+- если ошибка не обработана, то приложение находится в неопределённом состоянии
+
+```js
+process.on('uncaughtException', function (err) {
+    console.error('uncaughtException: ', err.message);
+    console.error(err.stack);
+    process.exit(1);
+});
+```
+
+**или**
+
+```js
+process.addListener('uncaughtException', function (err) {
+    console.error('uncaughtException: ', err.message);
+    console.error(err.stack);
+    process.exit(1);
+});
+```
+
+## Аддоны на С/С++
+
+**Плюсы**
+
+- **Node.js** позволяет забавляться с более низкоуровневым кодом на **С/С++**
+
+**Иии?**
+
+Разработка для
+
+- железа
+
+- IoT
+
+- дронов
+
+- роботов
+
+- умных гаджетов
+
+**Тут куют собственные аддоны на  С/С++!**
+
+**Напишем аддон с нуля?**
+
+![Напишем аддон с нуля С++?](./fun__02.jpg "Напишем аддон с нуля на С++?")
+
+- создадим файл **hello.cc**
+
+    - поместим несколько шаблонных импортов
+
+    - определим метод
+
+        - возвращающий строковое значение
+
+        - экспортирующий себя
+
+```cc
+#include <node.h>
+
+namespace demo {
+
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::String;
+using v8::Value;
+
+void Method(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
+  args.GetReturnValue().Set(String::NewFromUtf8(isolate, "capital one")); // String
+}
+
+void init(Local<Object> exports) {
+  NODE_SET_METHOD(exports, "hello", Method); // Exporting
+}
+
+NODE_MODULE(addon, init)
+
+}
+```
+
+- создадим файл **binding.gyp**
+
+```json
+{
+  "targets": [
+    {
+      "target_name": "addon",
+      "sources": [ "hello.cc" ]
+    }
+  ]
+}
+
+```
+
+- установим `node-gyp`
+
+```bash
+npm install -g node-gyp;
+
+node-gyp configure;
+node-gyp build;
+```
+
+- проверим `build/Release/`
+
+- напишем наш скрипт
+
+```js
+const addon = require('./build/Release/addon');
+
+console.log(addon.hello());
+```
 
 ## Заключение
 
