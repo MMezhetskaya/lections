@@ -125,7 +125,7 @@ console.log('Step 4');
 
 - использует модульную систему
 
-- вся встроенная функциональность разбита на
+- вся встроенная функциональность разбита
 
     - отдельные пакеты или модули
 
@@ -134,11 +134,126 @@ console.log('Step 4');
 - для загрузки `require()`
 
 ```js
-let os = require("os");
+const os = require("os");
 // получим имя текущего пользователя
 let userName = os.userInfo().username;
 
 console.log(userName);
+```
+
+- свои модули
+
+```js
+// greeting.js
+
+let currentDate = new Date();
+
+module.exports.date = currentDate;
+
+module.exports.getMessage = function(name){
+    var hour = currentDate.getHours();
+    if(hour > 16)
+        return "Добрый вечер, " + name;
+    else if(hour > 10)
+        return "Добрый день, " + name;
+    else
+        return "Доброе утро, " + name;
+}
+```
+
+- **module** ссылка на текущий модуль
+
+- **exports**
+
+```js
+// app.js
+
+const os = require("os");
+const greeting = require("./greeting");
+
+// получим имя текущего пользователя
+const userName = os.userInfo().username;
+
+
+console.log(`Дата запроса: ${greeting.date}`);
+console.log(greeting.getMessage(userName));
+```
+
+**Определение конструкторов и объектов**
+
+```js
+function User(name, age){
+    this.name = name;
+    this.age = age;
+    this.displayInfo = function(){
+
+        console.log(`Имя: ${this.name}  Возраст: ${this.age}`);
+    }
+}
+User.prototype.sayHi = function() {
+    console.log(`Привет, меня зовут ${this.name}`);
+};
+
+module.exports = User;
+```
+
+```js
+const User = require("user");
+
+const alec = new User("Alec", "30+");
+alec.sayHi();
+```
+
+### Работа с модулями
+
+- модули кэшируются
+
+    - увеличивает производительность
+
+**Нюансы**
+
+```js
+// greeting.js
+
+module.exports.name = "Alec";
+```
+
+
+```js
+// app.js
+
+const greeting1 = require("./greeting");
+console.log(`Hello ${greeting1.name}`); // Hello Alec
+
+const greeting2 = require("./greeting");
+greeting2.name= "Not Alec";
+
+console.log(`Hello ${greeting2.name}`); // Hello Not Alec
+console.log(`Hello ${greeting1.name}`); // Hello Not Alec
+```
+
+### Структура модулей
+
+- перенесли **greeting.js** -> **greeting/**
+
+- переименовали **greeting.js** -> **index.js**
+
+- как ищет модуль?
+
+    - **greeting** -> **greeting.js**
+
+    - **greeting** -> **greeting.note**
+
+    - **greeting** -> **greeting.json**
+
+    - **greeting** -> **greeting/** -> **index.***
+
+- а что внутри?
+
+```greeting.js
+...
+
+console.log(module);
 ```
 
 ## Глобальный объект
@@ -153,9 +268,17 @@ console.log(userName);
 
 **Встречайте**
 
+```js
+// some_module.js
+
+global.name = 'Alec';
+```
+
+- [все доступные Global Objects](https://nodejs.org/api/globals.html)
+
 - **global.process**
 
-    - процесс, система, информация об окружении (вы можете обратиться к входным данным CLI, к переменным окружения с паролями, к памяти т.д.)
+    - процесс, система, информация об окружении (вы можете обратиться к входным данным **CLI**, к переменным окружения с паролями, к памяти т.д.)
 
 - **global.__filename**
 
@@ -185,27 +308,57 @@ console.log(userName);
 
 **Свойства**
 
-- **process.pid** ID процесса этого экземпляра Node
+- **process.pid**
 
-- **process.versions** разные версии Node, V8 и других компонентов
+    - ID процесса этого экземпляра **Node**
 
-- **process.arch** архитектура системы
+- **process.versions**
 
-- **process.argv** аргументы CLI
+    - разные версии **Node**, **V8** и других компонентов
 
-- **process.env** переменные окружения
+- **process.arch**
+
+    - архитектура системы
+
+- **process.argv**
+
+    - аргументы **CLI**
+
+- **process.env**
+
+    - переменные окружения
 
 **Методы**
 
-- **process.uptime()** получает время работы
+- **process.uptime()**
 
-- **process.memoryUsage()**  получает объём потребляемой памяти
+    - получает время работы
 
-- **process.cwd()** получает текущую рабочую папку
+- **process.memoryUsage()**
 
-- **process.exit()** выходит из текущего процесс
+    - получает объём потребляемой памяти
 
-- **process.on()** прикрепляет на событие, например, `on('uncaughtException')`
+- **process.cwd()**
+
+    - получает текущую рабочую папку
+
+- **process.exit()**
+
+    - выходит из текущего процесс
+
+- **process.on()**
+
+    - прикрепляет на событие, например, `on('uncaughtException')`
+
+
+
+# COFFEE BREAK
+![Знания сила](./fun__00.jpg "Знания сила")
+
+
+## NPM и установка сторонних модулей
+
+
 
 ## Эмиттеры событий
 
@@ -263,9 +416,9 @@ emitter.emit('knock')
     - удаляет получателя событий.
 
 
-![Знания сила](./fun__00.jpg "Знания сила")
-# COFFEE BREAK
 
+# COFFEE BREAK
+![Знания сила](./fun__00.jpg "Знания сила")
 
 
 ## Stream’ы
@@ -674,6 +827,8 @@ console.log(addon.hello());
 - [Node JS dev version](https://nodejs.org/uk/download/current/)
 
 - [Node JS api](https://nodejs.org/dist/latest-v10.x/docs/api/)
+
+- [Global Objects](https://nodejs.org/api/globals.html)
 
 - [Ад callback’ов](http://callbackhell.com/)
 
