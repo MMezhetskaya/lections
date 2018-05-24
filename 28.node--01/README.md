@@ -182,6 +182,8 @@ console.log(greeting.getMessage(userName));
 **Определение конструкторов и объектов**
 
 ```js
+// user.js
+
 function User(name, age){
     this.name = name;
     this.age = age;
@@ -198,7 +200,9 @@ module.exports = User;
 ```
 
 ```js
-const User = require("user");
+// user.js
+
+const User = require("./user");
 
 const alec = new User("Alec", "30+");
 alec.sayHi();
@@ -358,7 +362,52 @@ global.name = 'Alec';
 
 ## NPM и установка сторонних модулей
 
+- [npm](https://docs.npmjs.com/)
 
+- установим **express**
+
+```js
+npm install express
+```
+
+- **package.json**
+
+```js
+npm init;
+```
+
+```js
+npm install;
+```
+
+
+- **dependencies**
+
+```js
+npm install express --save;
+```
+
+- **devDependencies**
+
+```js
+npm install jasmine-node --save-dev
+```
+
+- удаление
+
+```js
+npm uninstall express
+npm uninstall express --save
+npm uninstall express --save-dev
+```
+
+- семантическое версионирование **major.minor.patch**
+
+    - баг **patch**
+
+    - новая функциональность, совместимая **minor**
+
+    - **major**
 
 ## Эмиттеры событий
 
@@ -829,6 +878,8 @@ console.log(addon.hello());
 - [Node JS api](https://nodejs.org/dist/latest-v10.x/docs/api/)
 
 - [Global Objects](https://nodejs.org/api/globals.html)
+
+- [npm](https://docs.npmjs.com/)
 
 - [Ад callback’ов](http://callbackhell.com/)
 
