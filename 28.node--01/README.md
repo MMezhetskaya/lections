@@ -62,6 +62,8 @@
 
 - [Node JS download](https://nodejs.org)
 
+    - [nvm](https://github.com/creationix/nvm/blob/master/README.md)
+
 - PhpStorm
 
     - плагины (Node JS)
@@ -687,6 +689,8 @@ fs.appendFile(
 - [Node JS download](https://nodejs.org)
 
 - [Node JS dev version](https://nodejs.org/uk/download/current/)
+
+- [nvm](https://github.com/creationix/nvm/blob/master/README.md)
 
 - [Node JS api](https://nodejs.org/dist/latest-v10.x/docs/api/)
 
