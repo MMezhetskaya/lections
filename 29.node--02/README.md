@@ -1,6 +1,5 @@
 # Lection 29. Node p.02.
 
-
 ## Эмиттеры событий
 
 > **[Эмиттер событий](https://nodejs.org/api/events.html)** — это триггер для события, которое может прослушать кто угодно.
@@ -24,8 +23,8 @@
 **Для использования эмиттеров нужно импортировать модуль и создать экземпляр объекта:**
 
 ```js
-let events  = require('events');
-let emitter = new events.EventEmitter();
+const Emitter = require("events");
+const emitter = new Emitter();
 ```
 
 **Далее можно прикрепить получателей событий и активировать/передавать события:**
@@ -56,22 +55,63 @@ emitter.emit('knock')
 
     - удаляет получателя событий.
 
+### Передача параметров событию
 
+**При вызове события**
 
-# COFFEE BREAK
-![Знания сила](./fun__00.jpg "Знания сила")
+- в качестве второго параметра в функцию `emit`
 
+    - можно передавать дату
+
+        - передается в функцию обработчика события
+
+```js
+const Emitter = require("events");
+const emitter = new Emitter();
+const eventName = "greet";
+
+emitter.on(eventName, function(data){
+    console.log(data);
+});
+
+emitter.emit(eventName, "Привет пир!");
+```
+
+### Наследование от EventEmitter
+
+**Приложении как набор сложных объектов(воображение on)**
+
+- можно определять события
+
+    - их надо связать с объектом **EventEmitter**
+
+```js
+// app.js
+
+const util = require("util");
+const EventEmitter = require("events");
+
+function User() {}
+
+util.inherits(User, EventEmitter);
+
+const eventName = "greet";
+
+User.prototype.sayHi = function(data){
+    this.emit(eventName, data);
+}
+
+const user = new User();
+
+// добавляем к объекту user обработку события "greet"
+user.on(eventName, function(data){
+    console.log(data);
+});
+
+user.sayHi("Зай, мне нужна твоя одежда...");
+```
 
 ## Stream’ы
-
-**Зачем**
-
-При работе с большими объёмами данных(**Node**):
-
-- низкая производительность
-
-- ограничен размер буфера примерно 1 Гб
-
 
 **Стандартный подход к буферизации**
 
@@ -95,6 +135,76 @@ emitter.emit('knock')
 
 - **transform**
 
+![Stream’ы](./fun__01.jpeg "Stream’ы")
+
+**А ведь мы знакомы с потоками!**
+
+```js
+const http = require("http");
+
+http.createServer(function(request, response){
+
+}).listen(3000);
+```
+
+- **request**
+
+    - поток для чтения
+
+- **response**
+
+    - поток для записи
+
+**Используя потоки чтения и записи, мы можем считывать и записывать информацию в файл**
+
+```js
+const fs = require("fs");
+
+const writeableStream = fs.createWriteStream("hello.txt");
+
+writeableStream.write("Привет мир!");
+writeableStream.write("Продолжение записи \n");
+writeableStream.end("Завершение записи");
+
+const readableStream = fs.createReadStream("hello.txt", "utf8");
+
+readableStream.on("data", function(chunk){
+    console.log(chunk);
+});
+```
+
+- поток разбивается на ряд кусков или чанков(chunk)
+
+- при считывании каждого такого куска
+
+    - возникает событие **data**
+
+        - с помощью метода `on()`
+
+            - подписаться на это событие
+
+                - получить каждый кусок данных
+
+**Только файлы?**
+
+- сетевые потоки,
+
+- потоки шифрования
+
+- архивации
+
+- т.д.
+
+**Note:** общие принципы работы с ними те же, что и у файловых потоков
+
+**Зачем**
+
+При работе с большими объёмами данных(**Node**):
+
+- низкая производительность
+
+- ограничен размер буфера примерно 1 Гб
+
 **Наиболее востребованные реализации stream’ов**
 
 - HTTP-запросы и отклики
@@ -105,114 +215,69 @@ emitter.emit('knock')
 
 **Note:** **stream** события — наследуют от объекта "эмиттер событий"
 
-### Пример читаемого stream’а
+## Pipe
 
-**За основу**
+> **Pipe** - это канал, который связывает поток для чтения и поток для записи и позволяет сразу считать из потока чтения в поток записи
 
-- возьмём **process.stdin**
+**Для чего они нужны?**
 
-    - стандартный **stream** ввода
+**Пример**
 
-        - содержит данные, которые поступают в приложение(с клавиатуры, для запуска)
-
-**За считывания данных**
-
-- события **data** и **end**
-
-    - **callback** события **data** в качестве аргумента будет иметь **chunk**
-
+- копирование данных
 
 ```js
-// stdin по умолчанию ставится на паузу
-// из которой его надо вывести прежде, чем считывать из него данные
-process.stdin.resume()
-process.stdin.setEncoding('utf8')
+const fs = require("fs");
 
-process.stdin.on('data', function (chunk) {
-  console.log('chunk: ', chunk);
-});
+const readableStream = fs.createReadStream("hello.txt", "utf8");
 
-process.stdin.on('end', function () {
-  console.log('--- END ---');
+const writeableStream = fs.createWriteStream("some.txt");
+
+readableStream.on("data", function(chunk){
+    writeableStream.write(chunk);
 });
 ```
 
-**Ещё пример**
+**С pipe**
 
 ```js
-// есть синхронно работающий интерфейс read()
-// возвращает chunk или null
-let readable = getReadableStreamSomehow();
+const fs = require("fs");
 
-readable.on('readable', () => {
-  let chunk;
+const readableStream = fs.createReadStream("hello.txt", "utf8");
 
-  while (null !== (chunk = readable.read())) {
-    console.log('got %d bytes of data', chunk.length);
-  }
-})
+const writeableStream = fs.createWriteStream("some.txt");
+
+readableStream.pipe(writeableStream);
 ```
 
-### Пример записываемого stream’а
+- архивация файла
 
 ```js
-// записывать в stream можно с помощью операции write
-process.stdout.write('A simple message\n');
+const fs = require("fs");
+const zlib = require("zlib");
+
+const readableStream = fs.createReadStream("hello.txt", "utf8");
+
+const writeableStream = fs.createWriteStream("hello.txt.gz");
+
+const gzip = zlib.createGzip();
+
+readableStream.pipe(gzip).pipe(writeableStream);
 ```
 
-### Pipe
+- каждый метод `pipe()`
 
-```js
-let r = fs.createReadStream('file.txt');
-let z = zlib.createGzip();
-let w = fs.createWriteStream('file.txt.gz');
+    - возвращает поток для чтения
 
-// берёт поток данных и пропускает через все stream’ы
-r.pipe(z).pipe(w);
-```
+        - можно применить `pipe()` снова
 
-### HTTP-stream’ы
+            - записи в другой поток
 
-**HTTP-запросы можно стримить**
-
-- запросы/отклики читаемые и записываемые **stream’ы**
-
-    - наследуются от эмиттеров событий
-
-**Вывод**
-
-- прикрепить получателя событий **data**
-
-    - принимать **chunk** в его **callback**
-
-        - сразу преобразовывать
-
-            - не дожидаясь получения всего отклика
-
-```js
-const http = require('http');
-
-let server = http.createServer((req, res) => {
-    let body = ''
-
-    req.setEncoding('utf8');
-    req.on('data', (chunk) => {
-        body += chunk;
-    });
-    req.on('end', () => {
-        let data = JSON.parse(body);
-        res.write(typeof data);
-        res.end();
-    });
-});
-
-server.listen(1337);
-```
-
+                - и по новой
 
 
 
 # COFFEE BREAK
+![Знания сила](./fun__00.jpg "Знания сила")
 
 
 

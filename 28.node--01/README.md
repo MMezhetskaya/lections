@@ -151,13 +151,18 @@ let currentDate = new Date();
 module.exports.date = currentDate;
 
 module.exports.getMessage = function(name){
-    var hour = currentDate.getHours();
-    if(hour > 16)
-        return "Добрый вечер, " + name;
-    else if(hour > 10)
-        return "Добрый день, " + name;
-    else
-        return "Доброе утро, " + name;
+    const hour = currentDate.getHours();
+    let greeting = `Доброе утро, ${name}`;
+
+    if(hour > 10)
+        greeting = `Добрый день, ${name}`;
+    }
+
+    if(hour > 16) {
+        greeting = `Добрый вечер, ${name}`;
+    }
+
+    return greeting;
 }
 ```
 
@@ -468,7 +473,7 @@ http.createServer(function(request,response){
 
 **И тут на помощь к нам приходит!?**
 
-![Nodemon](./Nodemon.jpg "Nodemon")
+![Nodemon](./nodemon.jpg "Nodemon")
 
 ```bash
 npm install nodemon -g
