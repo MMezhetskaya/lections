@@ -10,26 +10,37 @@
 
 **Цель**
 
-- чтобы справиться с [адом callback’ов](http://callbackhell.com/)
+- справиться с [адом callback’ов](http://callbackhell.com/)
+
+- и много
+
+    - много других
 
 **Как?**
 
 - события обрабатываются с использованием шаблона **observer**
 
-- событие отслеживает все связанные с ним функции
+- событие отслеживает все связанные с ним
 
-- эти функции — observer’ы— исполняются при активизации данного события
+    - функции(observer’ы)
+
+        - исполняются при активизации
 
 **Для использования эмиттеров нужно импортировать модуль и создать экземпляр объекта:**
 
 ```js
 const Emitter = require("events");
+
 const emitter = new Emitter();
 ```
 
 **Далее можно прикрепить получателей событий и активировать/передавать события:**
 
 ```js
+const Emitter = require("events");
+
+const emitter = new Emitter();
+
 emitter.on('knock', function() {
   console.log('Who\'s there?')
 })
@@ -61,12 +72,13 @@ emitter.emit('knock')
 
 - в качестве второго параметра в функцию `emit`
 
-    - можно передавать дату
+    - можно передавать дату(данные)
 
         - передается в функцию обработчика события
 
 ```js
 const Emitter = require("events");
+
 const emitter = new Emitter();
 const eventName = "greet";
 
@@ -110,6 +122,40 @@ user.on(eventName, function(data){
 
 user.sayHi("Зай, мне нужна твоя одежда...");
 ```
+
+## Буферы
+
+- бинарный тип данных
+
+    - глобальный объект
+
+**[Для создания бинарного типа](https://nodejs.org/api/buffer.html#buffer_buffer)**
+
+```js
+// Создадим буфер с алфавитом с помощью цикла for:
+let buf = new Buffer.alloc(26);
+
+for (var i = 0 ; i < 26 ; i++) {
+  buf[i] = i + 97; // 97 is ASCII a
+}
+
+console.log(buf);
+buf.toString('utf8');
+buf.toString('ascii');
+```
+
+**Помните fs?**
+
+```js
+// По умолчанию значение data тоже является буфером
+fs.readFile('file.ext', function (err, data) {
+  if (err) return console.error(err)
+  console.log(data)
+});
+```
+
+
+**Note:** **data** выполняет роль буфера при работе с файлами
 
 ## Stream’ы
 
@@ -280,40 +326,6 @@ readableStream.pipe(gzip).pipe(writeableStream);
 ![Знания сила](./fun__00.jpg "Знания сила")
 
 
-
-## Буферы
-
-- бинарный тип данных
-
-    - глобальный объект
-
-**[Для создания бинарного типа](https://nodejs.org/api/buffer.html#buffer_buffer)**
-
-```js
-// Создадим буфер с алфавитом с помощью цикла for:
-let buf = new Buffer.alloc(26);
-
-for (var i = 0 ; i < 26 ; i++) {
-  buf[i] = i + 97; // 97 is ASCII a
-}
-
-console.log(buf);
-buf.toString('utf8');
-buf.toString('ascii');
-```
-
-**Помните fs?**
-
-```js
-// По умолчанию значение data тоже является буфером
-fs.readFile('/etc/passwd', function (err, data) {
-  if (err) return console.error(err)
-  console.log(data)
-});
-```
-
-
-**Note:** **data** выполняет роль буфера при работе с файлами
 
 ## Кластеры
 
