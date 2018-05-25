@@ -360,6 +360,7 @@ global.name = 'Alec';
 ![Знания сила](./fun__00.jpg "Знания сила")
 
 
+
 ## NPM и установка сторонних модулей
 
 - [npm](https://docs.npmjs.com/)
@@ -409,467 +410,270 @@ npm uninstall express --save-dev
 
     - **major**
 
+- и конечно не стесняемся использовать **help**
+
 ## Передача параметров приложению
 
+**Запуск**
 
+- из терминала/командной строки позволяет передавать параметры
 
-## Эмиттеры событий
-
-> **[Эмиттер событий](https://nodejs.org/api/events.html)** — это триггер для события, которое может прослушать кто угодно.
-
-- за каждым событием закреплено строковое имя
-
-    - на которое эмиттером может быть повешен **callback**
-
-**Цель**
-
-- чтобы справиться с [адом callback’ов](http://callbackhell.com/)
-
-**Как?**
-
-- события обрабатываются с использованием шаблона **observer**
-
-- событие отслеживает все связанные с ним функции
-
-- эти функции — observer’ы— исполняются при активизации данного события
-
-**Для использования эмиттеров нужно импортировать модуль и создать экземпляр объекта:**
+    - применяется массив **process.argv**
 
 ```js
-let events  = require('events');
-let emitter = new events.EventEmitter();
+// app.js
+
+const nodePath = process.argv[0];
+const appPath = process.argv[1];
+const name = process.argv[2];
+const age = process.argv[3];
+
+console.log("nodePath: " + nodePath);
+console.log("appPath: " + appPath);
+console.log();
+console.log("name: " + name);
+console.log("age: " + age);
 ```
-
-**Далее можно прикрепить получателей событий и активировать/передавать события:**
-
-```js
-emitter.on('knock', function() {
-  console.log('Who\'s there?')
-})
-
-emitter.on('knock', function() {
-  console.log('Go away!')
-})
-
-emitter.emit('knock')
-```
-
-**Что есть ещё**
-
-- **emitter.listeners(eventName)**
-
-    - формирует список всех получателей для данного события
-
-- **emitter.once(eventName, listener)**
-
-    - прикрепляет одноразового получателя событий
-
-- **emitter.removeListener(eventName, listener)**
-
-    - удаляет получателя событий.
-
-
-
-# COFFEE BREAK
-![Знания сила](./fun__00.jpg "Знания сила")
-
-
-## Stream’ы
-
-**Зачем**
-
-При работе с большими объёмами данных(**Node**):
-
-- низкая производительность
-
-- ограничен размер буфера примерно 1 Гб
-
-
-**Стандартный подход к буферизации**
-
-![Стандартный подход к буферизации](./buffer__standart.png "Стандартный подход к буферизации")
-
-**Note:** ждём полной загрузки буфера
-
-**Поточный подход к буферизации**
-
-![Поточный подход к буферизации](./buffer__stream.png "Поточный подход к буферизации")
-
-> **Stream’ы** в **Node** являются абстракцией, обозначающей непрерывное разбиение данных на фрагменты
-
-**Типы stream’ов**
-
-- **readable**
-
-- **writable**
-
-- **duplex**
-
-- **transform**
-
-**Наиболее востребованные реализации stream’ов**
-
-- HTTP-запросы и отклики
-
-- стандартные операции ввода/вывода
-
-- чтение из файлов и запись в них
-
-**Note:** **stream** события — наследуют от объекта "эмиттер событий"
-
-### Пример читаемого stream’а
-
-**За основу**
-
-- возьмём **process.stdin**
-
-    - стандартный **stream** ввода
-
-        - содержит данные, которые поступают в приложение(с клавиатуры, для запуска)
-
-**За считывания данных**
-
-- события **data** и **end**
-
-    - **callback** события **data** в качестве аргумента будет иметь **chunk**
-
-
-```js
-// stdin по умолчанию ставится на паузу
-// из которой его надо вывести прежде, чем считывать из него данные
-process.stdin.resume()
-process.stdin.setEncoding('utf8')
-
-process.stdin.on('data', function (chunk) {
-  console.log('chunk: ', chunk);
-});
-
-process.stdin.on('end', function () {
-  console.log('--- END ---');
-});
-```
-
-**Ещё пример**
-
-```js
-// есть синхронно работающий интерфейс read()
-// возвращает chunk или null
-let readable = getReadableStreamSomehow();
-
-readable.on('readable', () => {
-  let chunk;
-
-  while (null !== (chunk = readable.read())) {
-    console.log('got %d bytes of data', chunk.length);
-  }
-})
-```
-
-### Пример записываемого stream’а
-
-```js
-// записывать в stream можно с помощью операции write
-process.stdout.write('A simple message\n');
-```
-
-### Pipe
-
-```js
-let r = fs.createReadStream('file.txt');
-let z = zlib.createGzip();
-let w = fs.createWriteStream('file.txt.gz');
-
-// берёт поток данных и пропускает через все stream’ы
-r.pipe(z).pipe(w);
-```
-
-### HTTP-stream’ы
-
-**HTTP-запросы можно стримить**
-
-- запросы/отклики читаемые и записываемые **stream’ы**
-
-    - наследуются от эмиттеров событий
-
-**Вывод**
-
-- прикрепить получателя событий **data**
-
-    - принимать **chunk** в его **callback**
-
-        - сразу преобразовывать
-
-            - не дожидаясь получения всего отклика
-
-```js
-const http = require('http');
-
-let server = http.createServer((req, res) => {
-    let body = ''
-
-    req.setEncoding('utf8');
-    req.on('data', (chunk) => {
-        body += chunk;
-    });
-    req.on('end', () => {
-        let data = JSON.parse(body);
-        res.write(typeof data);
-        res.end();
-    });
-});
-
-server.listen(1337);
-```
-
-
-
-
-# COFFEE BREAK
-
-
-
-## Буферы
-
-- бинарный тип данных
-
-    - глобальный объект
-
-**[Для создания бинарного типа](https://nodejs.org/api/buffer.html#buffer_buffer)**
-
-```js
-// Создадим буфер с алфавитом с помощью цикла for:
-let buf = new Buffer.alloc(26);
-
-for (var i = 0 ; i < 26 ; i++) {
-  buf[i] = i + 97; // 97 is ASCII a
-}
-
-console.log(buf);
-buf.toString('utf8');
-buf.toString('ascii');
-```
-
-**Помните fs?**
-
-```js
-// По умолчанию значение data тоже является буфером
-fs.readFile('/etc/passwd', function (err, data) {
-  if (err) return console.error(err)
-  console.log(data)
-});
-```
-
-
-**Note:** **data** выполняет роль буфера при работе с файлами
-
-## Кластеры
-
-**Минусы**
-
-- один **thread**
-
-**Выход**
-
-- **cluster**
-
-**Итого**
-
-- возможность использовать все ресурсы процессора на любой машине
-
-или
-
-- вертикально масштабировать Node-приложения
-
-**Код очень прост**
-
-- импортируем модуль
-
-- создаём одного мастера и несколько работников (worker)
-
-- обычно создают по одному процессу на каждый ЦПУ
-
-    - но это не является незыблемым правилом
-
-        - можете наделать столько процессов, сколько пожелаете
-
-            - но с определённого момента прирост производительности прекратится, согласно закону убывания доходности
-
-```js
-// cluster.js
-const cluster = require('cluster');
-
-if (cluster.isMaster) {
-  for (var i = 0; i < numCPUs; i++) {
-    cluster.fork()
-  }
-} else if (cluster.isWorker) {
-  // ваш серверный код
-})
-```
-
-
-## Обработка асинхронных ошибок
-
-- try/catch
-
-```js
-try {
-    throw new Error('Fail!')
-} catch (e) {
-    console.log('Custom Error: ' + e.message)
-}
-```
-
-**Кто скажет в чем минус?**
-
-```js
-try {
-    setTimeout(function () {
-        throw new Error('Fail!')
-    }, Math.round(Math.random()*100));
-} catch (e) {
-    console.log('Custom Error: ' + e.message);
-}
-```
-
-![Работа над ошибками](./fun__05.jpg "Работа над ошибками")
-
-### `on('error')`
-
-- прослушивайть события `on('error')`
-
-    - генерируемые большинством основных объектов в **Node.js**(в особенности http)
-
-```js
-server.on('error', function (err) {
-    console.error(err);
-    process.exit(1);
-})
-```
-
-### uncaughtException
-
-- очень грубый механизм обработки ошибок
-
-- всегда прослушивайте `uncaughtException` в объекте `process`
-
-- если ошибка не обработана, то приложение находится в неопределённом состоянии
-
-```js
-process.on('uncaughtException', function (err) {
-    console.error('uncaughtException: ', err.message);
-    console.error(err.stack);
-    process.exit(1);
-});
-```
-
-**или**
-
-```js
-process.addListener('uncaughtException', function (err) {
-    console.error('uncaughtException: ', err.message);
-    console.error(err.stack);
-    process.exit(1);
-});
-```
-
-## Аддоны на С/С++
-
-**Плюсы**
-
-- **Node.js** позволяет забавляться с более низкоуровневым кодом на **С/С++**
-
-**Иии?**
-
-Разработка для
-
-- железа
-
-- IoT
-
-- дронов
-
-- роботов
-
-- умных гаджетов
-
-**Тут куют собственные аддоны на  С/С++!**
-
-**Напишем аддон с нуля?**
-
-![Напишем аддон с нуля С++?](./fun__02.jpg "Напишем аддон с нуля на С++?")
-
-- создадим файл **hello.cc**
-
-    - поместим несколько шаблонных импортов
-
-    - определим метод
-
-        - возвращающий строковое значение
-
-        - экспортирующий себя
-
-```cc
-#include <node.h>
-
-namespace demo {
-
-using v8::FunctionCallbackInfo;
-using v8::HandleScope;
-using v8::Isolate;
-using v8::Local;
-using v8::Object;
-using v8::String;
-using v8::Value;
-
-void Method(const FunctionCallbackInfo<Value>& args) {
-  Isolate* isolate = args.GetIsolate();
-  args.GetReturnValue().Set(String::NewFromUtf8(isolate, "capital one")); // String
-}
-
-void init(Local<Object> exports) {
-  NODE_SET_METHOD(exports, "hello", Method); // Exporting
-}
-
-NODE_MODULE(addon, init)
-
-}
-```
-
-- создадим файл **binding.gyp**
-
-```json
-{
-  "targets": [
-    {
-      "target_name": "addon",
-      "sources": [ "hello.cc" ]
-    }
-  ]
-}
-
-```
-
-- установим `node-gyp`
 
 ```bash
-npm install -g node-gyp;
-
-node-gyp configure;
-node-gyp build;
+node app.js Alec 18
 ```
 
-- проверим `build/Release/`
+## Nodemon
 
-- напишем наш скрипт
+**Процесс разработки(вообразили)**
+
+- необходимость внести изменения запущенный проект
 
 ```js
-const addon = require('./build/Release/addon');
+//  app.js
 
-console.log(addon.hello());
+const http = require("http");
+
+const message = "Hello World!";
+
+http.createServer(function(request,response){
+
+    console.log(message);
+    response.end(message);
+
+}).listen(3000, "127.0.0.1",()=>{
+    console.log("Сервер начал прослушивание запросов");
+});
 ```
 
+- обратимся к [http://localhost:3000/](http://localhost:3000/)
+
+- внезапно понадобилось изменить `message`
+
+**И тут на помощь к нам приходит!?**
+
+![Nodemon](./Nodemon.jpg "Nodemon")
+
+```bash
+npm install nodemon -g
+```
+
+- по новой
+
+```bash
+nodemon app.js
+```
+
+**Что еще?**
+
+- [pm2](http://pm2.keymetrics.io/)
+
+
+## Асинхронность в Node.js
+
+**Ааа что? Зачем?**
+
+- один поток
+
+- множество задач
+
+**А одновременно?**
+
+![Вот это поворот](./hqdefault.png "Вот это поворот")
+
+- очевидно
+
+```js
+// app.js
+
+function displaySync(data) {
+    console.log(data);
+}
+
+console.log("Начало работы программы");
+
+displaySync("Обработка данных...");
+
+console.log("Завершение работы программы");
+```
+
+- а так?
+
+```js
+// app.js
+
+function display(data, callback) {
+    // с помощью случайного числа определяем ошибку
+    const randInt = Math.random() * (10 - 1) + 1;
+    const err = randInt>5 ? new Error("Ошибка выполнения. randInt больше 5"): null;
+
+    setTimeout(function(){
+        callback(err, data);
+    }, 0);
+}
+
+console.log("Начало работы программы");
+
+display("Обработка данных...", function (err, data){
+    if(err) throw err;
+    console.log(data);
+});
+
+console.log("Завершение работы программы");
+```
+
+- приложение не блокируется (вспомним **event loop**)
+
+```js
+function displaySync(callback){
+    callback();
+}
+
+console.log("Начало работы программы");
+
+setTimeout(function(){
+    console.log("timeout 500");
+}, 500);
+
+setTimeout(function(){
+    console.log("timeout 100");
+}, 100);
+
+displaySync(function(){console.log("without timeout")});
+console.log("Завершение работы программы");
+```
+
+## Работа с файлами
+
+- знакомьтесь [fs](https://nodejs.org/api/fs.html)
+
+```txt
+// hello.txt
+
+Hello Node JS!
+```
+
+### Чтение
+
+- **fs.readFileSync/readFile**
+
+```js
+fs.readFileSync("hello.txt", "utf8");
+
+fs.readFile("hello.txt", "utf8", function(error, data){ });
+```
+
+```js
+// app.js
+
+const fs = require("fs");
+
+// асинхронное чтение
+fs.readFile(
+    "hello.txt",
+     "utf8",
+    function(error, data) {
+        console.log("Асинхронное чтение файла");
+        if(error) throw error; // если возникла ошибка
+        console.log(data);  // выводим считанные данные
+    }
+);
+
+// синхронное чтение
+console.log("Синхронное чтение файла");
+const fileContent = fs.readFileSync("hello.txt", "utf8");
+console.log(fileContent);
+```
+
+### Запись
+
+- **fs.writeFileSync/writeFile**
+
+```js
+fs.writeFileSync("hello.txt", "Привет ми ми ми!");
+
+fs.writeFile("hello.txt", "Привет МИР!");
+```
+
+```js
+const fs = require("fs");
+ 
+fs.writeFile(
+    "hello.txt",
+    "Hello мир!",
+    function(error){
+        if(error) throw error; // если возникла ошибка
+        console.log("Асинхронная запись файла завершена. Содержимое файла:");
+
+        const data = fs.readFileSync("hello.txt", "utf8");
+        console.log(data);  // выводим считанные данные
+    }
+);
+```
+
+- **fs.appendFileSync/appendFile**
+
+```js
+var fs = require("fs");
+
+fs.appendFileSync("hello.txt", "Привет ми ми ми!");
+
+fs.appendFile(
+    "hello.txt",
+    "Привет МИР!",
+    function(error){
+        if(error) throw error; // если возникла ошибка
+
+        console.log("Запись файла завершена. Содержимое файла:");
+
+        const data = fs.readFileSync("hello.txt", "utf8");
+        console.log(data);  // выводим считанные данные
+});
+```
+
+- [несомненно много много других возможностей](https://nodejs.org/api/fs.html)
+
 ## Заключение
+
+**Что с нами было!**
+
+- Немного узнали о Node JS
+
+- Цикл событий
+
+- Модули
+
+- Глобальный объект
+
+- Процесс
+
+- NPM
+
+- Передача параметров приложению
+
+- Nodemon
+
+- Асинхронность
+
+- Работа с файлами
+
+**Молодцы выдержали!!!**
 
 ## Справочники
 
@@ -885,6 +689,6 @@ console.log(addon.hello());
 
 - [npm](https://docs.npmjs.com/)
 
-- [Ад callback’ов](http://callbackhell.com/)
+- [pm2](http://pm2.keymetrics.io/)
 
-- [документации по буферу](https://nodejs.org/api/buffer.html#buffer_buffer)
+- [fs](https://nodejs.org/api/fs.html)

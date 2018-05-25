@@ -1,5 +1,467 @@
 # Lection 29. Node p.02.
 
+
+## Эмиттеры событий
+
+> **[Эмиттер событий](https://nodejs.org/api/events.html)** — это триггер для события, которое может прослушать кто угодно.
+
+- за каждым событием закреплено строковое имя
+
+    - на которое эмиттером может быть повешен **callback**
+
+**Цель**
+
+- чтобы справиться с [адом callback’ов](http://callbackhell.com/)
+
+**Как?**
+
+- события обрабатываются с использованием шаблона **observer**
+
+- событие отслеживает все связанные с ним функции
+
+- эти функции — observer’ы— исполняются при активизации данного события
+
+**Для использования эмиттеров нужно импортировать модуль и создать экземпляр объекта:**
+
+```js
+let events  = require('events');
+let emitter = new events.EventEmitter();
+```
+
+**Далее можно прикрепить получателей событий и активировать/передавать события:**
+
+```js
+emitter.on('knock', function() {
+  console.log('Who\'s there?')
+})
+
+emitter.on('knock', function() {
+  console.log('Go away!')
+})
+
+emitter.emit('knock')
+```
+
+**Что есть ещё**
+
+- **emitter.listeners(eventName)**
+
+    - формирует список всех получателей для данного события
+
+- **emitter.once(eventName, listener)**
+
+    - прикрепляет одноразового получателя событий
+
+- **emitter.removeListener(eventName, listener)**
+
+    - удаляет получателя событий.
+
+
+
+# COFFEE BREAK
+![Знания сила](./fun__00.jpg "Знания сила")
+
+
+## Stream’ы
+
+**Зачем**
+
+При работе с большими объёмами данных(**Node**):
+
+- низкая производительность
+
+- ограничен размер буфера примерно 1 Гб
+
+
+**Стандартный подход к буферизации**
+
+![Стандартный подход к буферизации](./buffer__standart.png "Стандартный подход к буферизации")
+
+**Note:** ждём полной загрузки буфера
+
+**Поточный подход к буферизации**
+
+![Поточный подход к буферизации](./buffer__stream.png "Поточный подход к буферизации")
+
+> **Stream’ы** в **Node** являются абстракцией, обозначающей непрерывное разбиение данных на фрагменты
+
+**Типы stream’ов**
+
+- **readable**
+
+- **writable**
+
+- **duplex**
+
+- **transform**
+
+**Наиболее востребованные реализации stream’ов**
+
+- HTTP-запросы и отклики
+
+- стандартные операции ввода/вывода
+
+- чтение из файлов и запись в них
+
+**Note:** **stream** события — наследуют от объекта "эмиттер событий"
+
+### Пример читаемого stream’а
+
+**За основу**
+
+- возьмём **process.stdin**
+
+    - стандартный **stream** ввода
+
+        - содержит данные, которые поступают в приложение(с клавиатуры, для запуска)
+
+**За считывания данных**
+
+- события **data** и **end**
+
+    - **callback** события **data** в качестве аргумента будет иметь **chunk**
+
+
+```js
+// stdin по умолчанию ставится на паузу
+// из которой его надо вывести прежде, чем считывать из него данные
+process.stdin.resume()
+process.stdin.setEncoding('utf8')
+
+process.stdin.on('data', function (chunk) {
+  console.log('chunk: ', chunk);
+});
+
+process.stdin.on('end', function () {
+  console.log('--- END ---');
+});
+```
+
+**Ещё пример**
+
+```js
+// есть синхронно работающий интерфейс read()
+// возвращает chunk или null
+let readable = getReadableStreamSomehow();
+
+readable.on('readable', () => {
+  let chunk;
+
+  while (null !== (chunk = readable.read())) {
+    console.log('got %d bytes of data', chunk.length);
+  }
+})
+```
+
+### Пример записываемого stream’а
+
+```js
+// записывать в stream можно с помощью операции write
+process.stdout.write('A simple message\n');
+```
+
+### Pipe
+
+```js
+let r = fs.createReadStream('file.txt');
+let z = zlib.createGzip();
+let w = fs.createWriteStream('file.txt.gz');
+
+// берёт поток данных и пропускает через все stream’ы
+r.pipe(z).pipe(w);
+```
+
+### HTTP-stream’ы
+
+**HTTP-запросы можно стримить**
+
+- запросы/отклики читаемые и записываемые **stream’ы**
+
+    - наследуются от эмиттеров событий
+
+**Вывод**
+
+- прикрепить получателя событий **data**
+
+    - принимать **chunk** в его **callback**
+
+        - сразу преобразовывать
+
+            - не дожидаясь получения всего отклика
+
+```js
+const http = require('http');
+
+let server = http.createServer((req, res) => {
+    let body = ''
+
+    req.setEncoding('utf8');
+    req.on('data', (chunk) => {
+        body += chunk;
+    });
+    req.on('end', () => {
+        let data = JSON.parse(body);
+        res.write(typeof data);
+        res.end();
+    });
+});
+
+server.listen(1337);
+```
+
+
+
+
+# COFFEE BREAK
+
+
+
+## Буферы
+
+- бинарный тип данных
+
+    - глобальный объект
+
+**[Для создания бинарного типа](https://nodejs.org/api/buffer.html#buffer_buffer)**
+
+```js
+// Создадим буфер с алфавитом с помощью цикла for:
+let buf = new Buffer.alloc(26);
+
+for (var i = 0 ; i < 26 ; i++) {
+  buf[i] = i + 97; // 97 is ASCII a
+}
+
+console.log(buf);
+buf.toString('utf8');
+buf.toString('ascii');
+```
+
+**Помните fs?**
+
+```js
+// По умолчанию значение data тоже является буфером
+fs.readFile('/etc/passwd', function (err, data) {
+  if (err) return console.error(err)
+  console.log(data)
+});
+```
+
+
+**Note:** **data** выполняет роль буфера при работе с файлами
+
+## Кластеры
+
+**Минусы**
+
+- один **thread**
+
+**Выход**
+
+- **cluster**
+
+**Итого**
+
+- возможность использовать все ресурсы процессора на любой машине
+
+или
+
+- вертикально масштабировать Node-приложения
+
+**Код очень прост**
+
+- импортируем модуль
+
+- создаём одного мастера и несколько работников (worker)
+
+- обычно создают по одному процессу на каждый ЦПУ
+
+    - но это не является незыблемым правилом
+
+        - можете наделать столько процессов, сколько пожелаете
+
+            - но с определённого момента прирост производительности прекратится, согласно закону убывания доходности
+
+```js
+// cluster.js
+const cluster = require('cluster');
+
+if (cluster.isMaster) {
+  for (var i = 0; i < numCPUs; i++) {
+    cluster.fork()
+  }
+} else if (cluster.isWorker) {
+  // ваш серверный код
+})
+```
+
+
+## Обработка асинхронных ошибок
+
+- try/catch
+
+```js
+try {
+    throw new Error('Fail!')
+} catch (e) {
+    console.log('Custom Error: ' + e.message)
+}
+```
+
+**Кто скажет в чем минус?**
+
+```js
+try {
+    setTimeout(function () {
+        throw new Error('Fail!')
+    }, Math.round(Math.random()*100));
+} catch (e) {
+    console.log('Custom Error: ' + e.message);
+}
+```
+
+![Работа над ошибками](./fun__05.jpg "Работа над ошибками")
+
+### `on('error')`
+
+- прослушивайть события `on('error')`
+
+    - генерируемые большинством основных объектов в **Node.js**(в особенности http)
+
+```js
+server.on('error', function (err) {
+    console.error(err);
+    process.exit(1);
+})
+```
+
+### uncaughtException
+
+- очень грубый механизм обработки ошибок
+
+- всегда прослушивайте `uncaughtException` в объекте `process`
+
+- если ошибка не обработана, то приложение находится в неопределённом состоянии
+
+```js
+process.on('uncaughtException', function (err) {
+    console.error('uncaughtException: ', err.message);
+    console.error(err.stack);
+    process.exit(1);
+});
+```
+
+**или**
+
+```js
+process.addListener('uncaughtException', function (err) {
+    console.error('uncaughtException: ', err.message);
+    console.error(err.stack);
+    process.exit(1);
+});
+```
+
+## Аддоны на С/С++
+
+**Плюсы**
+
+- **Node.js** позволяет забавляться с более низкоуровневым кодом на **С/С++**
+
+**Иии?**
+
+Разработка для
+
+- железа
+
+- IoT
+
+- дронов
+
+- роботов
+
+- умных гаджетов
+
+**Тут куют собственные аддоны на  С/С++!**
+
+**Напишем аддон с нуля?**
+
+![Напишем аддон с нуля С++?](./fun__02.jpg "Напишем аддон с нуля на С++?")
+
+- создадим файл **hello.cc**
+
+    - поместим несколько шаблонных импортов
+
+    - определим метод
+
+        - возвращающий строковое значение
+
+        - экспортирующий себя
+
+```cc
+#include <node.h>
+
+namespace demo {
+
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::String;
+using v8::Value;
+
+void Method(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
+  args.GetReturnValue().Set(String::NewFromUtf8(isolate, "capital one")); // String
+}
+
+void init(Local<Object> exports) {
+  NODE_SET_METHOD(exports, "hello", Method); // Exporting
+}
+
+NODE_MODULE(addon, init)
+
+}
+```
+
+- создадим файл **binding.gyp**
+
+```json
+{
+  "targets": [
+    {
+      "target_name": "addon",
+      "sources": [ "hello.cc" ]
+    }
+  ]
+}
+
+```
+
+- установим `node-gyp`
+
+```bash
+npm install -g node-gyp;
+
+node-gyp configure;
+node-gyp build;
+```
+
+- проверим `build/Release/`
+
+- напишем наш скрипт
+
+```js
+const addon = require('./build/Release/addon');
+
+console.log(addon.hello());
+```
+
+
 ## Заключение
 
 ## Справочники
+
+- [Ад callback’ов](http://callbackhell.com/)
+
+- [документации по буферу](https://nodejs.org/api/buffer.html#buffer_buffer)
