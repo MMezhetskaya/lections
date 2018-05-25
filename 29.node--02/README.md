@@ -135,7 +135,7 @@ user.sayHi("Зай, мне нужна твоя одежда...");
 // Создадим буфер с алфавитом с помощью цикла for:
 let buf = new Buffer.alloc(26);
 
-for (var i = 0 ; i < 26 ; i++) {
+for (let i = 0 ; i < 26 ; i++) {
   buf[i] = i + 97; // 97 is ASCII a
 }
 
@@ -325,7 +325,132 @@ readableStream.pipe(gzip).pipe(writeableStream);
 # COFFEE BREAK
 ![Знания сила](./fun__00.jpg "Знания сила")
 
+## Сервер
 
+- [http](https://nodejs.org/api/http.html)
+
+```js
+const http = require("http");
+
+http.createServer(function(request, response){
+    response.end("Hello world!");
+}).listen(3000);
+```
+
+- **request** хранит информацию о запросе
+
+- **response** управляет отправкой ответа
+
+**Request**
+
+- **headers** возвращает заголовки запроса
+
+- **method** тип запроса (GET, POST, DELETE, PUT)
+
+- **url** запрошенный адрес
+
+```js
+const http = require("http");
+
+http.createServer(function(request, response){
+    console.log("Url: " + request.url);
+    console.log("Тип запроса: " + request.method);
+    console.log("User-Agent: " + request.headers["user-agent"]);
+    console.log("Все заголовки");
+    console.log(request.headers);
+
+    response.end();
+}).listen(3000);
+```
+
+**Response**
+
+- **statusCode** устанавливает статусный код ответа
+
+- **statusMessage** устанавливает сообщение, отправляемое вместе со статусным кодом
+
+- **setHeader(name, value)** добавляет в ответ один заголовок
+
+- **write** пишет в поток ответа некоторое содержимое
+
+- **writeHead** добавляет в ответ статусный код и набор заголовков
+
+```js
+const http = require("http");
+
+http.createServer(function(request, response){
+    response.setHeader("UserId", 12);
+    response.setHeader("Content-Type", "text/html");
+    response.write("<h2>hello world</h2>");
+    response.end();
+}).listen(3000);
+```
+
+
+### Отправка статических файлов
+
+- **public/index.html**
+
+```js
+// app.js
+
+const http = require("http");
+const fs = require("fs");
+
+http.createServer(function(request, response){
+    console.log(`Запрошенный адрес: ${request.url}`);
+
+    if(request.url.startsWith("/public/")){
+        // получаем путь после слеша
+        const filePath = request.url.substr(1);
+        fs.readFile(filePath, function(error, data){
+            if(error){
+
+                response.statusCode = 404;
+                response.end("Ресурс не найден!");
+            } else {
+                response.end(data);
+            }
+        })
+    } else{
+        // во всех остальных случаях отправляем строку hello world!
+        response.end("Hello World!");
+    }
+}).listen(3000);
+```
+
+### Stream и отправка файлов
+
+- работа с большими файлами
+
+    - использование потоков
+
+```js
+// app.js
+
+const http = require("http");
+const fs = require("fs");
+
+http.createServer(function(request, response){
+    if(request.url == "/some.png"){
+        response.writeHead(200, {"Content-Type" : "image/png"});
+
+        fs.createReadStream("some.png").pipe(response);
+    }
+    else{
+        response.end("hello world!");
+    }
+
+}).listen(3000);
+```
+
+- `fs.createReadStream`создает поток для чтения
+
+    - получения данных из потока метод `pipe`
+
+        - передается объект интерфейса `stream.Writable` или поток для записи
+
+            - `http.ServerResponse` реализует этот интерфейс
 
 ## Кластеры
 
@@ -375,7 +500,7 @@ if (cluster.isMaster) {
 
 ## Обработка асинхронных ошибок
 
-- try/catch
+- **try/catch**
 
 ```js
 try {
@@ -534,11 +659,32 @@ const addon = require('./build/Release/addon');
 console.log(addon.hello());
 ```
 
+![Как забыть С++](./forgetCpp.jpg "Как забыть С++")
 
 ## Заключение
+
+- Эмиттеры событий
+
+- Буферы
+
+- Stream’ы
+
+- Pipe
+
+- Сервер
+
+- Кластеры
+
+- Обработка асинхронных ошибок
+
+- Аддоны на С/С++
+
+**Молодцы выдержали!!!**
 
 ## Справочники
 
 - [Ад callback’ов](http://callbackhell.com/)
 
 - [документации по буферу](https://nodejs.org/api/buffer.html#buffer_buffer)
+
+- [http](https://nodejs.org/api/http.html)
