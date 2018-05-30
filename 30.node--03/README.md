@@ -361,7 +361,7 @@ app.listen(3000);
 
 ## POST-запросы и работа с формой
 
-- для работы с **DOM**
+- для работы с **body**
 
 ```bash
 npm install body-parser --save
