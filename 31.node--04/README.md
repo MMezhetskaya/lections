@@ -507,11 +507,73 @@ app.listen(3000, function(){
 
 ## Node.js и MongoDB
 
-- установим **mongodb**
+- установим **[сервер MongoDB](https://www.mongodb.com/download-center#atlas)** и **драйвер MongoDB**
 
 ```bash
 npm install mongodb --save
 ```
+
+**Процесс работы**
+
+- подключение к серверу
+
+- получение объекта базы данных на сервере
+
+- получение объекта коллекции в базе данных
+
+- взаимодействие с коллекцией (добавление, удаление, получение, изменение данных)
+
+**Подключение к базе данных**
+
+```js
+const mongoClient = require("mongodb").MongoClient;
+
+const url = "mongodb://localhost:27017/";
+
+mongoClient.connect(url, function(err, client){
+    const db = client.db("usersdb");
+    const collection = db.collection("users");
+
+    const user = {name: "Tom", age: 23};
+
+    collection.insertOne(user, function(err, result){
+        if(err) return console.log(err);
+
+        console.log(result.ops);
+        client.close();
+    });
+});
+```
+
+- адрес сервера
+
+    - протокол устанавливается "mongodb://"
+
+- callback
+
+    - **err**
+
+    - **client**
+
+        - ссылка на подключенный к серверу клиент
+
+        - **client.db**
+
+        - **db.collection**
+
+        - **insertOne** метод коллекции
+
+            - **err**
+
+                - ошибка, которая может возникнуть при операции
+
+            - **result**
+
+                - результат операции
+
+        - закрыть соединение
+
+**Note:** если нет подобной базы данных **MongoDB**, будет создана при первом обращении
 
 ## Заключение
 
@@ -520,6 +582,8 @@ npm install mongodb --save
 - [RESTful](https://ru.wikipedia.org/wiki/REST)
 
 - [MongoDB](https://www.mongodb.com/)
+
+- [MongoDB download](https://www.mongodb.com/download-center#atlas)
 
 - [Документо-ориентированная модель данных](https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%BE%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F_%D0%A1%D0%A3%D0%91%D0%94)
 
