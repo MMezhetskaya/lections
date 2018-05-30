@@ -320,8 +320,6 @@ readableStream.pipe(gzip).pipe(writeableStream);
 
                 - и по новой
 
-
-
 # COFFEE BREAK
 ![Знания сила](./fun__00.jpg "Знания сила")
 
