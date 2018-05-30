@@ -1,6 +1,6 @@
 # Lection 30. Node p.03.
 
-## Express
+## [Express](http://expressjs.com/ru/)
 
 **Предоставляет ряд готовых абстракций, которые упрощают**
 
@@ -657,6 +657,24 @@ app.get("/contact", function(request, response){
 
 ## Заключение
 
+- Express
+
+- Конвейер обработки запроса
+
+- Маршрутизация
+
+- Статические файлы
+
+- POST-запросы и работа с формой
+
+- JSON и AJAX
+
+- Представления(View)
+
+- Частичные представления(Partial views)
+
 ## Справочники
+
+- [Express](http://expressjs.com/ru/)
 
 - [Handlebars](https://handlebarsjs.com/)
