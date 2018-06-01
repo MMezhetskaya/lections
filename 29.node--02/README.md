@@ -588,13 +588,14 @@ server.listen(3000);
 console.log('Started');
 ```
 
-- **inspect**
+- **inspect/inspect-brk**
+
 
 ```bash
 nodemon --inspect app.js
 ```
 
-
+- или **IDE**
 
 ## Аддоны на С/С++
 
