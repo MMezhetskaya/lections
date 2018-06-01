@@ -561,6 +561,41 @@ process.addListener('uncaughtException', function (err) {
 });
 ```
 
+## Отладка
+
+- [Debugging Guide](https://nodejs.org/en/docs/guides/debugging-getting-started/)
+
+    - [руководство](https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27)
+
+```js
+//app.js
+const http = require("http");
+
+const server = http.createServer();
+
+server.on('request', function(request, response) {
+    debugger;
+    response.setHeader("UserId", 12);
+    response.setHeader("Content-Type", "text/html");
+    response.write("<h2>hello world</h2>");
+
+    response.end();
+
+});
+
+server.listen(3000);
+
+console.log('Started');
+```
+
+- **inspect**
+
+```bash
+nodemon --inspect app.js
+```
+
+
+
 ## Аддоны на С/С++
 
 **Плюсы**
@@ -686,3 +721,7 @@ console.log(addon.hello());
 - [документации по буферу](https://nodejs.org/api/buffer.html#buffer_buffer)
 
 - [http](https://nodejs.org/api/http.html)
+
+- [Debugging Guide](https://nodejs.org/en/docs/guides/debugging-getting-started/)
+
+- [руководство](https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27)

@@ -484,7 +484,7 @@ npm install nodemon -g
 - по новой
 
 ```bash
-nodemon app.js
+nodemon app
 ```
 
 **Что еще?**
