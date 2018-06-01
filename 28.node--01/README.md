@@ -90,8 +90,9 @@ node
 node file.js
 ```
 
-
 ## Цикл событий
+
+- **Node.js**core **LibUV**
 
 ![Цикл событий](./node__cycle__events.png "Цикл событий")
 
