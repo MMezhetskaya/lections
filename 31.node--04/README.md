@@ -755,7 +755,7 @@ app.put("/api/users", jsonParser, function(req, res){
     const id = new ObjectId(req.body._id);
     const userName = req.body.name;
     const userAge = req.body.age;
-console.log(id);
+
     MongoClient.connect(url, { useNewUrlParser: true }, function(err, client){
         client.db("usersdb")
             .collection("users")
@@ -788,7 +788,339 @@ app.listen(3000, function(){
 });
 ```
 
+## [Mongoose](http://mongoosejs.com/)
+
+- **ODM** библиотека (Object Data Modelling)
+
+    - сопоставлять объекты классов и документы коллекций из базы
+
+```bash
+npm install mongoose --save
+```
+
+- **app.js**
+
+```js
+const mongoose = require("mongoose");
+const { Schema } = require("mongoose");
+
+ // для работы с promise
+ mongoose.Promise = global.Promise;
+
+ // установка схемы
+ const userScheme = new Schema({
+     name: String,
+     age: Number
+ });
+
+ // подключение
+ mongoose.connect("mongodb://localhost:27017/usersdb");
+
+ const User = mongoose.model("User", userScheme);
+ const user = new User({
+     name: "Alec",
+     age: 17
+ });
+
+
+user.save(function(err){
+    mongoose.disconnect();  // отключение от базы данных
+
+    if(err) return console.log(err);
+    console.log("Сохранен объект", user);
+});
+```
+
+- потому-что промис
+
+```js
+user.save()
+.then(function(doc){
+    console.log("Сохранен объект", doc);
+    mongoose.disconnect();  // отключение от базы данных
+})
+.catch(function (err){
+    console.log(err);
+    mongoose.disconnect();
+});
+```
+
+### Схемы в Mongoose
+
+**Определяют метаданные модели**
+
+- свойства
+
+- [типы данных](http://mongoosejs.com/docs/schematypes.html)
+
+    - **String**
+
+    - **Number**
+
+    - **Date**
+
+    - **Buffer**
+
+    - **Boolean**
+
+    - **Mixed**
+
+    - **Objectid**
+
+    - **Array**
+
+- доп. инфа
+
+```js
+// сложный объект
+const userScheme = new Schema({
+    name: String,
+    age: Number,
+    company: {
+        name: String,
+        employee: [String], // тип - массив строк
+        date: Date
+    }
+});
+```
+
+### Значение по умолчанию
+
+- **default**
+
+```js
+const userScheme = new Schema({
+    name: {
+        type: String,
+        default: "NoName"
+    },
+    age: {
+        type: Number,
+        default: 22
+    }
+});
+
+...
+
+const User = mongoose.model("User", userScheme);
+const user1 = new User(); // name - NoName, age - 22
+const user2 = new User({name: "Alec"}); // name - Alec, age - 17
+const user3 = new User({age: 31}); // name - NoName, age - 31
+```
+
+### Валидация
+
+- **required**
+
+    - требует обязательного наличия значения для свойства
+
+- **min/max**
+
+    - задают минимальное и максимальное значения для числовых данных
+
+- **minlength/maxlength**
+
+    - задают минимальную и максимальную длину для строк
+
+- **enum**
+
+    - строка должна представлять одно из значений в указанном массиве строк
+
+- **match**
+
+    - строка должна соответствовать регулярному выражению
+
+```js
+...
+
+// установка схемы
+const userScheme = new Schema({
+    name: {
+        type: String,
+        required: true,
+        minlength:3,
+        maxlength:20
+    },
+    age: {
+        type: Number,
+        required: true,
+        min: 1,
+        max:100
+    }
+});
+
+const User = mongoose.model("User", userScheme);
+const user = new User({name: "Me"});
+
+user.save()
+    .then(function(doc){
+        console.log("Сохранен объект", doc);
+        mongoose.disconnect();  // отключение от базы данных
+    })
+    .catch(function (err){
+        console.log(err);
+        mongoose.disconnect();
+    });
+```
+
+### Версия документа
+
+- **`__v`**
+
+```js
+const userScheme = new Schema(
+    {
+        name: String,
+        age: Number
+    },
+    {
+        versionKey: false
+    }
+);
+```
+
+### CRUD в Mongoose
+
+- **save/create**
+
+```js
+// установка схемы
+const userScheme = new Schema({
+    name: {
+        type: String,
+        required: true,
+        minlength:3,
+        maxlength:20
+    },
+    age: {
+        type: Number,
+        required: true,
+        min: 1,
+        max:100
+    }
+});
+
+const User = mongoose.model("User", userScheme);
+
+User.create({name: "Bob", age: 34})
+    .then(function(doc){
+        console.log("Сохранен объект", doc);
+        mongoose.disconnect();  // отключение от базы данных
+    })
+    .catch(function (err){
+        console.log(err);
+        mongoose.disconnect();
+    });
+```
+
+- **получение данных**
+
+    - **find**
+
+        - возвращает все объекты, которые соответствуют критерию фильтрации
+
+    - **findById**
+
+        - возвращает один объект по значению поля **_id**
+
+    - **findOne**
+
+        - возвращает один объект, который соответствует критерию фильтрации
+```js
+const userScheme = new Schema({
+    name: String,
+    age: Number
+});
+const User = mongoose.model("User", userScheme);
+
+User.find()
+    .then(function(doc){
+        console.log(doc);
+        mongoose.disconnect();
+    })
+    .catch(function (err){
+        console.log(err);
+        mongoose.disconnect();
+    });
+```
+
+- **remove**
+
+    - **findOneAndRemove**
+
+    - **findByIdAndRemove**
+
+```js
+const userScheme = new Schema({
+    name: String,
+    age: Number
+});
+const User = mongoose.model("User", userScheme);
+
+User.remove({age: 17})
+    .then(function(doc){
+        console.log(doc);
+        mongoose.disconnect();
+    })
+    .catch(function (err){
+        console.log(err);
+        mongoose.disconnect();
+    });
+```
+
+- **update**
+
+    - **findByIdAndUpdate**
+
+        - **{new: true}**
+
+```js
+...
+
+User.update({name: "Alec"}, {name: "Alec P"})
+    .then(function(doc){
+        console.log(doc);
+        mongoose.disconnect();
+    })
+    .catch(function (err){
+        console.log(err);
+        mongoose.disconnect();
+    });
+```
+
+```js
+...
+
+const id = "SOME_ID";
+User.update(id, {name: "Alec P"})
+    .then(function(doc){
+        console.log(doc);
+        mongoose.disconnect();
+    })
+    .catch(function (err){
+        console.log(err);
+        mongoose.disconnect();
+    });
+```
+
+
 ## Заключение
+
+- Создание RESTful API
+
+- MongoDB
+
+- Node.js и MongoDB
+
+- Добавление и получение данных
+
+- Удаление документов
+
+- Обновление документов
+
+- Express и MongoDB
+
+- Mongoose
 
 ## Справочники
 
@@ -807,3 +1139,7 @@ app.listen(3000, function(){
 - [Документо-ориентированная модель данных](https://ru.wikipedia.org/wiki/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%BE%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F_%D0%A1%D0%A3%D0%91%D0%94)
 
 - [Cursor](http://mongodb.github.io/node-mongodb-native/2.2/api/Cursor.html)
+
+- [Mongoose](http://mongoosejs.com/)
+
+- [Mongoose типы данных](http://mongoosejs.com/docs/schematypes.html)
