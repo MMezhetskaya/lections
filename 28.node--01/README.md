@@ -10,9 +10,7 @@
 
 - кроссплатформенный
 
-    - неважно какая платформа
-
-- осонова **JavaScript Chrome V8**
+- основа **JavaScript Chrome V8**
 
     - скорость
 
@@ -34,7 +32,7 @@
 
 **Что за сервер такой?**
 
-- библиотеки + экстра код(на C++ и не только)
+- библиотеки + экстра код(на C++ -> C и не только)
 
 
 **Где хорош?**
@@ -92,7 +90,7 @@ node file.js
 
 ## Цикл событий
 
-- **Node.js** core **LibUV**
+- **Node.js** core **[LibUV](http://libuv.org/)**
 
 ![Цикл событий](./node__cycle__events.png "Цикл событий")
 
@@ -139,7 +137,7 @@ console.log('Step 4');
 ```js
 const os = require("os");
 // получим имя текущего пользователя
-let userName = os.userInfo().username;
+const userName = os.userInfo().username;
 
 console.log(userName);
 ```
@@ -149,7 +147,7 @@ console.log(userName);
 ```js
 // greeting.js
 
-let currentDate = new Date();
+const currentDate = new Date();
 
 module.exports.date = currentDate;
 
@@ -157,7 +155,7 @@ module.exports.getMessage = function(name){
     const hour = currentDate.getHours();
     let greeting = `Доброе утро, ${name}`;
 
-    if(hour > 10)
+    if(hour > 10) {
         greeting = `Добрый день, ${name}`;
     }
 
@@ -195,11 +193,11 @@ console.log(greeting.getMessage(userName));
 function User(name, age){
     this.name = name;
     this.age = age;
-    this.displayInfo = function(){
-
+    this.displayInfo = function() {
         console.log(`Имя: ${this.name}  Возраст: ${this.age}`);
     }
 }
+
 User.prototype.sayHi = function() {
     console.log(`Привет, меня зовут ${this.name}`);
 };
@@ -212,7 +210,8 @@ module.exports = User;
 
 const User = require("./user");
 
-const alec = new User("Alec", "30+");
+const alec = new User("Alec", 17);
+
 alec.sayHi();
 ```
 
@@ -235,9 +234,11 @@ module.exports.name = "Alec";
 // app.js
 
 const greeting1 = require("./greeting");
+
 console.log(`Hello ${greeting1.name}`); // Hello Alec
 
 const greeting2 = require("./greeting");
+
 greeting2.name= "Not Alec";
 
 console.log(`Hello ${greeting2.name}`); // Hello Not Alec
@@ -270,13 +271,11 @@ console.log(module);
 
 ## Глобальный объект
 
-**Вопросы при переходе**
-
-- где хранить пароли?
+**Вопросы**
 
 - как создавать глобальные переменные (в **Node** нет **window**)?
 
-- как обращаться к входным данным CLI, ОС, платформе, памяти, версиям и т.д.?
+- как обращаться к входным данным **CLI**, **ОС**, платформе, памяти, версиям и т.д.?
 
 **Встречайте**
 
@@ -362,6 +361,41 @@ global.name = 'Alec';
 
     - прикрепляет на событие, например, `on('uncaughtException')`
 
+## Отладка
+
+- [Debugging Guide](https://nodejs.org/en/docs/guides/debugging-getting-started/)
+
+    - [руководство](https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27)
+
+```js
+//app.js
+const http = require("http");
+
+const server = http.createServer();
+
+server.on('request', function(request, response) {
+    debugger;
+    response.setHeader("UserId", 12);
+    response.setHeader("Content-Type", "text/html");
+    response.write("<h2>hello world</h2>");
+
+    response.end();
+
+});
+
+server.listen(3000);
+
+console.log('Started');
+```
+
+- **inspect/inspect-brk**
+
+```bash
+node --inspect app.js
+```
+
+- или немного магии и в **IDE**
+
 
 
 # COFFEE BREAK
@@ -414,17 +448,24 @@ npm uninstall express --save-dev
 
     - баг **patch**
 
-    - новая функциональность, совместимая **minor**
+    - новая функциональность
 
-    - **major**
+        - совместимая **minor**
 
-- и конечно не стесняемся использовать **help**
+        - нет **major**
+
+- не стесняемся использовать **help**
+
+```bash
+npm help
+npm <command> -h
+```
 
 ## Передача параметров приложению
 
 **Запуск**
 
-- из терминала/командной строки позволяет передавать параметры
+- из терминала/командной
 
     - применяется массив **process.argv**
 
@@ -438,7 +479,6 @@ const age = process.argv[3];
 
 console.log("nodePath: " + nodePath);
 console.log("appPath: " + appPath);
-console.log();
 console.log("name: " + name);
 console.log("age: " + age);
 ```
@@ -460,12 +500,10 @@ const http = require("http");
 
 const message = "Hello World!";
 
-http.createServer(function(request,response){
-
+http.createServer((request, response) => {
     console.log(message);
     response.end(message);
-
-}).listen(3000, "127.0.0.1",()=>{
+}).listen(3000, "127.0.0.1", () => {
     console.log("Сервер начал прослушивание запросов");
 });
 ```
@@ -477,6 +515,8 @@ http.createServer(function(request,response){
 **И тут на помощь к нам приходит!?**
 
 ![Nodemon](./nodemon.jpg "Nodemon")
+
+- [nodemon](http://nodemon.io/)
 
 ```bash
 npm install nodemon -g
@@ -529,17 +569,18 @@ console.log("Завершение работы программы");
 function display(data, callback) {
     // с помощью случайного числа определяем ошибку
     const randInt = Math.random() * (10 - 1) + 1;
-    const err = randInt>5 ? new Error("Ошибка выполнения. randInt больше 5"): null;
+    const err = randInt > 5 ? new Error("Ошибка выполнения. randInt больше 5"): null;
 
-    setTimeout(function(){
+    setTimeout(() => {
         callback(err, data);
     }, 0);
 }
 
 console.log("Начало работы программы");
 
-display("Обработка данных...", function (err, data){
+display("Обработка данных...", (err, data) => {
     if(err) throw err;
+
     console.log(data);
 });
 
@@ -555,15 +596,16 @@ function displaySync(callback){
 
 console.log("Начало работы программы");
 
-setTimeout(function(){
+setTimeout(() => {
     console.log("timeout 500");
 }, 500);
 
-setTimeout(function(){
+setTimeout(() => {
     console.log("timeout 100");
 }, 100);
 
-displaySync(function(){console.log("without timeout")});
+displaySync(() => { console.log("without timeout") });
+
 console.log("Завершение работы программы");
 ```
 
@@ -584,7 +626,7 @@ Hello Node JS!
 ```js
 fs.readFileSync("hello.txt", "utf8");
 
-fs.readFile("hello.txt", "utf8", function(error, data){ });
+fs.readFile("hello.txt", "utf8", (error, data) => { });
 ```
 
 ```js
@@ -595,10 +637,12 @@ const fs = require("fs");
 // асинхронное чтение
 fs.readFile(
     "hello.txt",
-     "utf8",
-    function(error, data) {
+    "utf8",
+    (error, data) => {
         console.log("Асинхронное чтение файла");
+
         if(error) throw error; // если возникла ошибка
+
         console.log(data);  // выводим считанные данные
     }
 );
@@ -625,11 +669,13 @@ const fs = require("fs");
 fs.writeFile(
     "hello.txt",
     "Hello мир!",
-    function(error){
+    (error) =>
         if(error) throw error; // если возникла ошибка
+
         console.log("Асинхронная запись файла завершена. Содержимое файла:");
 
         const data = fs.readFileSync("hello.txt", "utf8");
+
         console.log(data);  // выводим считанные данные
     }
 );
@@ -645,12 +691,13 @@ fs.appendFileSync("hello.txt", "Привет ми ми ми!");
 fs.appendFile(
     "hello.txt",
     "Привет МИР!",
-    function(error){
+    (error) => {
         if(error) throw error; // если возникла ошибка
 
         console.log("Запись файла завершена. Содержимое файла:");
 
         const data = fs.readFileSync("hello.txt", "utf8");
+
         console.log(data);  // выводим считанные данные
 });
 ```
@@ -671,6 +718,8 @@ fs.appendFile(
 
 - Процесс
 
+- Отладка
+
 - NPM
 
 - Передача параметров приложению
@@ -682,6 +731,8 @@ fs.appendFile(
 - Работа с файлами
 
 **Молодцы выдержали!!!**
+
+**[next >>](./29.node--02)**
 
 ## Справочники
 
@@ -695,9 +746,13 @@ fs.appendFile(
 
 - [Node JS api](https://nodejs.org/dist/latest-v10.x/docs/api/)
 
+- [LibUV](http://libuv.org/)
+
 - [Global Objects](https://nodejs.org/api/globals.html)
 
 - [npm](https://docs.npmjs.com/)
+
+- [nodemon](http://nodemon.io/)
 
 - [pm2](http://pm2.keymetrics.io/)
 

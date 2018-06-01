@@ -22,7 +22,7 @@
 
 - событие отслеживает все связанные с ним
 
-    - функции(observer’ы)
+    - функции(**observer**)
 
         - исполняются при активизации
 
@@ -70,9 +70,9 @@ emitter.emit('knock')
 
 **При вызове события**
 
-- в качестве второго параметра в функцию `emit`
+- в качестве второго параметра в функцию **emit**
 
-    - можно передавать дату(данные)
+    - можно передавать данные
 
         - передается в функцию обработчика события
 
@@ -91,7 +91,7 @@ emitter.emit(eventName, "Привет пир!");
 
 ### Наследование от EventEmitter
 
-**Приложении как набор сложных объектов(воображение on)**
+**Приложении как набор сложных объектов**
 
 - можно определять события
 
@@ -103,22 +103,20 @@ emitter.emit(eventName, "Привет пир!");
 const util = require("util");
 const EventEmitter = require("events");
 
+const eventName = "greet";
+
 function User() {}
 
 util.inherits(User, EventEmitter);
 
-const eventName = "greet";
-
-User.prototype.sayHi = function(data){
+User.prototype.sayHi = function(data) {
     this.emit(eventName, data);
 }
 
 const user = new User();
 
 // добавляем к объекту user обработку события "greet"
-user.on(eventName, function(data){
-    console.log(data);
-});
+user.on(eventName, (data) => console.log(data));
 
 user.sayHi("Зай, мне нужна твоя одежда...");
 ```
@@ -131,26 +129,14 @@ user.sayHi("Зай, мне нужна твоя одежда...");
 
 **[Для создания бинарного типа](https://nodejs.org/api/buffer.html#buffer_buffer)**
 
-```js
-// Создадим буфер с алфавитом с помощью цикла for:
-let buf = new Buffer.alloc(26);
-
-for (let i = 0 ; i < 26 ; i++) {
-  buf[i] = i + 97; // 97 is ASCII a
-}
-
-console.log(buf);
-buf.toString('utf8');
-buf.toString('ascii');
-```
-
 **Помните fs?**
 
 ```js
 // По умолчанию значение data тоже является буфером
-fs.readFile('file.ext', function (err, data) {
-  if (err) return console.error(err)
-  console.log(data)
+fs.readFile('file.txt', (err, data) => {
+  if (err) return console.error(err);
+
+  console.log(data);
 });
 ```
 
@@ -188,9 +174,7 @@ fs.readFile('file.ext', function (err, data) {
 ```js
 const http = require("http");
 
-http.createServer(function(request, response){
-
-}).listen(3000);
+http.createServer((request, response) => { ... }).listen(3000);
 ```
 
 - **request**
@@ -219,13 +203,13 @@ readableStream.on("data", function(chunk){
 });
 ```
 
-- поток разбивается на ряд кусков или чанков(chunk)
+- поток разбивается на ряд кусков или **chunk**
 
 - при считывании каждого такого куска
 
     - возникает событие **data**
 
-        - с помощью метода `on()`
+        - с помощью метода **on**
 
             - подписаться на это событие
 
@@ -245,7 +229,7 @@ readableStream.on("data", function(chunk){
 
 **Зачем**
 
-При работе с большими объёмами данных(**Node**):
+Большие объёмы данных:
 
 - низкая производительность
 
@@ -275,10 +259,9 @@ readableStream.on("data", function(chunk){
 const fs = require("fs");
 
 const readableStream = fs.createReadStream("hello.txt", "utf8");
-
 const writeableStream = fs.createWriteStream("some.txt");
 
-readableStream.on("data", function(chunk){
+readableStream.on("data", (chunk) => {
     writeableStream.write(chunk);
 });
 ```
@@ -289,7 +272,6 @@ readableStream.on("data", function(chunk){
 const fs = require("fs");
 
 const readableStream = fs.createReadStream("hello.txt", "utf8");
-
 const writeableStream = fs.createWriteStream("some.txt");
 
 readableStream.pipe(writeableStream);
@@ -302,26 +284,28 @@ const fs = require("fs");
 const zlib = require("zlib");
 
 const readableStream = fs.createReadStream("hello.txt", "utf8");
-
 const writeableStream = fs.createWriteStream("hello.txt.gz");
-
 const gzip = zlib.createGzip();
 
 readableStream.pipe(gzip).pipe(writeableStream);
 ```
 
-- каждый метод `pipe()`
+- каждый метод **pipe**
 
     - возвращает поток для чтения
 
-        - можно применить `pipe()` снова
+        - можно применить **pipe** снова
 
             - записи в другой поток
 
                 - и по новой
 
+
+
 # COFFEE BREAK
 ![Знания сила](./fun__00.jpg "Знания сила")
+
+
 
 ## Сервер
 
@@ -330,27 +314,37 @@ readableStream.pipe(gzip).pipe(writeableStream);
 ```js
 const http = require("http");
 
-http.createServer(function(request, response){
+http.createServer((request, response) => {
     response.end("Hello world!");
 }).listen(3000);
 ```
 
-- **request** хранит информацию о запросе
+- **request**
 
-- **response** управляет отправкой ответа
+    - хранит информацию о запросе
+
+- **response**
+
+    - управляет отправкой ответа
 
 **Request**
 
-- **headers** возвращает заголовки запроса
+- **headers**
 
-- **method** тип запроса (GET, POST, DELETE, PUT)
+    - возвращает заголовки запроса
 
-- **url** запрошенный адрес
+- **method**
+
+    - тип запроса (**GET**, **POST**, **DELETE**, **PUT** и тд.)
+
+- **url**
+
+    - запрошенный адрес
 
 ```js
 const http = require("http");
 
-http.createServer(function(request, response){
+http.createServer((request, response) => {
     console.log("Url: " + request.url);
     console.log("Тип запроса: " + request.method);
     console.log("User-Agent: " + request.headers["user-agent"]);
@@ -363,15 +357,25 @@ http.createServer(function(request, response){
 
 **Response**
 
-- **statusCode** устанавливает статусный код ответа
+- **statusCode**
 
-- **statusMessage** устанавливает сообщение, отправляемое вместе со статусным кодом
+    - устанавливает статусный код ответа
 
-- **setHeader(name, value)** добавляет в ответ один заголовок
+- **statusMessage**
 
-- **write** пишет в поток ответа некоторое содержимое
+    - устанавливает сообщение, отправляемое вместе со статусным кодом
 
-- **writeHead** добавляет в ответ статусный код и набор заголовков
+- **setHeader(name, value)**
+
+    - добавляет в ответ один заголовок
+
+- **write**
+
+    - пишет в поток ответа некоторое содержимое
+
+- **writeHead**
+
+    - добавляет в ответ статусный код и набор заголовков
 
 ```js
 const http = require("http");
@@ -395,15 +399,15 @@ http.createServer(function(request, response){
 const http = require("http");
 const fs = require("fs");
 
-http.createServer(function(request, response){
+http.createServer((request, response) => {
     console.log(`Запрошенный адрес: ${request.url}`);
 
     if(request.url.startsWith("/public/")){
         // получаем путь после слеша
         const filePath = request.url.substr(1);
-        fs.readFile(filePath, function(error, data){
-            if(error){
 
+        fs.readFile(filePath, (error, data) => {
+            if(error){
                 response.statusCode = 404;
                 response.end("Ресурс не найден!");
             } else {
@@ -429,26 +433,25 @@ http.createServer(function(request, response){
 const http = require("http");
 const fs = require("fs");
 
-http.createServer(function(request, response){
-    if(request.url == "/some.png"){
+http.createServer((request, response) => {
+    if(request.url === "/some.png") {
         response.writeHead(200, {"Content-Type" : "image/png"});
 
         fs.createReadStream("some.png").pipe(response);
-    }
-    else{
+    } else {
         response.end("hello world!");
     }
 
 }).listen(3000);
 ```
 
-- `fs.createReadStream`создает поток для чтения
+- **fs.createReadStream** создаёт поток для чтения
 
-    - получения данных из потока метод `pipe`
+    - получения данных из потока метод **pipe**
 
-        - передается объект интерфейса `stream.Writable` или поток для записи
+        - передается объект интерфейса **stream.Writable** или поток для записи
 
-            - `http.ServerResponse` реализует этот интерфейс
+            - **http.ServerResponse** реализует этот интерфейс
 
 ## Кластеры
 
@@ -458,7 +461,7 @@ http.createServer(function(request, response){
 
 **Выход**
 
-- **cluster**
+- **[cluster](https://nodejs.org/api/cluster.html)**
 
 **Итого**
 
@@ -472,15 +475,17 @@ http.createServer(function(request, response){
 
 - импортируем модуль
 
-- создаём одного мастера и несколько работников (worker)
+- один мастер и несколько работников
 
-- обычно создают по одному процессу на каждый ЦПУ
+- обычно по одному процессу на каждый ЦПУ
 
-    - но это не является незыблемым правилом
+    - не является незыблемым правилом
 
-        - можете наделать столько процессов, сколько пожелаете
+        - сколько пожелаете процессов
 
-            - но с определённого момента прирост производительности прекратится, согласно закону убывания доходности
+            - но с определённого момента прирост производительности прекратится
+
+                - закон убывания доходности
 
 ```js
 // cluster.js
@@ -504,7 +509,7 @@ if (cluster.isMaster) {
 try {
     throw new Error('Fail!')
 } catch (e) {
-    console.log('Custom Error: ' + e.message)
+    console.log(`Custom Error:  ${e.message}`);
 }
 ```
 
@@ -516,7 +521,7 @@ try {
         throw new Error('Fail!')
     }, Math.round(Math.random()*100));
 } catch (e) {
-    console.log('Custom Error: ' + e.message);
+    console.log(`Custom Error:  ${e.message}`);
 }
 ```
 
@@ -524,12 +529,12 @@ try {
 
 ### `on('error')`
 
-- прослушивайть события `on('error')`
+- прослушивайть события **error**
 
-    - генерируемые большинством основных объектов в **Node.js**(в особенности http)
+    - генерируемые большинством основных объектов
 
 ```js
-server.on('error', function (err) {
+server.on('error', (err) => {
     console.error(err);
     process.exit(1);
 })
@@ -539,13 +544,15 @@ server.on('error', function (err) {
 
 - очень грубый механизм обработки ошибок
 
-- всегда прослушивайте `uncaughtException` в объекте `process`
+- всегда прослушивайте **uncaughtException** в объекте **process**
 
-- если ошибка не обработана, то приложение находится в неопределённом состоянии
+- если ошибка не обработана
+
+    - приложение находится в неопределённом состоянии
 
 ```js
-process.on('uncaughtException', function (err) {
-    console.error('uncaughtException: ', err.message);
+process.on('uncaughtException', (err) => {
+    console.error(`uncaughtException:  ${err.message}`);
     console.error(err.stack);
     process.exit(1);
 });
@@ -554,48 +561,12 @@ process.on('uncaughtException', function (err) {
 **или**
 
 ```js
-process.addListener('uncaughtException', function (err) {
-    console.error('uncaughtException: ', err.message);
+process.addListener('uncaughtException', (err) => {
+    console.error(`uncaughtException:  ${err.message}`);
     console.error(err.stack);
     process.exit(1);
 });
 ```
-
-## Отладка
-
-- [Debugging Guide](https://nodejs.org/en/docs/guides/debugging-getting-started/)
-
-    - [руководство](https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27)
-
-```js
-//app.js
-const http = require("http");
-
-const server = http.createServer();
-
-server.on('request', function(request, response) {
-    debugger;
-    response.setHeader("UserId", 12);
-    response.setHeader("Content-Type", "text/html");
-    response.write("<h2>hello world</h2>");
-
-    response.end();
-
-});
-
-server.listen(3000);
-
-console.log('Started');
-```
-
-- **inspect/inspect-brk**
-
-
-```bash
-nodemon --inspect app.js
-```
-
-- или **IDE**
 
 ## Аддоны на С/С++
 
@@ -714,6 +685,8 @@ console.log(addon.hello());
 - Аддоны на С/С++
 
 **Молодцы выдержали!!!**
+
+**[<< prev](./28.node--01)[next >>](./30.node--03)**
 
 ## Справочники
 
