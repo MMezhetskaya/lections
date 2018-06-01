@@ -655,7 +655,7 @@ app.get("/contact", function(request, response){
 ...
 ```
 
-**[<< prev](../29.node--02)[next >>](../31.node--04)**
+**[<< prev](../29.node--02) | [next >>](../31.node--04)**
 
 ## Заключение
 
