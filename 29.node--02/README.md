@@ -682,6 +682,175 @@ console.log(addon.hello());
 
 ![Как забыть С++](./forgetCpp.jpg "Как забыть С++")
 
+## [Express](http://expressjs.com/ru/)
+
+**Предоставляет ряд готовых абстракций, которые упрощают**
+
+- создание сервера
+
+- серверной логики
+
+**Подробнее**
+
+- обработка отправленных форм
+
+- работа с куками
+
+- CORS
+
+- т.д.
+
+**Пройдёмся по примерам**
+
+- **package.json**
+
+```bash
+npm init;
+```
+
+- установим фреймворк
+
+```bash
+npm install express --save;
+```
+
+- **app.js**
+
+```js
+// подключение express
+const express = require("express");
+
+// создаем объект приложения
+const app = express();
+
+// определяем обработчик для маршрута "/"
+app.get("/", function(request, response){
+    response.send("<h1>Главная страница</h1>");
+});
+
+app.get("/about", function(request, response){
+    response.send("<h1>О сайте</h1>");
+});
+
+app.get("/contact", function(request, response){
+    response.send("<h1>Контакты</h1>");
+});
+
+// начинаем прослушивать подключения на 3000 порту
+app.listen(3000);
+```
+
+## Конвейер обработки запроса
+
+**Что происходит?**
+
+- **Express** получил запрос
+
+    - запрос передается в конвейер обработки
+
+**Из чего состоит?**
+
+- набор компонентов или **middleware**
+
+    - получают данные запроса
+
+        - решают как его обрабатывать
+
+**Пример?**
+
+Смотрим выше `app.get`
+
+**А ещё?**
+
+```js
+const express = require("express");
+
+const app = express();
+
+app.use(function(request, response, next){
+    console.log("Middleware 1");
+    next();
+});
+
+app.use(function(request, response, next){
+    console.log("Middleware 2");
+    next();
+});
+
+app.get("/", function(request, response){
+    console.log("Route /");
+    response.send("Hello");
+});
+
+app.listen(3000);
+```
+
+**Что за параметры?**
+
+- **request** данные запроса
+
+- **response** объект для управления ответом
+
+- **next** следующая в конвейере обработки функция
+
+**Note:** необязательно вызывать все последующие **middleware**
+
+**Что ещё?**
+
+**middleware**  могут сопоставляться с определенными маршрутами
+
+```js
+const express = require("express");
+
+const app = express();
+
+app.use(function(request, response, next) {
+    console.log("Middleware 1");
+    next();
+});
+
+app.use("/about", function(request, response, next) {
+    console.log("About Middleware");
+    response.send("About Middleware");
+});
+
+app.get("/", function(request, response){
+    console.log("Route /");
+    response.send("Hello");
+});
+
+app.listen(3000);
+```
+
+**Стандартная задача**
+
+- логгирование запросов
+
+```js
+const express = require("express");
+const fs = require("fs");
+
+const app = express();
+
+app.use(function(request, response, next) {
+    const now = new Date();
+    const hour = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const data = `${hour}:${minutes}:${seconds} ${request.method} ${request.url} ${request.get("user-agent")} \n`;
+
+    console.log(data);
+    fs.appendFile("server.log", data);
+    next();
+});
+
+app.get("/", function(request, response){
+    response.send("Hello");
+});
+
+app.listen(3000);
+```
+
 ## Заключение
 
 - Эмиттеры событий
@@ -699,6 +868,10 @@ console.log(addon.hello());
 - Обработка асинхронных ошибок
 
 - Аддоны на С/С++
+
+- Express
+
+- Конвейер обработки запроса
 
 **Молодцы выдержали!!!**
 
