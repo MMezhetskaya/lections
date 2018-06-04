@@ -524,11 +524,12 @@
 - JSON и AJAX
 - Представления(View)
 - Частичные представления(Partial views)
+- EJS
+- Создание RESTful API
 - Заключение
 - Справочники
 
 ## [31.node--04](./31.node--04)
-- Создание RESTful API
 - MongoDB
 - Node.js и MongoDB
 - Добавление и получение данных
