@@ -381,21 +381,21 @@
         - Build Tools
     - Причем тут TypeScript тема то про Angular!
 - QuickStart
-- Angular component
-- Структура src
-- Структура root
+    - Angular component
+    - Структура src
+    - Структура root
+- Основы Angular
+    - Что будем строить?
+        - Tutorial: Tour of Heroes
+    - Подготовка среды разработки
+        - Angular компоненты
+        - Редактируем стили
+        - Чему научились
 - Заключение
 - ДЗ
 - Справочники
  
 ## [23.angular--02](./23.angular--02)
-- Основы Angular
-- Что будем строить?
-    - Tutorial: Tour of Heroes
-- Подготовка среды разработки
-    - Angular компоненты
-    - Редактируем стили
-    - Чему научились
 - Heroes Editor
     - Компонент `heroes`
     - Класс `Hero`

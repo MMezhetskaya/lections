@@ -753,6 +753,146 @@ h1 {
 `tsconfig.json` | Конфигурация **TypeScript** для **IDE**
 `tslint.json` | Конфигурация для линтера [TSLint](https://palantir.github.io/tslint/) вместе с [Codelyzer](http://codelyzer.com/), используемая, запуск `ng lint`. Помогает поддерживать стиль кода
 
+## Основы Angular
+
+**Как?**
+
+- напишем небольшое приложение
+
+**Что узнаем?**
+
+- как использовать встроенные директивы **Angular**
+
+- научимся создавть **Angular** компоненты
+
+- использовать одностороннюю привязку данных только для чтения
+
+- обновлять модели с двух сторонней привязкой
+
+- узнаем что такое привязка в конце-концов :)
+
+- привязывать методы к пользовательским событиям
+
+- форматировать данные используя **pipes**
+
+- использовать **routing** для навигации между различными видами и их компонентами
+
+## Что будем строить?
+
+### Tutorial: Tour of Heroes
+
+**Dashboard view**
+
+![Dashboard view](heroes-dashboard-1.png "Dashboard view")
+
+- две ссылки над списком героев ("Dashboard", "Heroes")
+
+    - "Dashboard view"(активная)
+
+    - "Heroes view"
+
+**Hero Details view**
+
+![Hero Details view](hero-details-1.png "Hero Details view")
+
+- при выборе героя открывается "Hero Details view"
+
+    - можем изменить имя героя
+
+    - "back" возвращает на "Dashboard view"
+
+**Heroes view**
+
+![Heroes view](heroes-list-2.png "Heroes view")
+
+- при выборе героя
+
+    - отображается информация о герое(read only)
+
+    - кнопка "View Details"
+
+        - ведет на "Hero Details view" для выбранного героя
+
+**Tour of Heroes view**
+
+![Tour of Heroes view](nav-diagram.png "Tour of Heroes view")
+
+**"Tour of Heroes" в действии**
+
+![Tour of Heroes в действии](toh-anim.gif "Tour of Heroes в действии")
+
+## Подготовка среды разработки
+
+- если не установлено, то установить **Angular CLI**
+
+```
+npm i -g @angular/cli
+```
+
+- создаем новое приложение ([angular-cli документация](https://github.com/angular/angular-cli/wiki))
+
+```
+ng new angular-tour-of-heroes
+```
+
+- запуск приложения
+
+```
+cd angular-tour-of-heroes
+// собираем приложение и запускаем сервер
+ng serve --open
+```
+
+### Angular компоненты
+
+- **src/app/app.component.ts**, свойство класса
+
+```angularjs
+...
+
+title = 'Tour of Heroes';
+
+...
+```
+
+- **src/app/app.component.html**, шаблон
+
+```angularjs
+...
+
+<h1>{{title}}</h1>
+
+...
+```
+
+### Редактируем стили
+
+- **src/styles.css**
+
+```css
+/* Application-wide Styles */
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+}
+h2, h3 {
+  color: #444;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+body {
+  margin: 2em;
+}
+body, input[text], button {
+  color: #888;
+  font-family: Cambria, Georgia;
+}
+/* everywhere else */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+```
 
 ## Заключение
 
@@ -760,9 +900,7 @@ h1 {
 
 - Angular
 
-- Angular внутри
-
-- Angular снаружи
+- Angular компоненты
 
 ## ДЗ
 
