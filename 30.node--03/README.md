@@ -506,6 +506,4 @@ app.get("/contact", function(request, response){
 
 ## Справочники
 
-- [Express](http://expressjs.com/ru/)
-
 - [Handlebars](https://handlebarsjs.com/)

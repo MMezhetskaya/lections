@@ -4,13 +4,13 @@
 
 ## Курс молодого бойца или [TypeScripts](http://www.typescriptlang.org/)
 
->**TypeScript** — язык программирования, представленный Microsoft в 2012 году и позиционируемый как средство разработки веб-приложений, расширяющее возможности JavaScript [@Wiki](https://ru.wikipedia.org/wiki/TypeScripts)
+>**TypeScript** — язык программирования, представленный **Microsoft** в 2012 году и позиционируемый как средство разработки веб-приложений, расширяющее возможности **JavaScript** [@Wiki](https://ru.wikipedia.org/wiki/TypeScripts)
 
-**Что за зверь?**
+**Что за зверь TypeScript?**
 
-- **TypeScript** является обратно совместимым с **JS**
+- является обратно совместимым с **JS**
 
-- **TypeScript** отличается от **JS** 
+- отличается от **JS**
 
     - явное статическогое назначение типов
     
@@ -101,7 +101,9 @@ function andCheckMeToo(check: CheckObject, me: MeObject) {
 
 ### Минусы TypeScript
 
-- строгая типизация - ошалел что-ли жто же было плюсом!
+- строгая типизация
+
+    - ошалел что-ли жто же было плюсом!
 
 - компилятор
 
@@ -109,57 +111,87 @@ function andCheckMeToo(check: CheckObject, me: MeObject) {
 
 - а вдруг помрет?
 
-**Строгая типизация**
+#### Строгая типизация
 
-Этот пункт работает как во благо, так и во вред, потому что необходимо описывать
+**Этот пункт работает как во благо, так и во вред, потому что необходимо описывать**
 
 - все типы для всех обьектов
 
 - классов, переменных, и иже с ними
 
-Но куда большее зло — миграция существующих популярных **JS** решений на **TS**. Для каждой портированной либы необходимо описать `.d.ts` файл, в котором и хранятся все возвращаемые типы и описание всех методов.
+- куда большее зло
 
-Уверен, что портирование таких монстров, как **jQuery**, потребовало немало приседаний.
+    - миграция существующих популярных **JS** решений на **TS**
 
-**Компилятор**
+        - для портированной либы необходимо описать `.d.ts`
 
-Он существенно уменьшает вероятность "тупой" ошибки
+            - хранятся все возвращаемые типы и описание всех методов
+
+**Note:** уверен, что портирование таких монстров, как **jQuery**, потребовало немало усилий
+
+#### Компилятор
+
+**Он существенно уменьшает вероятность "тупой" ошибки**
 
 - типа пропущенных запятых
 
 - неправильно написанных имен переменных
 
-Убивается вся прелесть **JS**, когда большую часть решений можно было написать на коленках и проверить в консоли браузера.
+**Убивается вся прелесть JS**
 
-Не стоит забывать, что время от времени, придется обновлять и сам компилятор, поскольку язык развивается и, рано или поздно, появится необходимость
+- когда большую часть решений можно было написать
 
-- обновить существующую версию компилятора
+    - на коленках
 
-- возможно, и самого кода
+    - проверить в консоли браузера
 
-**Debug**
+**Время от времени, придется обновлять и сам компилятор**
 
-- наладить в **TypeScript** (придется немного попотеть)
+- язык развивается, рано или поздно, появится необходимость
 
-**А вдруг помрет?**
+    - обновить существующую версию компилятора
 
-Это интересный и серьёзный вопрос, потому как стандарты **JS** идут в ногу со временем и интегрируют в сам язык многое, что было полезно в **TS**:
+    - возможно, и самого кода
+
+#### Debug
+
+- наладить в **TypeScript**
+
+    - придется немного попотеть
+
+#### А вдруг помрет?
+
+**Это интересный и серьёзный вопрос**
+
+**Cтандарты JS идут в ногу со временем и интегрируют в язык многое, что было TS**
 
 - классы
 
-- стрелочные функции, и тд.
+- стрелочные функции
 
-**Судьба**
+- и тд
 
-- рано или поздно, все полезные функции **TS** будут так или иначе перенесены в стандарт языка и **TS** повесит плавки на гвоздь
+**Немного лирики**
 
-- а если ребята из **Microsoft** решат, что им это не нужно и полностью оставят **TS** на волю **open-source**?
+Рано или поздно, все полезные функции **TS** будут
 
-    - являясь открытым продуктом, **TS** не лишиться поддержки совсем — всегда найдутся энтузиасты, но поддержка такого гиганта, как **Microsoft**, никогда не помешает
+- перенесены в стандарт языка
 
-    - **Microsoft**, как основного разработчика, многие относят к минусу, потому как репутация у гиганта весьма спорная: **Skype**, **Nokia**, **Windows Phone**, **Windows Vista**, и тд
+    - **TS** повесит плавки на гвоздь
 
-### TypeScript за 5 минут
+**Или**
+
+Вдруг ребята из **Microsoft** решат, что им это не нужно и полностью оставят **TS** на волю **open-source**?
+
+- являясь открытым продуктом, **TS** не лишиться поддержки совсем
+
+    - всегда найдутся энтузиасты
+
+- **Microsoft**, как основного разработчика, многие относят к минусу, потому как репутация у гиганта весьма спорная:
+
+    - **Skype**, **Nokia**, **Windows Phone**, **Windows Vista**, и тд
+
+### TypeScript
 
 - установка
 
@@ -170,15 +202,14 @@ npm i -g typescript
 - **greeter.ts**
 
 ```typescript
-let user = "Jane User";
+const user = "Jane User";
 
 document.body.innerHTML = greeter(user);
 
 function greeter(person) {
-    return "Hello, " + person;
+    return `Hello, ${person}`;
 }
 ```
-
 
 - компиляция
 
@@ -190,91 +221,398 @@ tsc greeter.ts
 - обновим **greeter.ts**
 
 ```typescript
-let user = "Jane User";
+const user = "Jane User";
 
 document.body.innerHTML = greeter(user);
 
 function greeter(person: string) {
-    return "Hello, " + person;
+    return `Hello, ${person}`;
 }
 ```
 
 - попробуем **greeter.ts**
 
 ```typescript
-let user = [1, 2, 3];
+const user = [1, 2, 3];
 
 ...
 ```
 
-- **interface**, обновим **greeter.ts**
+#### Типы данных
 
-```typescript
-let user = {
-    firstName: "Jane",
-    lastName: "User"
-};
+- **Boolean**
 
-document.body.innerHTML = greeter(user);
+    - логическое значение true или false
 
-interface Person {
-    firstName: string;
-    lastName: string;
-}
-
-function greeter(person: Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
+```js
+let isAlive: boolean = false;
 ```
+
+- **Number**
+
+    - числовое значение
+
+```js
+let decimal: number = 6;
+let hex: number = 0xf00d;
+let binary: number = 0b1010;
+let octal: number = 0o744;
+```
+
+- **String**
+
+    - строки
+
+```js
+let firstName: string = "Alec";
+```
+
+- **Array**
+
+    - массивы
+
+```js
+let list: number[] = [10, 20, 30];
+let colors: string[] = ["red", "green", "blue"];
+
+// or
+let names: Array<string> = ["Alec", "Bob", "Alice"];
+```
+
+- **Tuple(кортежи)**
+
+    - набор элементов, для которых уже заранее известен тип
+
+```js
+// определение кортежа - кортеж состоит из двух элементов - строки и числа
+let userInfo: [string, number];
+// инициализация кортежа
+userInfo = ["Alec", 28];
+// Неправильная инициализация - переданные значения не соответствуют типам по позиции
+//userInfo = [28, "Alec"]; // Ошибка
+
+// использование кортежа
+console.log(userInfo[1]); // 28
+userInfo[1] = 37;
+```
+
+- **Enum(перечисления)**
+
+    - описание набора числовых данных с помощью строковых констант
+
+```js
+enum Season { Winter, Spring, Summer, Autumn };
+
+let current: Season = Season.Summer;
+
+console.log(current);// 2
+current = Season.Autumn; // изменение значения
+
+//по умолчанию
+enum Season { Winter=0, Spring=1, Summer=2, Autumn=3 };
+
+// переопределение
+enum Season { Winter=5, Spring, Summer, Autumn };           // 5, 6, 7, 8
+enum Season { Winter=4, Spring=8, Summer=16, Autumn=32 };   // 4, 8, 16, 32
+
+// получить текстовое значение
+enum Season { Winter=0, Spring=1, Summer=2, Autumn=3 };
+let current: string = Season[2];    // 2 - числовое значение Summer
+console.log(current);   // Summer
+```
+
+- **Any**
+
+    - произвольный тип
+
+```js
+let someVar: any = "hello";
+console.log(someVar);   // сейчас someVar - это string
+
+someVar = 20;
+console.log(someVar);   // сейчас someVar - это number
+
+let someArray: any[] = [ 24, "Alec", false]; // для массивов
+```
+
+- **Null**/**undefined**
+
+    - соответствуют значениям **null** и **undefined**
+
+```js
+let a: undefined = undefined;
+let b: null = null;
+```
+
+```js
+let x: number = undefined;
+console.log(x);
+x = null;
+console.log(x);
+x = 5;
+console.log(x);
+```
+
+- **Void**
+
+    - отсутствие конкретного значения, используется в основном в качестве возвращаемого типа функций
+
+```js
+function add(a: number, b: number): number {
+    return a + b;
+}
+
+let result1 = add(1, 2);
+```
+
+```js
+function add(a: number, b: number): void {
+    console.log(a + b);
+}
+
+add(10, 20);
+```
+
+- **Never**
+
+    - также представляет отсутствие значения и используется в качестве возвращаемого типа функций, которые генерируют или возвращают ошибку
+
+#### Class
 
 - **class**,  обновим **greeter.ts**
 
 ```
-class Student {
-    fullName: string;
-
-    constructor(public firstName: string, public middleInitial: string, public lastName: string) {
-        this.fullName = firstName + " " + middleInitial + " " + lastName;
+class User {
+    id: number;
+    name: string;
+    getInfo(): string {
+        return `id: ${this.id} name: ${this.name}`;
     }
 }
 
-let user = new Student("Jane", "M.", "User");
+let alec: User = new User();
 
-document.body.innerHTML = greeter(user);
+alec.id = 1;
+alec.name = "Alec";
+console.log(alec.getInfo());
 
-interface Person {
-    firstName: string;
-    lastName: string;
+let alice: User = new User();
+
+alice.id = 2;
+alice.name = "Alice";
+console.log(alice.getInfo());
+```
+
+- **constructor**
+
+```js
+class User {
+
+    id: number;
+    name: string;
+    constructor(userId: number, userName: string) {
+        this.id = userId;
+        this.name = userName;
+    }
+    getInfo(): string {
+        return `id: ${this.id} name: ${this.name}`;
+    }
 }
 
-function greeter(person : Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
+let alec: User = new User(1, "Alec");
+console.log(alec.getInfo());
+alec.id = 4;
+
+let alice: User = new User(2, "Alice");
+console.log(alice.getInfo());
+```
+
+- **статические свойства и функции**
+
+```js
+class User {
+    static PI: number = 3.14;
+    id: number;
+    name: string;
+    constructor(userId: number, userName: string) {
+        this.id = userId;
+        this.name = userName;
+    }
+    getInfo(): string {
+        return `id: ${this.id} name: ${this.name}`;
+    }
 }
 ```
 
-### Миграция с JavaScript
+#### Модификаторы доступа
 
-- создание **tsconfig.json**
+- **public**
 
-    - все скомпилированные файлы в `./build`
-
-    - принять файлы **JS** в качестве входных данных
-
-    - компиляция в формат
-
-    - чтение `./src`
-
-```json
-{
-    "compilerOptions": {
-        "outDir": "./built",
-        "allowJs": true,
-        "target": "es5"
-    },
-    "include": [
-        "./src/**/*"
-    ]
+```js
+class User {
+    name: string;
+    year: number;
 }
+```
+
+**same**
+
+```js
+class User {
+    public name: string;
+    public year: number;
+}
+```
+
+- **private**
+
+```js
+class User {
+    private name: string;
+    private year: number;
+
+    constructor(name: string, age: number) {
+        this._name = name;
+        this._year = this.setYear(age);
+    }
+}
+```
+
+- **protected**
+
+    - можно обратиться из классов-наследников
+
+```js
+class User {
+    private name: string;
+    protected age: number;
+
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public displayInfo(): void {
+        console.log(`name: ${this.name} age: ${this.age}`);
+    }
+}
+
+class Employee extends User {
+    private company: string;
+
+    constructor(name: string, age: number, company: string) {
+        super(name, age);
+        this.company = company;
+    }
+
+    public showData(): void {
+        console.log(`Age: ${this.age}`);
+        //console.log(`Name:  ${this.name}`); // не работает, так как name - private
+    }
+}
+```
+
+#### Методы доступа
+
+```js
+class User {
+    private _name: string;
+
+    public get name(): string {
+        return this._name;
+    }
+
+    public set name(n: string) {
+        this._name = n;
+    }
+}
+
+let alec = new User();
+alec.name = "Alec";   // срабатывает set-метод
+console.log(alec.name);  // срабатывает get-метод
+```
+
+#### Свойства только для чтения
+
+- **readonly**
+
+```js
+class User {
+    readonly id: number;
+    name: string;
+    constructor(userId: number, userName: string) {
+        this.id = userId;
+        this.name = userName;
+    }
+}
+
+let alec: User = new User(2, "Alec");
+console.log(alec.id, alec.name);
+```
+
+**Note:** установить значение только в конструкторе класса
+
+#### Определение свойств через конструктор
+
+```js
+class User {
+    constructor(private name: string, protected age: number) {}
+
+    public displayInfo(): void {
+        console.log(`name: ${this.name} age: ${this.age}`);
+    }
+}
+```
+
+#### Interface
+
+- определяет свойства и методы, которые объект должен реализовать
+
+```typescript
+interface IUser {
+    id: number;
+    name: string;
+}
+
+let employee: IUser = {
+    id: 1,
+    name: "Alec"
+}
+```
+
+- параметры методов и функций также могут представлять интерфейс
+
+```js
+interface IUser {
+    id: number;
+    name: string;
+}
+
+let employee: IUser = {
+    id: 1,
+    name: "Alice"
+}
+
+function getEmployeeInfo(user: IUser): void {
+    console.log(user.id, user.name);
+}
+
+getEmployeeInfo(employee);
+```
+
+-  можно возвращать объекты интерфейса
+
+```js
+interface IUser {
+    id: number;
+    name: string;
+}
+
+function buildUser(userId: number, userName: string): IUser {
+    return { id: userId, name: userName };
+}
+
+let newUser = buildUser(2, "Bill");
 ```
 
 #### Build Tools
