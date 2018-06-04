@@ -427,14 +427,14 @@ user.save(function(err){
 
 ```js
 user.save()
-.then(function(doc){
-    console.log("Сохранен объект", doc);
-    mongoose.disconnect();  // отключение от базы данных
-})
-.catch(function (err){
-    console.log(err);
-    mongoose.disconnect();
-});
+    .then(function(doc){
+        console.log("Сохранен объект", doc);
+        mongoose.disconnect();  // отключение от базы данных
+    })
+    .catch(function (err){
+        console.log(err);
+        mongoose.disconnect();
+    });
 ```
 
 ### Схемы в Mongoose
