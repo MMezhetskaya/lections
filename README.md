@@ -396,20 +396,28 @@
 - Справочники
  
 ## [23.angular--02](./23.angular--02)
-- Heroes Editor
-    - Компонент `heroes`
-    - Класс `Hero`
-    - Pipes
-    - NgModels
-    - Обьявление компонентов
-    - NgModules
-- Список героев
-- Макет списка
-- ngFor или отображение макета списка
-    - Стили для списка
-- Angular event-binding
-- NgIf
-- Angular class-binding
+- Основы TypeScript
+    - Переменные
+    - Работа с типами данных
+    - Функции
+        - Перегрузка функций
+        - Тип
+    - Интерфейсы
+- Основы Angular
+    - Heroes Editor
+        - Компонент `heroes`
+        - Класс `Hero`
+        - Pipes
+        - NgModels
+        - Обьявление компонентов
+        - NgModules
+    - Список героев
+    - Макет списка
+    - ngFor или отображение макета списка
+        - Стили для списка
+    - Angular event-binding
+    - NgIf
+    - Angular class-binding
 - Заключение
 - ДЗ
 - Справочники

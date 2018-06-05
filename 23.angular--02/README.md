@@ -1,155 +1,335 @@
 # Lection 23
 
+## Продолжим о TypeScript
+
+### Переменные
+
+- **var**
+
+- **let**
+
+- **const**
+
+### Работа с типами данных
+
+- **объединения**
+
+```js
+let id : number | string;
+
+id = "1345dgg5";
+console.log(id); // 1345dgg5
+
+id = 234;
+console.log(id);  // 234
+```
+
+- **проверка типа**
+
+    - **typeof**
+
+```js
+let sum: any;
+
+sum = 1200;
+sum = "тысяча двести";
+
+let result: number = sum / 12;
+console.log(result); // NaN - строку нельзя разделить на число
+
+```
+
+- **псевдонимы типов**
+
+    - **type**
+
+```js
+type stringOrNumberType = number | string;
+
+let sum: stringOrNumberType = 36.6;
+
+if (typeof sum === "number") {
+    console.log(sum / 6);
+}
+```
+
+- **type assertion**
+
+    - модель преобразования значения переменной к определенному типу
+
+**Пример**
+
+- одна переменная может представлять широкий тип(any)
+
+    - но надо использовать переменную как
+
+        - значение строго определенного типа
+
+**Две формы приведения**
+
+- использование угловых скобок
+
+```js
+let someAnyValue: any = "hello world!";
+let strLength: number = (<string>someAnyValue).length;
+console.log(strLength); // 12
+
+let someUnionValue: string | number = "hello work";
+strLength = (<string>someUnionValue).length;
+console.log(strLength); // 10
+```
+
+- оператора **as**
+
+```js
+let someAnyValue: any = "hello world!";
+let strLength: number = (someAnyValue as string).length;
+console.log(strLength); // 12
+
+let someUnionValue: string | number = "hello work";
+strLength = (someUnionValue as string).length;
+console.log(strLength); // 10
+```
+
+### Функции
+
+```js
+// определение функции
+function add(a: number, b: number): number {
+    return a + b;
+}
+// вызов функции
+let result1 = add(1, 2);
+console.log(result1);
+```
+
+- **void**
+
+**Параметры**
+
+- **необязательные**
+
+    - передаются только параметры которые определенны
+
+```js
+function getName(firstName: string, lastName?: string): string {
+    if (lastName) {
+        return `${firstName} ${lastName}`;
+    } else {
+        return firstName;
+    }
+}
+```
+
+- **по умолчанию**
+
+```js
+function defaultSurname(): string{
+    return "Smith";
+}
+
+function getName(firstName: string, lastName: string=defaultSurname()) {
+    return `${firstName} ${lastName}`;
+}
+```
+
+- **неопределенный набор**
+
+    - набор однотипных параметров
+
+```js
+function addNumbers(firstNumber: number, ...numberArray: number[]): number {
+    let result = firstNumber;
+
+    for (let i = 0; i < numberArray.length; i++) {
+        result += numberArray[i];
+    }
+
+    return result;
+}
+  
+let num1 = addNumbers(3, 7, 8);
+console.log(num1); // 18
+  
+let num2 = addNumbers(3, 7, 8, 9, 4);
+console.log(num2); // 31
+```
+
+#### Перегрузка функций
+
+Можно определить несколько версий функции
+
+- имя одно
+
+- разные типы параметров
+
+- разное количество параметров
+
+- разные возвращаемые типы результатов
+
+**Пример**
+
+- опеределяем все версии функции
+
+- с общей сигнатурой
+
+    - подходит под все ранее определенные варианты
+
+```js
+function add(x: string, y: string): string;
+function add(x: number, y: number): number;
+function add(x: any, y: any): any {
+    return x + y;
+}
+
+let result1 = add(5, 4);
+console.log(result1);   // 9
+
+let result2 = add("5", "4");
+console.log(result2);   // 54
+```
+
+#### Тип
+
+- **представление**
+
+```js
+function sum (x: number, y: number): number {
+    return x + y;
+};
+
+function subtract (a: number, b: number): number {
+    return a - b;
+};
+
+let op: (x:number, y:number) => number;
+
+op = sum;
+console.log(op(2, 4));  // 6
+
+op = subtract;
+console.log(op(6, 4));  // 2
+```
+
+- **стрелочные функции**
+
+```js
+let sum = (x: number, y: number) => x + y;
+
+let result = sum(15, 35); // 50
+console.log(result);
+```
+
+### Интерфейсы
+
+- определяет свойства и методы
+
+    - объект должен реализоват
+
+```js
+interface IUser {
+    id: number;
+    name: string;
+}
+
+let employee: IUser = {
+    id: 1,
+    name: "Tom"
+}
+
+console.log("id: " + employee.id);
+console.log("name: " + employee.name);
+```
+
+- необязательные свойства
+
+```js
+interface IUser {
+    id: number;
+    name: string;
+    age?: number;
+}
+
+let employee: IUser = {
+    id: 1,
+    name: "Alice",
+    age: 23
+}
+
+let manager: IUser = {
+    id: 2,
+    name: "Tom"
+}
+```
+
+- свойства только для чтения
+
+```js
+interface Point {
+    readonly x: number;
+    readonly y: number;
+}
+
+let p: Point = { x: 10, y: 20 };
+console.log(p);
+// p.x = 5; // Ошибка - свойство доступно только для чтения
+```
+
+- определение методов
+
+```js
+interface IUser {
+    id: number;
+    name: string;
+    getFullName(surname: string): string;
+}
+
+let employee: IUser = {
+    id: 1,
+    name: "Alice",
+    getFullName : function (surname: string): string {
+        return this.name + " " + surname;
+    }
+}
+
+let fullName = employee.getFullName("Tompson");
+```
+
+- интерфейсы классов, **implements**
+
+```js
+interface IUser {
+    id: number;
+    name: string;
+    getFullName(surname: string): string;
+}
+
+class User implements IUser{
+    id: number;
+    name: string;
+    age: number;
+    constructor(userId: number, userName: string, userAge: number) {
+        this.id = userId;
+        this.name = userName;
+        this.age = userAge;
+    }
+    getFullName(surname: string): string {
+        return `${this.name} ${surname}`;
+    }
+}
+
+let tom = new User(1, "Tom", 23);
+```
+
+**является как объектом User, так и объектом IUser:**
+
+```js
+let tom :IUser = new User(1, "Tom", 23);
+//или
+let tom :User = new User(1, "Tom", 23);
+```
+
 ## Основы Angular
-
-**Как?**
-
-- напишем небольшое приложение
-
-**Что узнаем?**
-
-- как использовать встроенные директивы **Angular**
-
-- научимся создавть **Angular** компоненты
-
-- использовать одностороннюю привязку данных только для чтения
-
-- обновлять модели с двух сторонней привязкой
-
-- узнаем что такое привязка в конце-концов :)
-
-- привязывать методы к пользовательским событиям
-
-- форматировать данные используя **pipes**
-
-- использовать **routing** для навигации между различными видами и их компонентами
-
-
-## Что будем строить?
-
-### Tutorial: Tour of Heroes
-
-**Dashboard view**
-
-![Dashboard view](heroes-dashboard-1.png "Dashboard view")
-
-- две ссылки над списком героев ("Dashboard", "Heroes")
-
-    - "Dashboard view"(активная)
-
-    - "Heroes view"
-
-**Hero Details view**
-
-![Hero Details view](hero-details-1.png "Hero Details view")
-
-- при выборе героя открывается "Hero Details view"
-
-    - можем изменить имя героя
-
-    - "back" возвращает на "Dashboard view"
-
-**Heroes view**
-
-![Heroes view](heroes-list-2.png "Heroes view")
-
-- при выборе героя
-
-    - отображается информация о герое(read only)
-
-    - кнопка "View Details"
-
-        - ведет на "Hero Details view" для выбранного героя
-
-**Tour of Heroes view**
-
-![Tour of Heroes view](nav-diagram.png "Tour of Heroes view")
-
-**"Tour of Heroes" в действии**
-
-![Tour of Heroes в действии](toh-anim.gif "Tour of Heroes в действии")
-
-## Подготовка среды разработки
-
-- если не установлено, то установить **Angular CLI**
-
-```
-npm i -g @angular/cli
-```
-
-- создаем новое приложение ([angular-cli документация](https://github.com/angular/angular-cli/wiki))
-
-```
-ng new angular-tour-of-heroes
-```
-
-- запуск приложения
-
-```
-cd angular-tour-of-heroes
-// собираем приложение и запускаем сервер
-ng serve --open
-```
-
-### Angular компоненты
-
-- **src/app/app.component.ts**, свойство класса
-
-```angularjs
-...
-
-title = 'Tour of Heroes';
-
-...
-```
-
-- **src/app/app.component.html**, шаблон
-
-```angularjs
-...
-
-<h1>{{title}}</h1>
-
-...
-```
-
-### Редактируем стили
-
-- **src/styles.css**
-
-```css
-/* Application-wide Styles */
-h1 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
-}
-h2, h3 {
-  color: #444;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: lighter;
-}
-body {
-  margin: 2em;
-}
-body, input[text], button {
-  color: #888;
-  font-family: Cambria, Georgia;
-}
-/* everywhere else */
-* {
-  font-family: Arial, Helvetica, sans-serif;
-}
-```
-
-### Чему научились
-
-- создавать пустой проект используя **Angular CLI**
-
-- увидели как работает отображение данных
-
-- вывели данные в шаблон
-
 
 ## Heroes Editor
 
@@ -554,6 +734,8 @@ export class HeroesComponent implements OnInit {
 - class-binding
 
 **null**
+
+[<< prev](../22.angular-01) | [next >>](../24.angular--03)
 
 ## Справочники
 

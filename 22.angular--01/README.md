@@ -353,6 +353,24 @@ x = 5;
 console.log(x);
 ```
 
+- **комплексные объекты**
+
+```js
+let person = {name:"Tom", age:23};
+
+console.log(person.name);
+// альтернативный вариант получения свойства
+console.log(person["name"]);
+```
+
+**но**
+
+```js
+let person = { name: "Tom", age: 23 };
+
+person = { name: "Alice" };
+```
+
 - **Void**
 
     - отсутствие конкретного значения, используется в основном в качестве возвращаемого типа функций
@@ -905,6 +923,8 @@ body, input[text], button {
 ## ДЗ
 
 **null**
+
+[<< prev](../21.react--06) | [next >>](../23.angular--02)
 
 ## Справочники
 
