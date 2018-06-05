@@ -521,7 +521,7 @@ app.get("/contact", function(request, response){
 
 - **.ejs**
 
-```ejs
+```js
 <!DOCTYPE html>
 <html>
 <head>
