@@ -519,30 +519,8 @@ app.get("/contact", function(request, response){
 
 ## EJS
 
-- **.ejs**
+- **[ejs](http://ejs.co/)**
 
-```js
-<!DOCTYPE html>
-<html>
-<head>
-    <title><%=title %></title>
-    <meta charset="utf-8" />
-</head>
-<body>
-    <h1><%=title %> в EJS</h1>
-
-    <% if(emailsVisible) {%>
-        <h3>Электронные адреса</h3>
-        <ul>
-            <% for(var i=0; i<emails.length;i++) {%>
-                <li><%=emails[i] %></li>
-            <%} %>
-        </ul>
-    <%} %>
-    <p>Телефон: <%=phone %></p>
-</body>
-<html>
-```
 
 ## Создание [RESTful](https://ru.wikipedia.org/wiki/REST) API
 
@@ -978,3 +956,5 @@ app.listen(3000, function(){
 ## Справочники
 
 - [Handlebars](https://handlebarsjs.com/)
+
+- [ejs](http://ejs.co/)
