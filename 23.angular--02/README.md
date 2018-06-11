@@ -139,13 +139,13 @@ function getName(firstName: string, lastName: string=defaultSurname()) {
 
 ```js
 function addNumbers(firstNumber: number, ...numberArray: number[]): number {
-    let result = firstNumber;
+    let result = firstNumber;
 
-    for (let i = 0; i < numberArray.length; i++) {
-        result += numberArray[i];
-    }
+    for (let i = 0; i < numberArray.length; i++) {
+        result += numberArray[i];
+    }
 
-    return result;
+    return result;
 }
   
 let num1 = addNumbers(3, 7, 8);
@@ -304,7 +304,7 @@ interface IUser {
     getFullName(surname: string): string;
 }
 
-class User implements IUser{
+class User implements IUser {
     id: number;
     name: string;
     age: number;
@@ -328,6 +328,125 @@ let tom :IUser = new User(1, "Tom", 23);
 //или
 let tom :User = new User(1, "Tom", 23);
 ```
+
+### Наследование интерфейсов
+
+```js
+interface IMovable {
+    speed: number;
+    move(): void;
+}
+
+interface ICar extends IMovable {
+    fill(): void;
+}
+
+class Car implements ICar {
+    speed: number;
+    move(): void {
+        console.log(`Машина едет со скоростью ${this.speed} км/ч`);
+    }
+    fill(): void {
+        console.log("Заправляем машину топливом");
+    }
+}
+
+let auto = new Car();
+auto.speed = 60;
+auto.fill();
+auto.move();
+```
+
+### Интерфейсы функций
+
+- содержат определение типа функции
+
+    - реализованы объектом
+
+        - представляет функцию данного типа
+
+```js
+interface FullNameBuilder {
+    (name: string, surname: string): string;
+}
+
+let simpleBuilder: FullNameBuilder;
+
+simpleBuilder = function (name:string, surname: string): string {
+    return `Mr. ${name} ${surname}`;
+}
+
+let fullName = simpleBuilder("Homer", "Simpson");
+console.log(fullName); // Mr. Homer Simpson
+```
+
+### Интерфейсы массивов
+
+```js
+interface StringArray {
+    [index: number]: string;
+}
+
+let phones: StringArray;
+
+phones = ["iPhone 7", "HTC 10", "HP Elite x3"];
+
+let myPhone: string = phones[0];
+
+console.log(myPhone);
+```
+
+- второй вариант
+
+```js
+interface Dictionary {
+    [index: string]: string;
+}
+
+let colors: Dictionary = {};
+
+colors["red"] = "#ff0000";
+colors["green"] = "#00ff00";
+colors["blue"] = "#0000ff";
+
+console.log(colors["red"]);
+```
+
+### Гибридные интерфейсы
+
+```js
+interface PersonInfo {
+    (name: string, surname: string):void;
+    fullName: string;
+    password: string;
+    authenticate(): void;
+}
+
+function personBuilder(): PersonInfo {
+    let person = <PersonInfo>function (name: string, surname: string): void {
+        person.fullName = `${name} ${surname}`;
+    };
+
+    person.authenticate = function () {
+        console.log(`${person.fullName} входит в систему с паролем ${person.password}`);
+    };
+
+    return person;
+}
+
+let tom = personBuilder();
+tom("Tom", "Simpson");
+tom.password = "qwerty";
+tom.authenticate();
+```
+
+- тип функции в роли конструктора объекта
+
+    - конструктор имеет тип `(name: string, surname: string):void;`
+
+- функция  `personBuilder` реализует функцию конструктора
+
+    - может использовать другие свойства и методы
 
 ## Основы Angular
 
@@ -401,7 +520,6 @@ export class HeroesComponent implements OnInit {
 ```
 
 ### [Pipes](https://next.angular.io/guide/pipes)
-
 
 - **src/app/heroes/heroes.component.html**
 
@@ -735,7 +853,7 @@ export class HeroesComponent implements OnInit {
 
 **null**
 
-[<< prev](../22.angular-01) | [next >>](../24.angular--03)
+[<< prev](../22.angular--01) | [next >>](../24.angular--03)
 
 ## Справочники
 
