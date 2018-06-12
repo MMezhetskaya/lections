@@ -416,17 +416,18 @@
         - Обьявление компонентов
         - NgModules
     - Список героев
-    - Макет списка
-    - ngFor или отображение макета списка
+        - Макет списка
+        - ngFor или отображение макета списка
         - Стили для списка
-    - Angular event-binding
-    - NgIf
-    - Angular class-binding
 - Заключение
 - ДЗ
 - Справочники
  
 ## [24.angular--03](./24.angular--03)
+- Основы TypeScript
+- Angular event-binding
+- NgIf
+- Angular class-binding
 - Страница героя
 - Создание HeroDetailComponent
     - Свойства Input и Output

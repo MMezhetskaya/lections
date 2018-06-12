@@ -74,8 +74,8 @@ let someAnyValue: any = "hello world!";
 let strLength: number = (<string>someAnyValue).length;
 console.log(strLength); // 12
 
-let someUnionValue: string | number = "hello work";
-strLength = (<string>someUnionValue).length;
+let someUnionValue: string | number = 1;
+strLength = (<number>someUnionValue) + 9;
 console.log(strLength); // 10
 ```
 
@@ -288,7 +288,7 @@ let employee: IUser = {
     id: 1,
     name: "Alice",
     getFullName : function (surname: string): string {
-        return this.name + " " + surname;
+        return `${this.name}  ${this.surname}`;
     }
 }
 
@@ -456,6 +456,8 @@ tom.authenticate();
 
 **Задача**
 
+![Tour of Heroes в действии](../22.angular--01/toh-anim.gif "Tour of Heroes в действии")
+
 Создадим компонент `heroes` - редактирование героя
 
 ```
@@ -521,6 +523,12 @@ export class HeroesComponent implements OnInit {
 
 ### [Pipes](https://next.angular.io/guide/pipes)
 
+**Что делает?**
+
+- принимает данные
+
+    - преобразует в желаемый результат
+
 - **src/app/heroes/heroes.component.html**
 
 ```angularjs
@@ -539,6 +547,12 @@ export class HeroesComponent implements OnInit {
 
 ### [NgModel](https://next.angular.io/api/forms/NgModel)
 
+**Что делает?**
+
+- создает экземпляр **FormControl** из модели
+
+    - связывает с элементом управления формой
+
 - добавим редактирование свойства `name` **src/app/heroes/heroes.component.html**
 
 ```angularjs
@@ -553,13 +567,18 @@ export class HeroesComponent implements OnInit {
 
 - **src/app/app.module.ts**
 
-Angular needs to know how the pieces of your application fit together and what other files and libraries the app requires. This information is called metadata
+**Что это и зачем?**
 
-Some of the metadata is in the @Component decorators that you added to your component classes. Other critical metadata is in @NgModule decorators.
+> **Метаданные** - информация указывающая как части приложения подходят друг другу, и какие другие файлы и библиотеки требуется приложению.
 
-The most important @NgModuledecorator annotates the top-level AppModule class.
+Метаданные находятся в декораторах
 
-The Angular CLI generated an AppModule class in src/app/app.module.ts when it created the project. This is where you opt-in to the FormsModule.
+- **@Component**
+
+- **@NgModule**
+
+- самый важный **@NgModuledecorator** аннотирует класс **AppModule** верхнего уровня
+
 
 ```angularjs
 import { FormsModule } from '@angular/forms';  // <-- NgModel lives here
@@ -588,20 +607,23 @@ imports: [
 
 ### [NgModules](https://next.angular.io/guide/ngmodules)
 
+- настраивает инжектор и компилятор
 
-## Заключение
+    - помогает организовать связанные вещи вместе
 
-- использовали **CLI** для создания **HeroesComponent**
+- класс, отмеченный декоратором **@NgModule**
 
-- добавили отображение **HeroesComponent**
+    - принимает объект метаданных
 
-- применили **UppercasePipe** для форматирование имени
+        - описывает, как скомпилировать шаблон компонента
 
-- использовали двухстороннюю привязку - **ngModel** директива
+        - как создать инжектор во время выполнения
 
-- импортировали **FormsModule** в **AppModule**, для того что-бы **Angular** смог распознать и применить директиву **ngModel**
+    - идентифицирует
 
-- узнали о важности объявления компонентов в  **AppModule** и оценили, что **CLI** объявила об этом для вас
+        - собственные компоненты модуля
+
+        - директивы и каналы
 
 ## Список героев
 
@@ -613,7 +635,7 @@ imports: [
 
     - оторазить информацию о героя
 
-## Макет списка
+### Макет списка
 
 - создадим список героев **src/app/mock-heroes.ts**
 
@@ -734,122 +756,25 @@ export class HeroesComponent implements OnInit {
 }
 ```
 
-## Angular [event-binding](https://next.angular.io/guide/template-syntax#event-binding)
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-...
-
-// onSelect() метод HeroesComponent
-<li *ngFor="let hero of heroes" (click)="onSelect(hero)">
-
-...
-```
-
-- **src/app/heroes/heroes.component.ts**
-
-```angularjs
-...
-
-export class HeroesComponent implements OnInit {
-  ...
-
-  selectedHero: Hero;
-
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
-  }
-
-  ...
-
-}
-
-```
-
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-<h2>My Heroes</h2>
-<ul class="heroes">
-  <li *ngFor="let hero of heroes" (click)="onSelect(hero)">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
-  </li>
-</ul>
-
-<h2>{{selectedHero.name | uppercase}} Details</h2>
-<div><span>id: </span>{{selectedHero.id}}</div>
-<div>
-  <label>
-    name: <input [(ngModel)]="selectedHero.name" placeholder="name">
-  </label>
-</div>
-```
-
-- откроем консоль
-
-- клик на любого героя из списка
-
-**Почему так?**
-
-- на начальном этапе `selectedHero === undefined`
-
-## [NgIf](https://next.angular.io/api/common/NgIf)
-
-**Как пофиксить?**
-
-- показывать `selectedHero` только если он существует
-
-**Решение**
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-...
-
-<div *ngIf="selectedHero">
-
-  <h2>{{ selectedHero.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{selectedHero.id}}</div>
-  <div>
-    <label>name:
-      <input [(ngModel)]="selectedHero.name" placeholder="name">
-    </label>
-  </div>
-
-</div>
-```
-
-## Angular [class-binding](https://next.angular.io/guide/template-syntax#class-binding)
-
-- выделим выбранного героя
-
-    - класс `.selected`, стили были добавлены ранее
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-...
-
-<li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-  ...
-</li>
-
-...
-```
-
 ## Заключение
 
-- отобразили список героев
+- Основы **TypeScript**
 
-- познакомились с event-binding
+- использовали **CLI** для создания **HeroesComponent**
 
-- ngFor
+- добавили отображение **HeroesComponent**
 
-- ngIf
+- применили **UppercasePipe** для форматирование имени
 
-- class-binding
+- использовали двухстороннюю привязку - **ngModel** директива
+
+- импортировали **FormsModule** в **AppModule**, для того что-бы **Angular** смог распознать и применить директиву **ngModel**
+
+- узнали о важности объявления компонентов в  **AppModule** и оценили, что **CLI** объявила об этом для вас
+
+- **ngFor**
+
+## ДЗ
 
 **null**
 
@@ -866,9 +791,3 @@ export class HeroesComponent implements OnInit {
 - [NgModules](https://next.angular.io/guide/ngmodules)
 
 - [ngFor](https://next.angular.io/guide/template-syntax#ngFor)
-
-- [event-binding](https://next.angular.io/guide/template-syntax#event-binding)
-
-- [class-binding](https://next.angular.io/guide/template-syntax#class-binding)
-
-- [NgIf](https://next.angular.io/api/common/NgIf)
