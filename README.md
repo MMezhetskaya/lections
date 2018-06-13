@@ -425,6 +425,9 @@
  
 ## [24.angular--03](./24.angular--03)
 - Основы TypeScript
+    - Преобразование типов
+    - Обобщения
+    - Обобщенные классы и интерфейсы
 - Angular event-binding
 - NgIf
 - Angular class-binding
