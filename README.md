@@ -415,10 +415,13 @@
         - NgModels
         - Обьявление компонентов
         - NgModules
-    - Список героев
+    - Список и детали героев
         - Макет списка
         - ngFor или отображение макета списка
         - Стили для списка
+        - Angular event-binding
+        - NgIf
+        - Angular class-binding
 - Заключение
 - ДЗ
 - Справочники
@@ -428,9 +431,7 @@
     - Преобразование типов
     - Обобщения
     - Обобщенные классы и интерфейсы
-- Angular event-binding
-- NgIf
-- Angular class-binding
+
 - Страница героя
 - Создание HeroDetailComponent
     - Свойства Input и Output

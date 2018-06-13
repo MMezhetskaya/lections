@@ -174,120 +174,7 @@ console.log(alice.getId()); // возвращает string
 
 ```
 
-## Страница героя
-
-## Angular [event-binding](https://next.angular.io/guide/template-syntax#event-binding)
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-...
-
-// onSelect() метод HeroesComponent
-<li *ngFor="let hero of heroes" (click)="onSelect(hero)">
-
-...
-```
-
-- **src/app/heroes/heroes.component.ts**
-
-```angularjs
-...
-
-export class HeroesComponent implements OnInit {
-  ...
-
-  selectedHero: Hero;
-
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
-  }
-
-  ...
-
-}
-
-```
-
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-<h2>My Heroes</h2>
-<ul class="heroes">
-  <li *ngFor="let hero of heroes" (click)="onSelect(hero)">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
-  </li>
-</ul>
-
-<h2>{{selectedHero.name | uppercase}} Details</h2>
-<div><span>id: </span>{{selectedHero.id}}</div>
-<div>
-  <label>
-    name: <input [(ngModel)]="selectedHero.name" placeholder="name">
-  </label>
-</div>
-```
-
-- откроем консоль
-
-- клик на любого героя из списка
-
-**Почему так?**
-
-- на начальном этапе `selectedHero === undefined`
-
-## [NgIf](https://next.angular.io/api/common/NgIf)
-
-**Как пофиксить?**
-
-- показывать `selectedHero` только если он существует
-
-**Решение**
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-...
-
-<div *ngIf="selectedHero">
-
-  <h2>{{ selectedHero.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{selectedHero.id}}</div>
-  <div>
-    <label>name:
-      <input [(ngModel)]="selectedHero.name" placeholder="name">
-    </label>
-  </div>
-
-</div>
-```
-
-## Angular [class-binding](https://next.angular.io/guide/template-syntax#class-binding)
-
-- выделим выбранного героя
-
-    - класс `.selected`, стили были добавлены ранее
-
-- **src/app/heroes/heroes.component.html**
-
-```angularjs
-...
-
-<li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-  ...
-</li>
-
-...
-```
-
-## Заключение
-
-**Правила хорошего тона!**
-
-- reusable
-
-- строго отвечают своему предназначению
+## Создание HeroDetailComponent
 
 **Что будем делать**
 
@@ -297,7 +184,7 @@ export class HeroesComponent implements OnInit {
 
     - компонент описания героя
 
-## Создание HeroDetailComponent
+**Go go go!**
 
 - создадим `hero-detail`
 
