@@ -4,6 +4,59 @@
 
 ### Миксины
 
+- не позволяет использовать напрямую множественное наследование
+
+    - можем реализовать множество интерфейсов в классе
+
+        - но унаследовать его можем только от одного класса
+
+>Функциональность миксинов частично позволяют унаследовать свойства и методы сразу двух и более классов.
+
+**Пример**
+
+```js
+class Animal {
+
+    feed():void {
+        console.log("кормим животное");
+    }
+}
+
+class Transport {
+
+    speed: number=0;
+    move(): void {
+        if (this.speed == 0) {
+            console.log("Стоим на месте");
+        }
+        else if (this.speed > 0) {
+            console.log("Перемещаемся со скоростью " + this.speed + " км/ч");
+        }
+    }
+}
+
+class Horse implements Animal, Transport {
+    speed: number=0;
+    feed: () => void;
+    move: () => void;
+}
+
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
+}
+
+applyMixins(Horse, [Animal, Transport]);
+
+let pony: Horse = new Horse();
+pony.feed();
+pony.move();
+pony.speed = 4;
+pony.move();
+```
 
 
 ## Создание HeroDetailComponent
