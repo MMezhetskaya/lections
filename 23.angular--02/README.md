@@ -448,6 +448,277 @@ tom.authenticate();
 
     - может использовать другие свойства и методы
 
+### Преобразование типов
+
+**Пример**
+
+```angularjs
+class User {
+    name: string;
+
+    constructor(userName: string) {
+        this.name = userName;
+    }
+}
+
+class Employee extends User {
+    company: string;
+
+    constructor(employeeCompany: string, userName: string) {
+        super(userName);
+        this.company = employeeCompany;
+    }
+}
+
+// от призводного типа Employee к базовому типу User
+function getUserName(user: User): string {
+    return user.name;
+}
+
+function userFactory(name: string): User {
+    return new Employee("не установлено", name);
+}
+
+let alice: Employee = new Employee("Microsoft", "Alice");
+let userName = getUserName(alice);
+console.log(userName);  // Alice
+
+let tom = userFactory("Tom");
+userName = getUserName(tom);
+console.log(userName);  // Tom
+```
+
+**Тут вроде все ясно?**
+
+```angularjs
+let alice: User = new Employee("Microsoft", "Alice");
+console.log(alice.company);
+```
+
+
+```angularjs
+let alice: User = new Employee("Microsoft", "Alice");
+
+let aliceEmployee: Employee = <Employee>alice; // преобразование к типу Employee
+console.log(aliceEmployee.company);
+
+// или так
+console.log((<Employee>alice).company);
+```
+
+**А интерфейсы?**
+
+```angularjs
+interface IUser {
+    name: string;
+}
+class User {
+    name: string;
+    constructor(userName: string) {
+        this.name = userName;
+    }
+}
+class Employee extends User {
+    company: string;
+    constructor(employeeCompany: string, userName: string) {
+        super(userName);
+        this.company = employeeCompany;
+    }
+}
+
+function getUserName(user: IUser): string {
+    return user.name;
+}
+
+let alice: User = new Employee("Microsoft", "Alice");
+console.log(getUserName(alice));
+
+console.log(getUserName({ name: "Tom" }));
+console.log(getUserName({ name: "Bob", company:"Microsoft" }));
+```
+
+- как решить проблему?
+
+- **instanceOf**
+
+### Обобщения
+
+**TypeScript является строго типизированным языком?**
+
+- не можем использовать результат функции как объект того типа, который передан в функцию
+
+```angularjs
+function getId(id: any): any {
+    return id;
+}
+
+let result = getId(5);
+console.log(result);
+```
+
+- типизирована определенным типом T
+
+    - при выполнении функции вместо Т будет подставляться конкретный тип
+
+        - на этапе компиляции конкретный тип не известен
+
+```angularjs
+function getId<T>(id: T): T {
+    return id;
+}
+```
+
+```angularjs
+function getId<T>(id: T): T {
+
+    return id;
+}
+
+let result1 = getId<number>(5);
+console.log(result1);
+let result2 = getId<string>("abc");
+console.log(result2);
+```
+
+- обобщенные массивы
+
+```angularjs
+function getString<T>(arg: Array<T>): string {
+    let result = "";
+    for (let i = 0; i < arg.length; i++) {
+        if (i > 0)
+            result += ",";
+        result += arg[i].toString();
+    }
+    console.log(result);
+    return result;
+}
+
+let result = getString<number>( [1, 2, 34, 5]);
+console.log(result);
+```
+
+#### Обобщенные классы и интерфейсы
+
+```angularjs
+class User<T> {
+    private _id: T;
+    constructor(id:T) {
+        this._id=id;
+    }
+    getId(): T {
+
+        return this._id;
+    }
+}
+
+let tom = new User<number>(3);
+console.log(tom.getId()); // возвращает number
+
+let alice = new User<string>("vsf");
+console.log(alice.getId()); // возвращает string
+
+```
+
+
+```
+let tom = new User<number>(3);
+console.log(tom.getId());
+tom = new User<string>("vsf");
+```
+
+**Note:** если типизировали объект определенным типом, то сменить данный тип уже не получится
+
+#### Ограничения обобщений
+
+- необходимо использовать обобщения
+
+    - принимать любой тип в функцию или класс вместо параметра T нежелательно
+
+**Например**
+
+```js
+interface IUser {
+    getInfo();
+}
+
+class User implements IUser {
+    _id: number;
+    _name: string;
+    constructor(id:number, name:string) {
+
+        this._id = id;
+        this._name = name;
+    }
+    getInfo() {
+
+        console.log("id: " + this._id + "; name: " + this._name);
+    }
+}
+
+class Employee extends User {
+    _company: string;
+    constructor(id: number, name: string, company: string) {
+        super(id, name);
+        this._company = company;
+    }
+
+    getInfo() {
+        console.log("id: " + this._id + "; name: " + this._name+"; company:"+this._company);
+    }
+}
+```
+
+- создадим класс, выводящий информацию о пользователях
+
+    - предполагая, что в качестве параметра будет передаваться объект IUser
+
+    - чтобы нельзя было передать объекты любого типа
+
+        - устанавливается ограничения **extends**
+
+```js
+class UserInfo<T extends IUser>{
+
+    getUserInfo(user: T): void{
+        user.getInfo();
+    }
+}
+```
+
+#### New
+
+- новый объект в коде обобщений
+
+    - надо указать
+
+        - что обобщенный тип T имеет конструктор
+
+```js
+function UserFactory<T>(): T {
+    return new T();
+}
+```
+
+- так да
+
+```js
+function userFactory<T>(type: { new (): T; }): T {
+     
+    return new type();
+}
+ 
+ 
+class User {
+ 
+    constructor() {
+        console.log("создан объект User");
+    }
+}
+ 
+let user : User = userFactory(User);
+```
+
 ## Основы Angular
 
 ## Heroes Editor
