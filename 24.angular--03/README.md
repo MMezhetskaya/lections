@@ -197,6 +197,35 @@ let iphone: Phone = new Phone("iPhone X");
 Call(iphone);
 ```
 
+**module** vs **namespace**
+
+В TS-руководстве есть 2 типа модулей:
+
+- внутренний(пространства имен)
+
+    - код во внутреннем модуле написан в Typescript
+
+- "внешний"(модуль)
+
+    - написан в Javascript.
+
+**Note:** чтобы согласовать с новой терминологией ECMAScript 2015, они решили переименовать их в пространства имен и модули
+
+**Пример**
+
+
+```js
+window.NamespaceA
+window.NamespaceA.NamespaceB
+window.NamespaceA.NamespaceB.NamespaceC
+window.NamespaceA.NamespaceB.NamespaceC.ClassD
+```
+
+
+а если с модулями?
+
+    - должны использовать "волшебство"
+
 #### Загрузка модулей
 
 ### Заголовочные файлы
