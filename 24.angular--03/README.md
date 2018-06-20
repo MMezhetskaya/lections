@@ -16,27 +16,26 @@
 
 ```js
 class Animal {
-
     feed():void {
         console.log("кормим животное");
     }
 }
 
 class Transport {
-
     speed: number=0;
     move(): void {
         if (this.speed == 0) {
             console.log("Стоим на месте");
         }
-        else if (this.speed > 0) {
-            console.log("Перемещаемся со скоростью " + this.speed + " км/ч");
+
+        if (this.speed > 0) {
+            console.log(`Перемещаемся со скоростью ${this.speed} км/ч`);
         }
     }
 }
 
 class Horse implements Animal, Transport {
-    speed: number=0;
+    speed: number = 0;
     feed: () => void;
     move: () => void;
 }
@@ -57,6 +56,154 @@ pony.move();
 pony.speed = 4;
 pony.move();
 ```
+
+**Ограничения**
+
+- миксин может унаследовать только
+
+    - свойства и методы, которые непосредственно определены в применяемом классе
+
+- если родительские классы определяют метод с одним и тем же именем
+
+    - то миксин наследует только ...
+
+### Модули
+
+#### Пространства имен
+
+**Цель**
+
+- организация больших программ
+
+**Что внутри**
+
+- группы классов, интерфейсов, функций, других пространств имен
+
+    - могут использоваться в общем контексте
+
+```js
+namespace Personnel {
+    export class Employee {
+        constructor(public name: string) {
+        }
+    }
+}
+
+let alec = new Personnel.Employee("Alec");
+console.log(alec.name);    // Alec
+```
+
+- определяются в отдельных файлах
+
+    -  **personnel.ts**
+
+```js
+namespace Personnel {
+    export class Employee {
+        constructor(public name: string) {
+        }
+    }
+
+    export class Manager {
+        constructor(public name: string) {
+        }
+    }
+}
+```
+
+- **app.ts**
+
+```js
+/// <reference path="personnel.ts" />
+
+let tom = new Personnel.Employee("Tom")
+console.log(tom.name);
+
+let alec = new Personnel.Manager("Alec");
+console.log(alec.name);
+```
+
+**Вложенные пространства имен**
+
+```js
+namespace Data{
+    export namespace Personnel {
+        export class Employee {
+
+            constructor(public name: string){
+            }
+        }
+    }
+    export namespace Clients {
+        export class VipClient {
+
+            constructor(public name: string){
+            }
+        }
+    }
+}
+
+let tom = new Data.Personnel.Employee("Tom")
+console.log(tom.name);
+
+let sam = new Data.Clients.VipClient("Sam");
+console.log(sam.name);
+```
+
+**Псевдонимы**
+
+```js
+namespace Data{
+    export namespace Personnel {
+        export class Employee {
+            constructor(public name: string){
+            }
+        }
+    }
+}
+
+import employee = Data.Personnel.Employee;
+let tom = new employee("Tom")
+console.log(tom.name);
+```
+
+#### Модули
+
+-  **devices.ts**
+
+```js
+interface Device{
+    name: string;
+}
+
+class Phone implements Device {
+    name: string;
+    constructor(n:string){
+        this.name = n;
+    }
+}
+
+function Call(phone: Phone) : void{
+    console.log("Make a call by", phone.name);
+}
+export {Device, Phone, Call as Devices};
+```
+
+- **app.ts**
+
+```js
+import {Phone, Call} from "./devices";
+let iphone: Phone = new Phone("iPhone X");
+Call(iphone);
+```
+
+#### Загрузка модулей
+
+### Заголовочные файлы
+
+
+
+# Обратно к Angular
 
 ## Список и детали героев
 
