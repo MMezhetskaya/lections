@@ -711,7 +711,7 @@ let acc = new Account("bir@gmail.com", "+23451235678");
 acc.email = "bir_iki_yedi";
 ```
 
-![Мои поздравления](./node__cycle__events__full.png "Мои поздравления")
+![Мои поздравления](./finaly__00.png "Мои поздравления")
 
 # Обратно к Angular
 
