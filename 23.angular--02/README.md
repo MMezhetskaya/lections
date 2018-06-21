@@ -142,7 +142,7 @@ function addNumbers(firstNumber: number, ...numberArray: number[]): number {
     let result = firstNumber;
 
     for (let i = 0; i < numberArray.length; i++) {
-        result += numberArray[i];
+        result += numberArray[i];
     }
 
     return result;
@@ -713,7 +713,7 @@ let user: User = userFactory(User);
 ```
 
 
-![Мои поздравления](./finaly__01.png "Мои поздравления")
+![Мои поздравления](./finally--01.jpg "Мои поздравления")
 
 # Основы Angular
 

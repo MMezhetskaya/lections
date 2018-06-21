@@ -568,7 +568,7 @@ function format(target: Object, propertyKey: string){
 
     // геттер
     const getter = function () {
-        return "Mr./Ms." + _val;
+        return `Mr./Ms. ${_val}`;
     };
 
     // сеттер
@@ -711,7 +711,7 @@ let acc = new Account("bir@gmail.com", "+23451235678");
 acc.email = "bir_iki_yedi";
 ```
 
-![Мои поздравления](./finaly__00.png "Мои поздравления")
+![Мои поздравления](./finally--00.jpg "Мои поздравления")
 
 # Обратно к Angular
 
@@ -727,15 +727,17 @@ acc.email = "bir_iki_yedi";
 
 - добавим редактирование свойства `name` **src/app/heroes/heroes.component.html**
 
-```angularjs
+```html
+...
+
 <div>
-    <label>
-        name: <input [(ngModel)]="hero.name" placeholder="name">
-    </label>
+  <label>
+    name: <input [(ngModel)]="hero.name" placeholder="name">
+  </label>
 </div>
 ```
 
-*`[(ngModel)] ` - синтаксис двусторонней привязки
+**Note:** `[(ngModel)] ` - синтаксис двусторонней привязки
 
 - **src/app/app.module.ts**
 
@@ -810,7 +812,7 @@ imports: [
 
 - создадим список героев **src/app/mock-heroes.ts**
 
-```angularjs
+```js
 import { Hero } from './hero';
 
 export const HEROES: Hero[] = [
@@ -829,7 +831,7 @@ export const HEROES: Hero[] = [
 
 - импортируем список **src/app/heroes/heroes.component.ts**
 
-```angularjs
+```js
 ...
 
 import { HEROES } from '../mock-heroes';
@@ -851,11 +853,11 @@ export class HeroesComponent implements OnInit {
 
 - отредактируем **src/app/heroes/heroes.component.html**
 
-```js
+```html
 <h2>My Heroes</h2>
 <ul class="heroes">
   <li *ngFor="let hero of heroes">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
+    <span class="badge">{hero.id}</span> {hero.name}
   </li>
 </ul>
 
@@ -931,7 +933,7 @@ export class HeroesComponent implements OnInit {
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```js
 ...
 
 // onSelect() метод HeroesComponent
@@ -942,7 +944,7 @@ export class HeroesComponent implements OnInit {
 
 - **src/app/heroes/heroes.component.ts**
 
-```angularjs
+```js
 ...
 
 export class HeroesComponent implements OnInit {
@@ -960,19 +962,18 @@ export class HeroesComponent implements OnInit {
 
 ```
 
-
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```html
 <h2>My Heroes</h2>
 <ul class="heroes">
   <li *ngFor="let hero of heroes" (click)="onSelect(hero)">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
+    <span class="badge">{hero.id}</span> {hero.name}
   </li>
 </ul>
 
-<h2>{{selectedHero.name | uppercase}} Details</h2>
-<div><span>id: </span>{{selectedHero.id}}</div>
+<h2>{selectedHero.name | uppercase} Details</h2>
+<div><span>id: </span>{selectedHero.id}</div>
 <div>
   <label>
     name: <input [(ngModel)]="selectedHero.name" placeholder="name">
@@ -998,13 +999,13 @@ export class HeroesComponent implements OnInit {
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```html
 ...
 
 <div *ngIf="selectedHero">
 
-  <h2>{{ selectedHero.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{selectedHero.id}}</div>
+  <h2>{ selectedHero.name | uppercase } Details</h2>
+  <div><span>id: </span>{selectedHero.id}</div>
   <div>
     <label>name:
       <input [(ngModel)]="selectedHero.name" placeholder="name">
@@ -1032,12 +1033,6 @@ export class HeroesComponent implements OnInit {
 ...
 ```
 
-**Правила хорошего тона!**
-
-- reusable
-
-- строго отвечают своему предназначению
-
 ## Создание HeroDetailComponent
 
 **Что будем делать**
@@ -1058,11 +1053,11 @@ ng generate component hero-detail
 
 - перенесём с **src/app/heroes/heroes.component.html** в **src/app/heroes/hero-detail.component.html**
 
-```angularjs
+```js
 <div *ngIf="hero">
 
-  <h2>{{ hero.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{hero.id}}</div>
+  <h2>{ hero.name | uppercase } Details</h2>
+  <div><span>id: </span>{hero.id}</div>
   <div>
     <label>name:
       <input [(ngModel)]="hero.name" placeholder="name"/>
@@ -1072,11 +1067,11 @@ ng generate component hero-detail
 </div>
 ```
 
-*selectedHero -> hero
+**Note:** selectedHero -> hero
 
 - **src/app/hero-detail/hero-detail.component.ts**
 
-```angularjs
+```js
 import { Component, OnInit, Input } from '@angular/core';
 import { Hero } from '../hero';
 
@@ -1094,7 +1089,6 @@ export class HeroDetailComponent implements OnInit {
   }
 
 }
-
 ```
 
 ### [Свойства Input и Output](https://next.angular.io/guide/template-syntax#inputs-outputs)
