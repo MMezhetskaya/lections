@@ -205,11 +205,11 @@ Call(iphone);
 
     - код во внутреннем модуле написан в Typescript
 
-- "внешний"(модуль)
+- внешний(модуль)
 
     - написан в Javascript.
 
-**Note:** чтобы согласовать с новой терминологией ECMAScript 2015, они решили переименовать их в пространства имен и модули
+**Note:** чтобы согласовать с новой терминологией ECMAScript 2015, было решено переименовать их в пространства имен и модули
 
 **Пример**
 
@@ -221,16 +221,497 @@ window.NamespaceA.NamespaceB.NamespaceC
 window.NamespaceA.NamespaceB.NamespaceC.ClassD
 ```
 
-
 а если с модулями?
 
     - должны использовать "волшебство"
 
-#### Загрузка модулей
-
 ### Заголовочные файлы
 
+**Цель**
 
+- для установки связи с внешними файлами скриптов javascript
+
+- файлы с расширением .d.ts
+
+    - описывают синтаксис и структуру функций и свойств
+
+    - не предоставляют реализацию
+
+    - роль оберток над библиотеками javascript
+
+
+- **файл с глобвальной переменной**
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>TypeScript HTML App</title>
+</head>
+<body>
+    <h1>TypeScript HTML App</h1>
+
+    <div id="content"></div>
+    <script>
+        const globalVar = "hello TS";
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
+```
+
+- **app.js**
+
+```js
+class Utility {
+    static displayGlobalVar() {
+
+        console.log(globalVar);
+    }
+}
+
+window.onload = () => {
+
+    Utility.displayGlobalVar();
+
+};
+```
+
+- **globals.d.ts**
+
+```js
+declare const globalVar: string;
+```
+
+- **app.js**
+
+```js
+/// <reference path="globals.d.ts" />
+
+class Utility {
+    static displayGlobalVar() {
+        console.log(globalVar);
+    }
+}
+window.onload = () => {
+    Utility.displayGlobalVar();
+};
+```
+
+- **более сложные объекты**
+
+```js
+const points = [
+    { X: 10, Y: 34 },
+    { X: 24, Y: 65 },
+    { X: 89, Y: 12 }
+];
+```
+
+```js
+// globals.d.ts
+
+interface IPoint {
+    X: number;
+    Y: number;
+}
+
+declare const points: IPoint[];
+```
+
+### Декораторы
+
+> Декларати́вное программи́рование — это парадигма программирования, в которой задаётся спецификация решения задачи, то есть описывается, что представляет собой проблема и ожидаемый результат **@ Wwiki**
+
+**Цель**
+
+- инструменты декларативного программирования
+
+    - позволяют добавить к классам и их членам метаданные
+
+    - тем самым изменить их поведение без изменения их кода
+
+**Note:** на текущий момент декораторы являются экпериментальной функциональностью языка TypeScript
+
+#### Декораторы классов
+
+- представляет функцию, которая принимает один параметр
+
+```js
+function classDecoratorFn(constructor: Function){ }
+```
+
+```js
+function sealed(constructor: Function) {
+    console.log("sealed decorator");
+    Object.seal(constructor);
+    Object.seal(constructor.prototype);
+}
+
+@sealed
+class User {
+    name: string;
+    constructor(name: string){
+        this.name = name;
+    }
+    print():void{
+        console.log(this.name);
+    }
+}
+
+Object.defineProperty(User, 'age', {
+    value: 17
+});
+```
+
+#### Декоратор метода
+
+- представляет функцию, которая принимает три параметра
+
+    - функция конструктора класса для статического метода, либо прототип класса для обычного метода
+
+    - название метода
+
+    - объект интерфейса PropertyDescriptor
+
+```js
+interface PropertyDescriptor{
+    configurable?: boolean;
+    enumerable?: boolean;
+    value?: any;
+    writable?: boolean;
+    get? (): any;
+    set? (v: any): void;
+}
+```
+
+```js
+function deprecated(target: any, propertyName: string, descriptor: PropertyDescriptor){
+    console.log("Method is deprecated");
+}
+```
+
+**Пример**
+
+```js
+function readonly (target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
+    descriptor.writable = false;
+};
+
+class User {
+
+    name: string;
+    constructor(name: string){
+        this.name = name;
+    }
+
+    @readonly
+    print():void{
+        console.log(this.name);
+    }
+}
+const tom = new User("Tom");
+tom.print = function(){console.log("print has been changed");}
+tom.print();  // Tom
+```
+
+#### Параметры и выходной результат метода
+
+- позволяет манипулировать параметрами и возвращаемым результатом метода
+
+```js
+// обычное логирование
+
+function log(target: Object, method: string, descriptor: PropertyDescriptor){
+    const originalMethod = descriptor.value;
+
+    descriptor.value = function(...args){
+        console.log(JSON.stringify(args));
+
+        const returnValue = originalMethod.apply(this, args);
+
+        console.log(`${JSON.stringify(args)} => ${returnValue}`)
+
+        return returnValue;
+    }
+}
+
+class Calculator{
+
+    @log
+    add(x: number, y: number): number{
+        return x + y;
+    }
+}
+
+let calc = new Calculator();
+let z = calc.add(4, 5);
+z = calc.add(6, 7);
+```
+
+#### Декораторы параметров методов
+
+- представляет функцию, которая принимает три параметра
+
+```js
+function MyParameterDecorator(target: Object, propertyKey: string, parameterIndex: number){
+    // код декоратора
+}
+```
+
+- представляет
+
+    - конструктор класса (метод статический)
+
+    - прототип класса (метод нестатический)
+
+- имя параметра
+
+- порядковый индекс параметра в списке параметров
+
+**Пример**
+
+```js
+// добавляет в прототип класса новое свойство metadataKey
+// - свойство представляет массив, который содержит индексы декорированных параметров
+
+function logParameter(target: any, key : string, index : number) {
+    const metadataKey = `__log_${key}_parameters`;
+
+    if (Array.isArray(target[metadataKey])) {
+        target[metadataKey].push(index);
+    } else {
+        target[metadataKey] = [index];
+    }
+}
+
+// для чтения метаданных из свойства metadataKey
+// - перебирает все параметры метода
+// - находит значения параметров по индексам, которые определены декоратором параметров
+// - выводит в консоль названия и значения декорированных параметров
+function logMethod(target, key, descriptor) {
+    const originalMethod = descriptor.value;
+
+    descriptor.value = function (...args: any[]) {
+
+        const metadataKey = `__log_${key}_parameters`;
+        const indices = target[metadataKey];
+
+        if (Array.isArray(indices)) {
+            for (var i = 0; i < args.length; i++) {
+
+                if (indices.indexOf(i) !== -1) {
+                    const arg = args[i];
+                    const argStr = JSON.stringify(arg) || arg.toString();
+                    console.log(`${key} arg[${i}]: ${argStr}`);
+                }
+            }
+            const result = originalMethod.apply(this, args);
+            return result;
+        }
+        else {
+            const a = args.map(a => (JSON.stringify(a) || a.toString())).join();
+            const result = originalMethod.apply(this, args);
+            const r = JSON.stringify(result);
+
+            console.log(`Call: ${key}(${a}) => ${r}`);
+            return result;
+        }
+    }
+    return descriptor;
+}
+
+class User {
+
+    private name: string;
+    constructor(name: string){
+        this.name = name;
+    }
+    @logMethod
+    setName(@logParameter name: string){
+        this.name = name;
+    }
+    print():void{
+        console.log(this.name);
+    }
+}
+
+const tom = new User("Tom");
+tom.setName("Bob");
+tom.setName("Sam");
+```
+
+#### Декораторы свойств
+
+- представляет функцию, которая принимает два параметра
+
+```js
+function MyPropertyDecorator(target: Object, propertyKey: string){
+    // код декоратора
+}
+```
+
+- представляет
+
+    - конструктор класса (метод статический)
+
+    - прототип класса (метод нестатический)
+
+- имя свойства
+
+```js
+function format(target: Object, propertyKey: string){
+
+    let _val = this[propertyKey];   // получаем значение свойства
+
+    // геттер
+    const getter = function () {
+        return "Mr./Ms." + _val;
+    };
+
+    // сеттер
+    const setter = function (newVal) {
+        _val = newVal;
+    };
+
+    // удаляем свойство
+    if (delete this[propertyKey]) {
+
+        // И создаем новое свойство с геттером и сеттером
+        Object.defineProperty(target, propertyKey, {
+            get: getter,
+            set: setter
+        });
+    }
+}
+
+class User {
+
+    @format
+    name: string;
+    constructor(name: string){
+        this.name = name;
+    }
+    print():void{
+        console.log(this.name);
+    }
+}
+let tom = new User("Tom");
+tom.print();
+tom.name = "Tommy";
+tom.print();
+```
+
+#### Декоратор метода доступа
+
+```js
+function decorator(target: Object, propertyName: string, descriptor: PropertyDescriptor){
+    // код декоратора
+}
+```
+
+- представляет
+
+    - конструктор класса (метод статический)
+
+    - прототип класса (метод нестатический)
+
+- имя метода
+
+- объект PropertyDescriptor
+
+**Пример**
+
+```js
+function validator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    const oldSet = descriptor.set;
+
+    descriptor.set = function(value: string) {
+        if (value === "admin") {
+            throw new Error("Invalid value");
+        }
+
+        oldSet.call(this, value);
+    }
+}
+class User {
+
+    private _name: string;
+    constructor(name: string){
+        this.name = name;
+    }
+
+    public get name(): string {
+        return this._name;
+    }
+    @validator
+    public set name(n: string) {
+        this._name = n;
+    }
+}
+let tom = new User("Tom");
+tom.name= "admin";
+console.log(tom.name);
+```
+
+#### Фабрики декораторов
+
+- функция, которая возвращает функцию декоратора
+
+```js
+function regex(pattern: string){
+    const expression = new RegExp(pattern);
+
+    return function regex(target: Object, propertyName: string){
+        const propertyValue = this[propertyName];
+
+        // геттер
+        const getter = function () {
+            return propertyValue;
+        };
+
+        // сеттер
+        const setter = function (newVal) {
+            let isValid: boolean = expression.test(newVal);
+
+            if(isValid === false){
+                throw new Error(`Value ${newVal} does not match ${pattern}`);
+            } else {
+                console.log(`${newVal} is valid`);
+            }
+        };
+        // удаляем свойство
+        if (delete this[propertyName]) {
+
+            // И создаем новое свойство с геттером и сеттером
+            Object.defineProperty(target, propertyName, {
+                get: getter,
+                set: setter
+            });
+        }
+    }
+}
+
+class Account{
+
+    @regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+    email: string;
+
+    @regex("^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$")
+    phone: string;
+
+    constructor(email: string, phone: string){
+        this.email = email; this.phone = phone;
+    }
+}
+
+let acc = new Account("bir@gmail.com", "+23451235678");
+acc.email = "bir_iki_yedi";
+```
+
+![Мои поздравления](./node__cycle__events__full.png "Мои поздравления")
 
 # Обратно к Angular
 
