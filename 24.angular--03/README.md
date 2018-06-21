@@ -1149,7 +1149,7 @@ ng generate serice hero --module=app
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 import { Injectable } from '@angular/core';
 import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
@@ -1173,7 +1173,7 @@ export class HeroService {
 
 - **src/app/heroes/heroes.component.ts**
 
-```angularjs
+```js
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
@@ -1207,7 +1207,7 @@ export class HeroesComponent implements OnInit {
 
     - при создании `HeroesComponent`, **Dependency Injection** устанавливает `heroService` как одиночный экземпляр `HeroService`
 
-```angularjs
+```js
 ...
 
 constructor(private heroService: HeroService) { }
@@ -1217,7 +1217,7 @@ constructor(private heroService: HeroService) { }
 
 - создадим функцию для получения героев из сервиса
 
-```angularjs
+```js
 ...
 
 getHeroes(): void {
@@ -1229,7 +1229,7 @@ getHeroes(): void {
 
 - вызовем её на `ngOnInit`
 
-```
+```js
 ...
 
 ngOnInit() {
