@@ -379,7 +379,7 @@
         - Определение свойств через конструктор
         - Interfaces
         - Build Tools
-    - Причем тут TypeScript тема то про Angular!
+- Причем тут TypeScript тема то про Angular!
 - QuickStart
     - Angular component
     - Структура src

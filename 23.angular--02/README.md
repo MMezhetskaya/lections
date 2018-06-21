@@ -712,7 +712,10 @@ class User {
 let user: User = userFactory(User);
 ```
 
-## Основы Angular
+
+![Мои поздравления](./finaly__01.png "Мои поздравления")
+
+# Основы Angular
 
 ## Heroes Editor
 

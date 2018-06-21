@@ -674,7 +674,9 @@ module.exports = {
 };
 ```
 
-### Причем тут TypeScript тема то про Angular!
+## Причем тут TypeScript тема то про Angular!
+
+![Вот это поворот](./hqdefault.png "Вот это поворот")
 
 ## QuickStart
 
