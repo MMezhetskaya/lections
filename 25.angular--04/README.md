@@ -1260,13 +1260,11 @@ button:disabled {
 
 - ngIf
 
+- event-binding
+
 - class-binding
 
-- Routing
-
-- Страница Dashboard
-
-- Страница героя
+- routing
 
 ## ДЗ
 
