@@ -442,6 +442,11 @@
     - Макет списка
     - ngFor или отображение макета списка
     - Стили для списка
+- ДЗ
+- Справочники
+ 
+## [25.angular--04](./25.angular--04)
+- Список и детали героев
     - Angular event-binding
     - NgIf
     - Angular class-binding
@@ -459,10 +464,6 @@
 - Observable HeroService
 - Subscribe в HeroesComponent
 - HeroesComponent
-- ДЗ
-- Справочники
- 
-## [25.angular--04](./25.angular--04)
 - Отображение сообщения
     - Создание MessagesComponent
     - Создание MessageService
