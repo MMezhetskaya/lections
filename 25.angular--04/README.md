@@ -1282,6 +1282,10 @@ button:disabled {
 
 ## ДЗ
 
+**null**
+
+[<< prev](../24.angular--03) | [next >>](../26.angular--05)
+
 ## Справочники
 
 - [event-binding](https://next.angular.io/guide/template-syntax#event-binding)

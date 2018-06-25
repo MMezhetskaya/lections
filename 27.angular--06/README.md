@@ -89,8 +89,9 @@
 
 ![React vs Angular](./react_vs_angular.jpeg "React vs Angular")
 
-
 ## Заключение
+
+[<< prev](../26.angular--05)
 
 ## Справочники
 - [React’s JSX: The Other Side of the Coin](https://medium.freecodecamp.org/react-s-jsx-the-other-side-of-the-coin-2ace7ab62b98)

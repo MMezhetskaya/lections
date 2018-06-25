@@ -724,6 +724,9 @@ this.heroes$ = this.searchTerms.pipe(
 
 - попробуйте провести все **CRUD** операции через реальную БД
 
+
+[<< prev](../25.angular--04) | [next >>](../27.angular--06)
+
 ## Справочники
 
 - [HttpClient](https://next.angular.io/api/common/http/HttpClient)
