@@ -1,5 +1,6 @@
 # Lection 25
 
+## Список и детали героев
 
 ### Angular [event-binding](https://next.angular.io/guide/template-syntax#event-binding)
 
@@ -95,7 +96,7 @@ export class HeroesComponent implements OnInit {
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```html
 ...
 
 <li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
@@ -119,13 +120,13 @@ export class HeroesComponent implements OnInit {
 
 - создадим `hero-detail`
 
-```
+```bash
 ng generate component hero-detail
 ```
 
 - перенесём с **src/app/heroes/heroes.component.html** в **src/app/heroes/hero-detail.component.html**
 
-```js
+```html
 <div *ngIf="hero">
 
   <h2>{ hero.name | uppercase } Details</h2>
@@ -169,7 +170,7 @@ export class HeroDetailComponent implements OnInit {
 
 - **src/app/heroes/heroes.component.html**
 
-```
+```html
 ...
 
 <app-hero-detail [hero]="selectedHero"></app-hero-detail>
@@ -187,37 +188,41 @@ export class HeroDetailComponent implements OnInit {
 
 **Зачем?**
 
-- компоненты не должны работать напрямую с датой
+Компоненты не должны работать напрямую с датой
 
-    - представлении данных
+- а что должны делать компоненты?
 
-    - делегировании доступа к данным
+    - представление данных
 
-**Что сделаем**
+    - делегирование доступа к данным
 
-- создадим `HeroService` - все классы приложения имеют доступ к героям
+**Что будем делать?**
+
+- создадим `HeroService`
+
+    - все классы приложения имеют доступ к героям
 
     - будем использовать **[Angular dependency injection](https://next.angular.io/guide/dependency-injection)**
 
-- создадим `MessageService` и добавим его в
+- создадим `MessageService`, добавим его в
 
     - `HeroService` - отправление сообщения
 
     - `MessagesComponent` - отображение сообщения
 
-### [Angular dependency injection](https://next.angular.io/guide/dependency-injection)
-
 ## Создаем HeroService
 
 - cервис `hero`
 
-```
+```bash
 ng generate serice hero --module=app
 ```
 
-- добавит `HeroService` в **dependency injection** системы прежде чем **Angular** сможет использовать его в `HeroesComponent`
+- добавит `HeroService` в **dependency injection** системы
 
-    - **src/app/app.module.ts**
+    - прежде чем **Angular** сможет использовать его в `HeroesComponent`
+
+        - **src/app/app.module.ts**
 
 - **src/app/hero.service.ts**
 
@@ -237,7 +242,7 @@ export class HeroService {
 }
 ```
 
-*`HeroService` может получать дату отовсюду web service, local storage, или data source
+**Note:** `HeroService` может получать дату отовсюду web service, local storage, или data source
 
 ### [Providers](https://next.angular.io/guide/providers)
 
@@ -275,9 +280,15 @@ export class HeroesComponent implements OnInit {
 
 - добавим `HeroService` в конструктор класса
 
-    - параметр одновреммено определяет `private heroService` свойство и определяет его как  `HeroService` injection
+    - параметр определяет
 
-    - при создании `HeroesComponent`, **Dependency Injection** устанавливает `heroService` как одиночный экземпляр `HeroService`
+        - `private heroService` свойство
+
+        - как внедрение `HeroService`
+
+    - при создании `HeroesComponent`
+
+        - **Dependency Injection** устанавливает `heroService` как одиночный экземпляр `HeroService`
 
 ```js
 ...
@@ -318,7 +329,11 @@ ngOnInit() {
 - `HeroService.getHeroes()` получение данных идет синхронно
 
 ```js
+...
+
 this.heroes = this.heroService.getHeroes();
+
+...
 ```
 
 - не будет работать в реальном приложении
@@ -334,7 +349,7 @@ this.heroes = this.heroService.getHeroes();
 
 **Способы "общения" компонентов**
 
-Идея предельно простая и давно хорошо себя зарекомендовавшая.
+Идея предельно простая и давно хорошо себя зарекомендовавшая
 
 - публикация и подписка на именованные события
 
@@ -354,7 +369,7 @@ this.heroes = this.heroService.getHeroes();
 
     - за именами событий
 
-    - за тем, кому какие события нужны для правильной работы.
+    - за тем, кому какие события нужны для правильной работы
 
 - появляются
 
@@ -364,11 +379,11 @@ this.heroes = this.heroService.getHeroes();
 
 - невозможно делать при такой организации
 
-    - компоновать события.
+    - компоновать события
 
 **Пример**
 
-Требование "сделай что-то когда событие Б возникнет после двух событий A" выливается в тонну локальных переменных, хранящих последние данные из событий и счетчики самих событий.
+Требование "сделай что-то когда событие Б возникнет после двух событий A" выливается в тонну локальных переменных, хранящих последние данные из событий и счетчики самих событий
 
 **Облегчают**
 
@@ -385,11 +400,11 @@ this.heroes = this.heroService.getHeroes();
 
 - каждый компонент соединен с другими, "потоками", по которым передается сигнал
 
-- какие данные нужны компоненту для работы
+    - какие данные нужны компоненту для работы
 
-    - от каких компонентов приходят потоки
+        - от каких компонентов приходят потоки
 
-    - как преобразуются данные по пути
+        - как преобразуются данные по пути
 
 - именовать события при такой организации не нужно
 
@@ -447,7 +462,7 @@ function someObserver(streamEvent) {
 
 - `Observable` один из ключевых классов **[RxJS](http://reactivex.io/rxjs/)**
 
-- **./src/app/hero.service.ts**, сэмулируем  получение данных от сервера используя **RxJS** `Observable.of()`
+- **./src/app/hero.service.ts**, эмулируем получение данных от сервера используя **RxJS** `Observable.of()`
 
 ```bash
 npm install rxjs --save-dev
@@ -504,7 +519,7 @@ ng generate component messages
 
 - **/src/app/app.component.html**
 
-```js
+```html
 ...
 
 <app-messages></app-messages>
@@ -573,7 +588,7 @@ import { MessageService } from './message.service';
 ...
 ```
 
-*классический "service-in-service" cценарий
+**Note:** классический "service-in-service" cценарий
 
 ### Отправление сообщения с HeroService
 
@@ -652,12 +667,11 @@ button.clear {
 
 - **/src/app/messages/messages.component.html**
 
-```js
+```html
 <div *ngIf="messageService.messages.length">
 
   <h2>Messages</h2>
-  <button class="clear"
-          (click)="messageService.clear()">clear</button>
+  <button class="clear" (click)="messageService.clear()">clear</button>
   <div *ngFor='let message of messageService.messages'> {{message}} </div>
 
 </div>
@@ -675,7 +689,7 @@ button.clear {
 
     - вызов метода `MessageService.clear()`
 
-## Routing
+## [Routing](https://angular.io/guide/router)
 
 **Задача**
 
@@ -695,13 +709,13 @@ button.clear {
 ng generate module app-routing --flat --module=app;
 ```
 
-*`--flat` кладет файлы в `src/app`
+**Note:** `--flat` кладет файлы в `src/app`
 
-*`--module=app` зарегистрировать в импортах `AppModule`
+**Note:** `--module=app` зарегистрировать в импортах `AppModule`
 
 - **src/app/app-routing.module.ts**
 
-```angularjs
+```js
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -727,7 +741,7 @@ export class AppRoutingModule {}
 
 - **src/app/app-routing.module.ts**
 
-```angularjs
+```js
 ...
 
 import { HeroesComponent }      from './heroes/heroes.component';
@@ -741,7 +755,7 @@ const routes: Routes = [
 
 - инициализируем `router` и начнем слушать изменения `location`(**src/app/app-routing.module.ts**)
 
-```angularjs
+```js
 ...
 
 imports: [ RouterModule.forRoot(routes) ],
@@ -754,7 +768,7 @@ imports: [ RouterModule.forRoot(routes) ],
 
 - **/src/app/app.component.html**
 
-```angularjs
+```js
 <h1>{{title}}</h1>
 <router-outlet></router-outlet>
 <app-messages></app-messages>
@@ -766,7 +780,7 @@ imports: [ RouterModule.forRoot(routes) ],
 
 - **src/app/app.component.html**
 
-```angularjs
+```js
 ...
 
 <nav>
@@ -800,7 +814,7 @@ ng generate component dashboard
 
 - **src/app/dashboard/dashboard.component.ts**
 
-```angularjs
+```js
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
@@ -897,7 +911,7 @@ h4 {
 
 - **src/app/app-routing.module.ts**
 
-```angularjs
+```js
 ...
 
 import { DashboardComponent }   from './dashboard/dashboard.component';
@@ -912,7 +926,7 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 
 - выставим **URL** по умолчанию (**src/app/app-routing.module.ts**)
 
-```angularjs
+```js
 ...
 
 { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -922,7 +936,7 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 
 - добавим ссылку на Dashboard (**src/app/app.component.html**)
 
-```angularjs
+```js
 ...
 
  <a routerLink="/dashboard">Dashboard</a>
@@ -944,7 +958,7 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```js
 <h2>My Heroes</h2>
 
 <ul class="heroes">
@@ -960,7 +974,7 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 
 - **src/app/app-routing.module.ts**
 
-```angularjs
+```js
 ...
 import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
 
@@ -973,7 +987,7 @@ import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
 
 - добавим ссылку на героя (**src/app/dashboard/dashboard.component.html**)
 
-```angularjs
+```js
 <a *ngFor="let hero of heroes" class="col-1-4"
     routerLink="/detail/{{hero.id}}">
     ...
@@ -982,7 +996,7 @@ import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```js
 ...
 
 <ul class="heroes">
@@ -998,7 +1012,7 @@ import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
 
 - **src/app/heroes/heroes.component.ts**
 
-```angularjs
+```js
 ...
 
 export class HeroesComponent implements OnInit {
@@ -1031,7 +1045,7 @@ export class HeroesComponent implements OnInit {
 
 - **src/app/hero-detail/hero-detail.component.ts**
 
-```angularjs
+```js
 import { Component, OnInit, Input } from '@angular/core';
 import { Hero } from '../hero';
 
@@ -1072,7 +1086,7 @@ export class HeroDetailComponent implements OnInit {
 
 - **src/app/hero-detail/hero-detail.component.ts**
 
-```angularjs
+```js
 ...
 
 ngOnInit(): void {
@@ -1092,7 +1106,7 @@ getHero(): void {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 ...
 
 getHero(id: number): Observable<Hero> {
@@ -1108,7 +1122,7 @@ getHero(id: number): Observable<Hero> {
 
 - **src/app/hero-detail/hero-detail.component.html**
 
-```angularjs
+```js
 ...
 
 <button (click)="goBack()">go back</button>
@@ -1118,7 +1132,7 @@ getHero(id: number): Observable<Hero> {
 
 - **src/app/hero-detail/hero-detail.component.ts**
 
-```angularjs
+```js
 ...
 
 goBack(): void {
@@ -1288,4 +1302,7 @@ button:disabled {
 
 - [RxJS](http://reactivex.io/rxjs/)
 
+- [Routing](https://angular.io/guide/router)
+
 - [location](https://next.angular.io/api/common/Location)
+

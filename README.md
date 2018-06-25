@@ -456,7 +456,6 @@
 - Отображение HeroDetailComponent
     - property-binding
 - Services
-    - Angular dependency injection
 - Создаем HeroService
     - Providers
 - Observable data
