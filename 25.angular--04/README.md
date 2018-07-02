@@ -493,8 +493,8 @@ X - ошибка
 ![RxJS example](./rx__example.png "RxJS example")
 
 ```js
-const refreshButton = document.querySelector('.refresh');
-const refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
+const ourButton = document.querySelector('.button');
+const clickStream = Rx.Observable.fromEvent(ourButton, 'click');
 
 ...
 ```
