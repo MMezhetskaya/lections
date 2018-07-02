@@ -459,7 +459,7 @@
 - Создаем HeroService
     - Providers
 - Observable data
-- RxJS
+- Что такое реактивное программирование, или RxJS
 - Observable HeroService
 - Subscribe в HeroesComponent
 - HeroesComponent
