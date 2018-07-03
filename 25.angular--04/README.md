@@ -520,11 +520,9 @@ X - ошибка
 
 **Задача**
 
-Сделать поток счетчиков, который определяет, сколько раз кнопка была нажата
+Сделать поток счетчиков, который определяет, сколько раз кнопка была нажата 2 и более раза
 
 **Решение**
-
-![RxJS example](./rx__example.png "RxJS example")
 
 ```html
 <button #button>
@@ -548,6 +546,8 @@ ngAfterViewInit(): void {
     .subscribe(e => console.log(e));
 }
 ```
+
+![RxJS example](./rx__example.png "RxJS example")
 
 ## Observable HeroService
 
