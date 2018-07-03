@@ -415,6 +415,47 @@ this.heroes = this.heroService.getHeroes();
 
 [RxJS](http://reactivex.io/rxjs/) - представляет собой модульную библиотеку, позволяющую создавать и компоновать потоки данных.
 
+**Пример**
+
+```js
+class Observable {
+    constructor(source) {
+        this.source = source.split('');
+        this.result = this.source;
+    }
+
+    subscribe(next) {
+        for (let item of this.result) {
+            next(item);
+        }
+    }
+
+    filter(predicate) {
+        this.result = this.result.filter(predicate);
+        return this;
+    }
+
+    map(callback) {
+        this.result = this.result.map(callback);
+        return this;
+    }
+}
+
+new Observable('Observable')
+    .map(letter => letter.toUpperCase())
+    .filter(letter === 'E')
+    .subscribe(letter => console.log(letter));
+```
+
+```js
+import { Observable } from 'rxjs';
+
+new Observable('Observable')
+      .map(letter => letter.toUpperCase())
+      .filter(letter => letter === 'E')
+      .subscribe(letter => console.log(letter));
+```
+
 **Для общего развития**
 
 > Подход, используемый в **Rx**, появился в **.NET** и оттуда был портирован во многие популярные языки.
@@ -427,17 +468,10 @@ this.heroes = this.heroService.getHeroes();
 
         - при помощи метода **subscribe**, который принимает в качестве аргумента **Observer**
 
-```js
-observableStream.subscribe(someObserver);
-```
+- в самом простом случае **Observer** это функция, которая принимает единственный аргумент
 
-- в самом простом случае **Observer** это функция, которая принимает единственный аргумент – переданное сообщение из потока
+    - переданное сообщение из потока
 
-```js
-function someObserver(streamEvent) {
-    console.log('Received ' + streamEvent);
-}
-```
 
 **Преимущества**
 
@@ -492,11 +526,27 @@ X - ошибка
 
 ![RxJS example](./rx__example.png "RxJS example")
 
-```js
-const ourButton = document.querySelector('.button');
-const clickStream = Rx.Observable.fromEvent(ourButton, 'click');
+```html
+<button #button>
+    test
+</button>
+```
 
-...
+```js
+import { Observable } from 'rxjs';
+
+@ViewChild("button", {read: ElementRef})
+button: ElementRef;
+
+ngAfterViewInit(): void {
+  const click$ = Observable.fromEvent(this.button.nativeElement, 'click');
+
+  click$
+    .buffer(click$.throttleTime(250))
+    .map(a => a.length)
+    .filter(x => x >= 2)
+    .subscribe(e => console.log(e));
+}
 ```
 
 ## Observable HeroService
