@@ -704,6 +704,388 @@ this.heroes$ = this.searchTerms.pipe(
 );
 ```
 
+## Подключаем MongoDB
+
+- узнаем/вспомним [NodeJS](https://zlodej43sm.github.io/lections/28.node--01/)
+
+- узнаем/вспомним [MongoDB](https://zlodej43sm.github.io/lections/31.node--04/)
+
+- запустим сервер с API
+
+- **server/app.js**
+
+```js
+const express = require("express");
+const bodyParser = require("body-parser");
+const { MongoClient, ObjectId } = require("mongodb");
+
+const app = express();
+const jsonParser = bodyParser.json();
+const url = "mongodb://localhost:27017/";
+
+app.use(express.static(__dirname + "/public"));
+// Add headers
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    // res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
+
+app.get("/api/users", function(req, res) {
+    MongoClient.connect(url, { useNewUrlParser: true }, function(err, client) {
+        client.db("usersdb")
+            .collection("users")
+            .find()
+            .toArray(function(err, users) {
+                res.send(users);
+                client.close();
+            });
+    });
+});
+
+app.get("/api/users/:id", function(req, res){
+    const id = new ObjectId(req.params.id);
+
+    MongoClient.connect(url, { useNewUrlParser: true }, function(err, client) {
+        client.db("usersdb")
+            .collection("users")
+            .findOne(
+                {_id: id},
+                function(err, user){
+                    if(err) return res.status(400).send();
+
+                    res.send(user);
+                    client.close();
+                }
+            );
+    });
+});
+
+app.post("/api/users", jsonParser, function (req, res) {
+    if(!req.body) return res.sendStatus(400);
+
+    const userName = req.body.name;
+    const userAge = req.body.age;
+    const user = {name: userName, age: userAge};
+
+    MongoClient.connect(url, { useNewUrlParser: true }, function(err, client) {
+        client.db("usersdb")
+            .collection("users")
+            .insertOne(
+                user,
+                function(err, result) {
+                    if(err) return res.status(400).send();
+
+                    res.send(user);
+                    client.close();
+                }
+            );
+    });
+});
+
+app.delete("/api/users/:id", function(req, res){
+    const id = new ObjectId(req.params.id);
+
+    MongoClient.connect(url, { useNewUrlParser: true },  function(err, client){
+        client.db("usersdb")
+            .collection("users")
+            .findOneAndDelete(
+                {_id: id},
+                function(err, result) {
+                    if(err) return res.status(400).send();
+
+                    const user = result.value;
+
+                    res.send(user);
+                    client.close();
+                }
+            );
+    });
+});
+
+app.put("/api/users", jsonParser, function(req, res){
+    if(!req.body) return res.sendStatus(400);
+
+    const id = new ObjectId(req.body.id);
+    const userName = req.body.name;
+    const userAge = req.body.age;
+
+    MongoClient.connect(url, { useNewUrlParser: true }, function(err, client){
+        client.db("usersdb")
+            .collection("users")
+            .findOneAndUpdate(
+                {_id: id},
+                {
+                    $set: {
+                        age: userAge,
+                        name: userName
+                    }
+                },
+                {
+                    returnOriginal: false
+                },
+                function(err, result){
+
+                    if(err) return res.status(400).send();
+
+                    const user = result.value;
+
+                    res.send(user);
+                    client.close();
+                }
+            );
+    });
+});
+
+app.listen(3000, function(){
+    console.log("Сервер ожидает подключения...");
+});
+```
+
+- **server/public/index.html**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Список пользователей</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<main class="container">
+    <h2>Список пользователей</h2>
+
+    <form name="userForm" id="form">
+        <input type="hidden" name="id" value="0" />
+
+        <p class="form-group">
+            <input class="form-control" name="name" placeholder="Имя" />
+        </p>
+
+        <p class="form-group">
+            <input class="form-control" name="age" placeholder="Возраст" />
+        </p>
+
+        <p class="panel-body">
+            <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+            <button type="reset" id="resetBtn" class="btn btn-sm btn-primary">Сбросить</button>
+        </p>
+    </form>
+
+    <table class="table table-condensed table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>возраст</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+</main>
+
+<script>
+    // Получение всех пользователей
+    function GetUsers() {
+        fetch('/api/users', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then((users) => tableBody.innerHTML = users.reduce((rows, user) => rows + row(user), ''))
+            .catch((res) => console.log(res));
+    }
+
+    // Получение одного пользователя
+    function GetUser(id) {
+        fetch(`/api/users/${id}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then((user) => {
+                form.elements["id"].value = user._id;
+                form.elements["name"].value = user.name;
+                form.elements["age"].value = user.age;
+            })
+            .catch((res) => console.log(res));
+    }
+
+    // Добавление пользователя
+    function CreateUser(userName, userAge) {
+        fetch('/api/users/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: userName,
+                age: userAge
+            })
+        })
+            .then((res) => res.json())
+            .then((user) => {
+                form.elements["id"].value = 0;
+                tableBody.innerHTML += row(user);
+            })
+            .catch((res) => console.log(res));
+    }
+
+    // Изменение пользователя
+    function EditUser(userId, userName, userAge) {
+        fetch('/api/users/', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: userId,
+                name: userName,
+                age: userAge
+            })
+        })
+            .then((res) => res.json())
+            .then((user) => {
+                const childsTD = document.querySelector(`tr[data-rowid='${user._id}']`).children;
+
+                childsTD[1].innerHTML = user.name;
+                childsTD[2].innerHTML = user.age;
+
+                reset();
+            })
+            .catch((res) => console.log(res));
+    }
+
+    // Удаление пользователя
+    function DeleteUser(id) {
+        fetch(`api/users/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then((user) => document.querySelector(`tr[data-rowid='${user._id}']`).remove())
+            .catch((res) => console.log(res));
+    }
+
+    // создание строки для таблицы
+    function row(user) {
+        return `<tr data-rowid='${user._id}'><td>${user._id}</td><td>${user.name}</td><td>${user.age
+        }</td><td><a class='editLink' data-id='${user._id}'>Изменить</a> | <a class='removeLink' data-id='${user._id}'>Удалить</a></td></tr>`;
+    }
+
+    // сброс значений формы
+    resetBtn.click(() => reset());
+
+    function reset() {
+        form.elements["id"].value = 0;
+    }
+
+    // отправка формы
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const id = this.elements["id"].value;
+        const name = this.elements["name"].value;
+        const age = this.elements["age"].value;
+
+        (+id === 0) ? CreateUser(name, age) : EditUser(id, name, age);
+    });
+
+    tableBody.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const targetBtn = e.target;
+
+        // нажимаем на ссылку Изменить
+        targetBtn.className === "editLink" && GetUser(targetBtn.getAttribute('data-id'));
+
+        // нажимаем на ссылку Удалить
+        targetBtn.className === "removeLink" && DeleteUser(targetBtn.getAttribute('data-id'));
+    });
+
+    // загрузка пользователей
+    GetUsers();
+</script>
+</body>
+</html>
+```
+
+- обновим **src/app/hero.service.ts**
+
+```js
+...
+
+const httpOptions = {
+  headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+  }),
+};
+
+...
+export class HeroService {
+  private heroesUrl = 'http://localhost:3000/api/users';  // URL to web api
+
+  ...
+
+  /** GET heroes from the server */
+  getHeroes (): Observable<Hero[]> {
+    return this.http.get<Hero[]>(this.heroesUrl)
+      .pipe(
+        tap(heroes => this.log(`fetched heroes`)),
+        /* handleError - reports the error and then returns an innocuous result */
+        catchError(this.handleError('getHeroes', []))
+      );
+  }
+
+ ...
+}
+
+```
+
+- отключим **src/app/app.module.ts**
+
+```js
+...
+
+HttpClientInMemoryWebApiModule.forRoot(
+   InMemoryDataService, { dataEncapsulation: false }
+)
+
+...
+```
+
+- больше магии и все получиться
+
 ## А что дальше?
 
 - [Angular architecture](https://next.angular.io/guide/architecture)
@@ -717,10 +1099,6 @@ this.heroes$ = this.searchTerms.pipe(
 - Цепочки RxJS
 
 ## ДЗ
-
-- поднимите приложение на сервере
-
-- подключите БД
 
 - попробуйте провести все **CRUD** операции через реальную БД
 
