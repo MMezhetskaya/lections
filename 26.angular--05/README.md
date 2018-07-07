@@ -80,7 +80,7 @@ imports: [ RouterModule.forRoot(routes) ],
 - **/src/app/app.component.html**
 
 ```js
-<h1>{{title}}</h1>
+<h1>{title}</h1>
 <router-outlet></router-outlet>
 <app-messages></app-messages>
 ```
@@ -116,7 +116,7 @@ ng generate component dashboard
 <div class="grid grid-pad">
   <a *ngFor="let hero of heroes" class="col-1-4">
     <div class="module hero">
-      <h4>{{hero.name}}</h4>
+      <h4>{hero.name}</h4>
     </div>
   </a>
 </div>
@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
 
   getHeroes(): void {
     this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes.slice(1, 5));
+      .subscribe(heroes => this.heroes = heroes.slice(0, 4));
   }
 }
 ```
@@ -274,7 +274,7 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 
 <ul class="heroes">
   <li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
+    <span class="badge">{hero.id}</span> {hero.name}
   </li>
 </ul>
 ```
@@ -300,7 +300,7 @@ import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
 
 ```js
 <a *ngFor="let hero of heroes" class="col-1-4"
-    routerLink="/detail/{{hero.id}}">
+    routerLink="/detail/{hero.id}">
     ...
 </a>
 ```
@@ -312,8 +312,8 @@ import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
 
 <ul class="heroes">
   <li *ngFor="let hero of heroes">
-    <a routerLink="/detail/{{hero.id}}">
-      <span class="badge">{{hero.id}}</span> {{hero.name}}
+    <a routerLink="/detail/{hero.id}">
+      <span class="badge">{hero.id}</span> {hero.name}
     </a>
   </li>
 </ul>
@@ -606,7 +606,7 @@ button:disabled {
 
 - добавить его в массив `@NgModule.imports`
 
-```angularjs
+```js
 ...
 
 import { HttpClientModule } from '@angular/common/http';
@@ -645,7 +645,7 @@ npm install angular-in-memory-web-api@0.5.4 --save
 
 - **src/app/app.module.ts**, импорт класса
 
-```angularjs
+```js
 ...
 
 
@@ -670,7 +670,7 @@ import { InMemoryDataService }  from './in-memory-data.service';
 
 - создадим **src/app/in-memory-data.service.ts**
 
-```angularjs
+```js
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
 export class InMemoryDataService implements InMemoryDbService {
@@ -698,7 +698,7 @@ export class InMemoryDataService implements InMemoryDbService {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 ...
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -727,7 +727,7 @@ export class HeroService {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 /** GET heroes from the server */
 getHeroes (): Observable<Hero[]> {
   return this.http.get<Hero[]>(this.heroesUrl)
@@ -748,7 +748,7 @@ getHeroes (): Observable<Hero[]> {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -832,7 +832,7 @@ export class HeroService {
 
 - **src/app/hero-detail/hero-detail.component.html**
 
-```angularjs
+```js
 
 ...
 
@@ -844,7 +844,7 @@ export class HeroService {
 
 - **src/app/hero-detail/hero-detail.component.ts**
 
-```angularjs
+```js
 
 ...
 
@@ -859,7 +859,7 @@ save(): void {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 
 ...
 
@@ -885,7 +885,7 @@ updateHero (hero: Hero): Observable<any> {
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```js
 
 ...
 
@@ -905,7 +905,7 @@ updateHero (hero: Hero): Observable<any> {
 
 - **src/app/heroes/heroes.component.ts**
 
-```angularjs
+```js
 
 ...
 
@@ -924,7 +924,7 @@ add(name: string): void {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 
 ...
 
@@ -946,7 +946,7 @@ addHero (hero: Hero): Observable<Hero> {
 
 - **src/app/heroes/heroes.component.html**
 
-```angularjs
+```js
 
 ...
 
@@ -965,7 +965,7 @@ addHero (hero: Hero): Observable<Hero> {
 
 - **src/app/heroes/heroes.component.ts**
 
-```angularjs
+```js
 
 ...
 
@@ -980,7 +980,7 @@ delete(hero: Hero): void {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 
 ...
 
@@ -1101,7 +1101,7 @@ button.delete {
 
 - **src/app/hero.service.ts**
 
-```angularjs
+```js
 
 ...
 
@@ -1131,7 +1131,7 @@ ng generate component hero-search
 
 - **src/app/dashboard/dashboard.component.html**
 
-```angularjs
+```js
 
 ...
 <app-hero-search></app-hero-search>
@@ -1142,7 +1142,7 @@ ng generate component hero-search
 
 - **src/app/hero-search/hero-search.component.html**
 
-```angularjs
+```html
 <div id="search-component">
   <h4>Hero Search</h4>
 
@@ -1151,7 +1151,7 @@ ng generate component hero-search
   <ul class="search-result">
     <li *ngFor="let hero of heroes$ | async" >
       <a routerLink="/detail/{{hero.id}}">
-        {{hero.name}}
+        {hero.name}
       </a>
     </li>
   </ul>
@@ -1214,7 +1214,7 @@ ul.search-result {
 
 - **src/app/hero-search/hero-search.component.ts**
 
-```angularjs
+```js
 import { Component, OnInit } from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
@@ -1271,7 +1271,7 @@ export class HeroSearchComponent implements OnInit {
 
 **Где это в коде?**
 
-```angularjs
+```js
 this.heroes$ = this.searchTerms.pipe(
   // wait 300ms after each keystroke before considering the term
   debounceTime(300),
