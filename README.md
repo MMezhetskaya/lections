@@ -469,6 +469,10 @@
     - Inject в HeroService
     - Отправление сообщения с HeroService
     - Привязка к MessageService
+- ДЗ
+- Справочники
+ 
+## [26.angular--05](./26.angular--05)
 - Routing
     - Добавляем AppRoutingModule
     - Добавляем routes
@@ -477,11 +481,6 @@
 - Страница героя
     - Router для героя
     - Routable HeroDetailComponent
-- Заключение
-- ДЗ
-- Справочники
- 
-## [26.angular--05](./26.angular--05)
 - HTTP
     - Включим HTTP сервисы
     - Имитируем сервер данных
