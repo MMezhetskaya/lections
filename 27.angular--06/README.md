@@ -1145,7 +1145,7 @@ HttpClientInMemoryWebApiModule.forRoot(
 
     - для чтения **React** выучи **JS**
 
-```angularjs
+```js
 <ul>
   <li *ngFor="#hero of heroes">
     {{hero.name}}
