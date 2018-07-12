@@ -529,7 +529,7 @@ button.delete {
   searchHeroes(term: string): Observable<Hero[]> {
     if (!term.trim()) {
       // if not search term, return empty hero array.
-      return Observable.of([]);
+      return of([]);
     }
     return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
       tap(_ => this.log(`found heroes matching "${term}"`)),
